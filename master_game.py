@@ -2,7 +2,7 @@ import pygame
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode([100,100])
+    screen = pygame.display.set_mode([500,500])
     screen.fill([25, 226, 230])
     #running state of the game variable
     run = True
