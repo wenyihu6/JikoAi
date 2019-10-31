@@ -16,15 +16,16 @@ def main():
 
     pg.init()
     pg.font.init()
-    font = pg.font.SysFont('VT323-Regular.ttf', 180)
+    titleFont = pg.font.SysFont('VT323-Regular.ttf', 180)
+    textFont = pg.font.SysFont('VT323-Regular.ttf', 100)
     
     screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
-
-    screen.fill(WHITE)
 
     currGameState = Screen.STARTING
 
     while True:
+        ev = pg.event.get()
+        screen.fill(WHITE)
         if currGameState == Screen.STARTING:
             outerRect = pg.Rect(WIDTH / 2, HEIGHT / 2, 410, 160)
             innerRect = pg.Rect(WIDTH / 2, HEIGHT / 2, 390, 140)
@@ -34,12 +35,16 @@ def main():
             pg.draw.rect(screen, BLACK, outerRect)
             pg.draw.rect(screen, WHITE, innerRect)
 
-            title = font.render('JikoAi', True, (0, 0, 0))
+            title = titleFont.render('JikoAi', True, (0, 0, 0))
             screen.blit(title,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
-        # elif currGameState == Screen.HOME:
+            if pg.mouse.get_pressed()[0]:
+                currGameState = Screen.HOME
 
-
-        for event in pg.event.get():
+        elif currGameState == Screen.HOME:
+            welcome = textFont.render('h', True, (0, 0, 0))
+            screen.blit(welcome,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
+        
+        for event in ev:
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
