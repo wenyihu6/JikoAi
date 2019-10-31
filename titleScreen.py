@@ -25,7 +25,7 @@ display_surface = pygame.display.set_mode((X, Y ))
 pygame.display.set_caption('Image') 
   
 # create a surface object, image is drawn on it. 
-titleBG = GIFImage("graphicAssets/BgTitle.gif")
+titleBG = GIFImage("graphicAssets/BgTitle2.gif")
 #image = pygame.image.load(r'graphicAssets/BgTitle.gif') 
 
 # infinite loop 
@@ -35,7 +35,8 @@ while True :
     # with white colour 
     display_surface.fill(white) 
     titleBG.render(display_surface, (0, 0))
-    pygame.display.update() 
+    pygame.display.update()
+    
     # copying the image surface object 
     # to the display surface object at 
     # (0, 0) coordinate. 
