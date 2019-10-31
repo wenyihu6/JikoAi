@@ -1,9 +1,16 @@
 from enum import Enum
+from GIFImage import GIFImage
 import pygame as pg
 
 class Screen(Enum):
     STARTING = 0
     HOME = 1
+    EGG = 2
+    Q_A = 3
+    HATCH = 4
+    FOOD = 5
+    WATER = 6
+    FUN = 7
 
 
 def main():
@@ -21,12 +28,17 @@ def main():
     
     screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
+    titleBG = GIFImage("graphicAssets/BgTitle2.gif")
+    # titleBG = pg.transform.scale(titleBG.getImage, (1280, 720))
+    
     currGameState = Screen.STARTING
 
     while True:
         ev = pg.event.get()
         screen.fill(WHITE)
+
         if currGameState == Screen.STARTING:
+
             outerRect = pg.Rect(WIDTH / 2, HEIGHT / 2, 410, 160)
             innerRect = pg.Rect(WIDTH / 2, HEIGHT / 2, 390, 140)
             outerRect.centerx = WIDTH / 2 #draw rectangles at the center of the screen
@@ -37,6 +49,10 @@ def main():
 
             title = titleFont.render('JikoAi', True, (0, 0, 0))
             screen.blit(title,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
+
+            titleBG.render(screen, (0, 0))
+            pg.display.update()
+
             if pg.mouse.get_pressed()[0]:
                 currGameState = Screen.HOME
 
@@ -44,11 +60,24 @@ def main():
             welcome = textFont.render('h', True, (0, 0, 0))
             screen.blit(welcome,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
         
+        elif currGameState == Screen.EGG
+            print("FILLER")
+        elif currGameState == Screen.FOOD
+            print("FILLER")
+        elif currGameState == Screen.HATCH
+            print("FILLER")
+        elif currGameState == Screen.Q_A
+            print("FILLER")
+        elif currGameState == Screen.WATER
+            print("FILLER")
+        elif currGameState == Screen.FUN
+            print("FILLER")
+            
         for event in ev:
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
-        pg.display.update()
+
 
 
 main()

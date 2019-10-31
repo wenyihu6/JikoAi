@@ -163,6 +163,9 @@ class GIFImage(object):
         self.ptime = time.time()
         self.reversed = False
 
+    def getImage(self):
+        return self.image
+
     def copy(self):
         new = GIFImage(self.filename)
         new.running = self.running
