@@ -29,14 +29,14 @@ def main():
     
     screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
-    titleBG = gifImage("graphicAssets/BgTitle3", 0, 0)
+    titleBG = gifImage("graphicAssets/BgTitle3")
     # titleBG = pg.transform.scale(titleBG.getImage, (1280, 720))
     
     currGameState = Screen.STARTING
 
     while True:
 
-        #clock = pygame.time.Clock()
+        clock = pg.time.Clock()
 
         ev = pg.event.get()
         screen.fill(WHITE)
@@ -78,6 +78,8 @@ def main():
             print("FILLER")
 
         pg.display.update()
+
+        clock.tick(60)
 
         for event in ev:
             if event.type == pg.QUIT:
