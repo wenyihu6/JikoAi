@@ -1,3 +1,4 @@
+import requests
 #request section for the audio processing
 
 url = "https://stream.watsonplatform.net/speech-to-text/api/v1/recognize"

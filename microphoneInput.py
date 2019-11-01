@@ -12,9 +12,12 @@ seconds = 10
 filename = 'command.wav'
 p = pyaudio.PyAudio()
 
+print(p.get_default_output_device_info())
+
 stream = p.open(format=sample_format,
                 channels=channels,
                 rate=fs,
+                input_device_index=0,
                 frames_per_buffer=chunk,
                 input=True)
 
