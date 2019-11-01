@@ -21,11 +21,12 @@ def main():
     BLUE = (0, 0, 255) # More colours should be added here
     WIDTH = 800
     HEIGHT = 480
+    FRAMERATE = 60
 
     pg.init()
     pg.font.init()
     titleFont = pg.font.SysFont('VT323-Regular.ttf', 180)
-    textFont = pg.font.SysFont('VT323-Regular.ttf', 100)
+    textFont = pg.font.SysFont('VT323-Regular.ttf', 60)
     
     screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
@@ -57,10 +58,16 @@ def main():
             title = titleFont.render('JikoAi', True, (0, 0, 0))
             screen.blit(title,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
 
+            subtitle = textFont.render('Click to begin!', True, (0, 0, 0))
+            screen.blit(subtitle, (WIDTH/ 4 + 65, HEIGHT / 2 + 57))
+
             if pg.mouse.get_pressed()[0]:
                 currGameState = Screen.HOME
 
         elif currGameState == Screen.HOME:
+
+            titleBG.animate(screen)
+
             welcome = textFont.render('h', True, (0, 0, 0))
             screen.blit(welcome,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
         
@@ -79,7 +86,7 @@ def main():
 
         pg.display.update()
 
-        clock.tick(60)
+        clock.tick(FRAMERATE)
 
         for event in ev:
             if event.type == pg.QUIT:
