@@ -1,5 +1,5 @@
 from enum import Enum
-from GIFImage import GIFImage
+# from GIFImage import GIFImage
 import pygame as pg
 
 class Screen(Enum):
@@ -12,27 +12,58 @@ class Screen(Enum):
     WATER = 6
     FUN = 7
 
+class PetType(Enum):
+    BALA = 0
+    MAMAU = 1
+    TORA = 2
+
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+BLUE = (0, 0, 255) # More colours should be added here
+WIDTH = 800
+HEIGHT = 480
+
+pg.init()
+pg.font.init()
+
+titleFont = pg.font.SysFont('VT323-Regular.ttf', 180)
+textFont = pg.font.SysFont('VT323-Regular.ttf', 100)
+screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
+
+class Pet(pg.sprite.Sprite):
+    petType = -1
+    name = ""
+    food = 100
+    water = 100
+    sleep = 100
+    stress = 0
+    picture = "graphicAssets/SpriteBala"
+    def __init__ (self, petType, name):
+        WHITE = (255, 255, 255)
+        super().__init__()
+        self.petType = petType
+        self.name = name
+        if (petType == PetType.BALA):
+            picture = "graphicAssets/SpriteBala.png"
+        elif (petType == PetType.MAMAU):
+            picture = "graphicAssets/SpriteMamau.png"
+        elif (petType == PetType.TORA):
+            picture = "graphicAssets/SpriteTora.png"
+        self.image = pg.image.load(picture)
+        self.image.set_colorkey(WHITE)
+
+    def draw(self, x, y):
+        screen.blit(self.image, (x, y))
+        pg.display.flip()
 
 def main():
 
-    BLACK = (0, 0, 0)
-    WHITE = (255, 255, 255)
-    BLUE = (0, 0, 255) # More colours should be added here
-    WIDTH = 800
-    HEIGHT = 480
 
-    pg.init()
-    pg.font.init()
-    titleFont = pg.font.SysFont('VT323-Regular.ttf', 180)
-    textFont = pg.font.SysFont('VT323-Regular.ttf', 100)
-    
-    screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
-
-    titleBG = GIFImage("graphicAssets/BgTitle2.gif")
+    # titleBG = GIFImage("graphicAssets/BgTitle2.gif")
     # titleBG = pg.transform.scale(titleBG.getImage, (1280, 720))
     
     currGameState = Screen.STARTING
-
+    currPet = Pet(PetType.BALA, "bala")
     while True:
         ev = pg.event.get()
         screen.fill(WHITE)
@@ -50,15 +81,15 @@ def main():
             title = titleFont.render('JikoAi', True, (0, 0, 0))
             screen.blit(title,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
 
-            titleBG.render(screen, (0, 0))
+            # titleBG.render(screen, (0, 0))
             pg.display.update()
 
             if pg.mouse.get_pressed()[0]:
                 currGameState = Screen.HOME
 
         elif currGameState == Screen.HOME:
-            welcome = textFont.render('h', True, (0, 0, 0))
-            screen.blit(welcome,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
+            currPet.draw(100, 100)
+            # screen.blit(welcome,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
         
         elif currGameState == Screen.EGG:
             print("FILLER")
