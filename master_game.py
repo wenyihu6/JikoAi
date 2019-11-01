@@ -20,6 +20,10 @@ class PetType(Enum):
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255) # More colours should be added here
+ORANGE = (255, 128, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+PURPLE = (127, 0, 255)
 WIDTH = 800
 HEIGHT = 480
 
@@ -56,6 +60,16 @@ class Pet(pg.sprite.Sprite):
         screen.blit(self.image, (x, y))
         pg.display.flip()
 
+def drawWithBorder(innerRect, color):
+    borderRect = pg.Rect(innerRect.left, innerRect.top, innerRect.width + 10, innerRect.height + 10)
+    borderRect.center = innerRect.center
+    pg.draw.rect(screen, BLACK, borderRect)
+    pg.draw.rect(screen, color, innerRect)
+
+def drawStatBar(rect, color, val):
+    drawWithBorder(rect, WHITE)
+    pg.draw.rect(screen, color, pg.Rect(rect.left, rect.top, rect.width * (val / 100), rect.height))
+
 def main():
 
 
@@ -75,8 +89,7 @@ def main():
             outerRect.centerx = WIDTH / 2 #draw rectangles at the center of the screen
             outerRect.centery = HEIGHT / 2
             innerRect.center = outerRect.center
-            pg.draw.rect(screen, BLACK, outerRect)
-            pg.draw.rect(screen, WHITE, innerRect)
+            drawWithBorder(innerRect, WHITE)
 
             title = titleFont.render('JikoAi', True, (0, 0, 0))
             screen.blit(title,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
@@ -88,7 +101,15 @@ def main():
                 currGameState = Screen.HOME
 
         elif currGameState == Screen.HOME:
-            currPet.draw(100, 100)
+            innerFoodBar = pg.Rect(40, 40, 200, 25)
+            innerWaterBar = pg.Rect(40, 80, 200, 25)
+            innerSleepBar = pg.Rect(40, 120, 200, 25)
+            innerStressBar = pg.Rect(40, 160, 200, 25)
+            drawStatBar(innerFoodBar, ORANGE, currPet.food)
+            drawStatBar(innerWaterBar, BLUE, currPet.water)
+            drawStatBar(innerSleepBar, PURPLE, currPet.sleep)
+            drawStatBar(innerStressBar, RED, currPet.stress)
+            currPet.draw(WIDTH / 2, 3 / 4 * HEIGHT)
             # screen.blit(welcome,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
         
         elif currGameState == Screen.EGG:
