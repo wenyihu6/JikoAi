@@ -7,7 +7,7 @@ import pyaudio
 chunk = 8192
 sample_format = pyaudio.paInt16
 #two channels for Windows, one channel for Mac
-channels = 2
+channels = 1
 fs = 44100
 seconds = 10
 filename = 'command.wav'
