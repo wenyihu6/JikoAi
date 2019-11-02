@@ -31,7 +31,11 @@ def main():
     screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
     titleBG = gifImage("graphicAssets/BgTitle3")
-    # titleBG = pg.transform.scale(titleBG.getImage, (1280, 720))
+    homeBG = gifImage("graphicAssets/BgTitle5")
+    homeBG.resize(800, 480)
+
+    eggUnhatched = gifImage("graphicAssets/EggUnhatched", WIDTH/4 + 35, HEIGHT/2 - 200, 15)
+    eggUnhatched.resize(250, 250)
     
     currGameState = Screen.STARTING
 
@@ -66,10 +70,11 @@ def main():
 
         elif currGameState == Screen.HOME:
 
-            titleBG.animate(screen)
+            homeBG.animate(screen)
+            eggUnhatched.animate(screen)
 
-            welcome = textFont.render('h', True, (0, 0, 0))
-            screen.blit(welcome,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
+            #welcome = textFont.render('h', True, (0, 0, 0))
+            #screen.blit(welcome,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
         
         elif currGameState == Screen.EGG:
             print("FILLER")

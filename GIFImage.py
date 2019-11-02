@@ -10,6 +10,7 @@ class gifImage(object):
         self.images = []
         self.x = x
         self.y = y
+        self.center = (self.x, self.y)
         self.frameNum = 0
         self.frameCycleLen = frameCycleLen
         self.frameCycleCount = 1
@@ -26,6 +27,10 @@ class gifImage(object):
         self.imgNames = os.listdir(self.folderPath)
         for i in range(len(self.imgNames)):
             self.images.append(pygame.image.load(self.folderPath + "/" + self.imgNames[i]))
+
+    def resize(self, width, height):
+        for i in range(len(self.images)):
+            self.images[i] = pygame.transform.scale(self.images[i], (width, height))
 
     def animate(self, screen):
         screen.blit(self.images[self.frameNum], (self.x, self.y))
