@@ -41,7 +41,7 @@ class Pet(pg.sprite.Sprite):
     water = 100
     sleep = 100
     stress = 0
-    picture = "graphicAssets/SpriteBala"
+    picture = "graphicAssets/SpriteBala.png"
     def __init__ (self, petType, name):
         WHITE = (255, 255, 255)
         super().__init__()
@@ -55,9 +55,10 @@ class Pet(pg.sprite.Sprite):
             picture = "graphicAssets/SpriteTora.png"
         self.image = pg.image.load(picture)
         self.image.set_colorkey(WHITE)
+        self.image = pg.transform.smoothscale(self.image, (105, 135))
 
     def draw(self, x, y):
-        screen.blit(self.image, (x, y))
+        screen.blit(self.image, (x - self.image.get_width() / 2, y - self.image.get_width() / 2))
         pg.display.flip()
 
 def drawWithBorder(innerRect, color):
@@ -109,7 +110,7 @@ def main():
             drawStatBar(innerWaterBar, BLUE, currPet.water)
             drawStatBar(innerSleepBar, PURPLE, currPet.sleep)
             drawStatBar(innerStressBar, RED, currPet.stress)
-            currPet.draw(WIDTH / 2, 3 / 4 * HEIGHT)
+            currPet.draw(WIDTH / 2, 3 * HEIGHT / 4)
             # screen.blit(welcome,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
         
         elif currGameState == Screen.EGG:
