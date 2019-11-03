@@ -1,4 +1,5 @@
 import os
+import re
 import pygame
 from PIL import Image
 
@@ -30,7 +31,7 @@ class gifImage(object):
 
     def getFrames(self):
         self.imgNames = os.listdir(self.folderPath)
-        self.imgNames.sort()
+        self.imgNames = self.naturalSort(self.imgNames)
         for i in range(len(self.imgNames)):
             self.images.append(pygame.image.load(self.folderPath + "/" + self.imgNames[i]))
 
@@ -49,4 +50,9 @@ class gifImage(object):
             self.frameNum = 0
         
         self.frameCycleCount = self.frameCycleCount + 1
+
+    def naturalSort(self, l): 
+        convert = lambda text: int(text) if text.isdigit() else text.lower() 
+        alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
+        return sorted(l, key = alphanum_key)
 

@@ -92,8 +92,8 @@ def processImage(path):
 
 
 def main():
-    processImage('graphicAssets/BgTitle4.gif')
-    processImage('graphicAssets/BgTitle5.gif')
+    processImage('graphicAssets/BgTitle6.gif')
+    #processImage('graphicAssets/BgTitle5.gif')
     
 
 if __name__ == "__main__":
