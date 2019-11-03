@@ -2,6 +2,11 @@ import os
 import pygame
 from PIL import Image
 
+#How to use this class
+#Put the animation frames in a folder, and give that folderpath to the gifImage object
+#You can set the size, placement, and how many frames you want each picture to be!
+#The game is currently set to 60 fps.
+
 class gifImage(object):
 
     def __init__(self, folderPath, x=0, y=0, frameCycleLen = 1):
@@ -25,6 +30,7 @@ class gifImage(object):
 
     def getFrames(self):
         self.imgNames = os.listdir(self.folderPath)
+        self.imgNames.sort()
         for i in range(len(self.imgNames)):
             self.images.append(pygame.image.load(self.folderPath + "/" + self.imgNames[i]))
 

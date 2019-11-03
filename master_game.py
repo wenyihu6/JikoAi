@@ -33,8 +33,10 @@ def main():
     titleBG = gifImage("graphicAssets/BgTitle3")
     homeBG = gifImage("graphicAssets/BgTitle5")
     homeBG.resize(800, 480)
+    qaBG = gifImage("graphicAssets/BgTitle4")
+    qaBG.resize(800, 480)
 
-    eggUnhatched = gifImage("graphicAssets/EggUnhatched", WIDTH/4 + 35, HEIGHT/2 - 200, 15)
+    eggUnhatched = gifImage("graphicAssets/EggUnhatched", WIDTH/4 + 80, HEIGHT/2 - 170, 15)
     eggUnhatched.resize(250, 250)
     
     currGameState = Screen.STARTING
@@ -59,10 +61,10 @@ def main():
 
             titleBG.animate(screen)
 
-            title = titleFont.render('JikoAi', True, (0, 0, 0))
+            title = titleFont.render('JikoAi', True, WHITE)
             screen.blit(title,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
 
-            subtitle = textFont.render('Click to begin!', True, (0, 0, 0))
+            subtitle = textFont.render('Click to begin!', True, WHITE)
             screen.blit(subtitle, (WIDTH/ 4 + 65, HEIGHT / 2 + 57))
 
             if pg.mouse.get_pressed()[0]:
@@ -73,17 +75,23 @@ def main():
             homeBG.animate(screen)
             eggUnhatched.animate(screen)
 
-            #welcome = textFont.render('h', True, (0, 0, 0))
-            #screen.blit(welcome,(WIDTH / 4 + 13, HEIGHT / 2 - 57))
+            eggSubtitle = textFont.render('Who will your pet be?', True, WHITE)
+            screen.blit(eggSubtitle, (WIDTH / 4 + 13, HEIGHT / 2 + 77))
+
+            if pg.mouse.get_pressed()[0]:
+                currGameState = Screen.Q_A
         
         elif currGameState == Screen.EGG:
+
             print("FILLER")
         elif currGameState == Screen.FOOD:
             print("FILLER")
         elif currGameState == Screen.HATCH:
             print("FILLER")
         elif currGameState == Screen.Q_A:
-            print("FILLER")
+            
+            qaBG.animate(screen)
+
         elif currGameState == Screen.WATER:
             print("FILLER")
         elif currGameState == Screen.FUN:
