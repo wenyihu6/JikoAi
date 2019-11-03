@@ -1,6 +1,6 @@
 #Assets from: https://www.megupets.com/
 import pygame 
-from GIFImage import GIFImage
+from gifImage import gifImage
 import gifExtract
 
 # import pygame module in this program 
