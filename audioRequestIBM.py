@@ -20,5 +20,7 @@ headers = {
 data = open('C:\\Users\\Sims\\Downloads\\IBMWatsonTest.flac', 'rb')
 
 response = requests.post(url, data, headers=headers)
+cleanResponse = response.json()
 
 print(response.text)
+print(cleanResponse['results'][0]['alternatives'][0]['transcript'])
