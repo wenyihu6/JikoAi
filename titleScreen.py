@@ -1,6 +1,7 @@
 #Assets from: https://www.megupets.com/
 import pygame 
-from GIFImage import GIFImage
+from gifImage import gifImage
+import gifExtract
 
 # import pygame module in this program 
   
@@ -26,6 +27,7 @@ pygame.display.set_caption('Image')
   
 # create a surface object, image is drawn on it. 
 titleBG = GIFImage("graphicAssets/BgTitle2.gif")
+
 #image = pygame.image.load(r'graphicAssets/BgTitle.gif') 
 
 # infinite loop 
@@ -34,7 +36,8 @@ while True :
     # completely fill the surface object 
     # with white colour 
     display_surface.fill(white) 
-    titleBG.render(display_surface, (0, 0))
+
+    #titleBG.render(display_surface, (0, 0))
     pygame.display.update()
     
     # copying the image surface object 
