@@ -1,8 +1,9 @@
 import sys
 from enum import Enum
 from gifImage import gifImage
+from Pet import Pet 
+from Pet import PetType
 import pygame as pg
-
 
 class Screen(Enum):
     STARTING = 0
@@ -12,17 +13,11 @@ class Screen(Enum):
     Q_A1 = 4
     Q_A2 = 5
     Q_A3 = 6
-    HATCH = 7
-    FOOD = 8
-    WATER = 9
-    FUN = 10
-
-
-class PetType(Enum):
-    BALA = 0
-    MAMAU = 1
-    TORA = 2
-
+    Q_A4 = 7
+    HATCH = 8
+    FOOD = 9
+    WATER = 10
+    FUN = 11
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -41,50 +36,6 @@ textFont = pg.font.Font("VT323-Regular.ttf", 60)
 smallFont = pg.font.Font("VT323-Regular.ttf", 40)
 
 screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
-
-
-class Pet(pg.sprite.Sprite):
-    petType = -1
-    name = ""
-    food = 100
-    water = 100
-    sleep = 100
-    stress = 0
-    picture = "graphicAssets/SpriteBala.png"
-
-    def __init__(self, petType, name):
-        WHITE = (255, 255, 255)
-        super().__init__()
-        self.petType = petType
-        self.name = name
-        if (petType == PetType.BALA):
-            picture = "graphicAssets/SpriteBala.png"
-        elif (petType == PetType.MAMAU):
-            picture = "graphicAssets/SpriteMamau.png"
-        elif (petType == PetType.TORA):
-            picture = "graphicAssets/SpriteTora.png"
-        self.image = pg.image.load(picture)
-        self.image.set_colorkey(WHITE)
-        self.image = pg.transform.smoothscale(self.image, (105, 135))
-
-    def draw(self, x, y):
-        screen.blit(self.image, (x - self.image.get_width() /
-                                 2, y - self.image.get_width() / 2))
-        pg.display.flip()
-
-
-def drawWithBorder(innerRect, color):
-    borderRect = pg.Rect(innerRect.left, innerRect.top,
-                         innerRect.width + 10, innerRect.height + 10)
-    borderRect.center = innerRect.center
-    pg.draw.rect(screen, BLACK, borderRect)
-    pg.draw.rect(screen, color, innerRect)
-
-
-def drawStatBar(rect, color, val):
-    drawWithBorder(rect, WHITE)
-    pg.draw.rect(screen, color, pg.Rect(rect.left, rect.top, rect.width * (val / 100), rect.height))
-
 
 def main():
 
@@ -116,7 +67,7 @@ def main():
             outerRect.centerx = WIDTH / 2  # draw rectangles at the center of the screen
             outerRect.centery = HEIGHT / 2
             innerRect.center = outerRect.center
-            drawWithBorder(innerRect, WHITE)
+            #Pet.drawWithBorder(screen, innerRect, WHITE)
 
             titleBG.animate(screen)
 
@@ -137,11 +88,11 @@ def main():
             innerWaterBar = pg.Rect(40, 80, 200, 25)
             innerSleepBar = pg.Rect(40, 120, 200, 25)
             innerStressBar = pg.Rect(40, 160, 200, 25)
-            drawStatBar(innerFoodBar, ORANGE, currPet.food)
-            drawStatBar(innerWaterBar, BLUE, currPet.water)
-            drawStatBar(innerSleepBar, PURPLE, currPet.sleep)
-            drawStatBar(innerStressBar, RED, currPet.stress)
-            currPet.draw(WIDTH / 2, 3 * HEIGHT / 4)
+            currPet.drawStatBar(screen, innerFoodBar, ORANGE, currPet.food)
+            currPet.drawStatBar(screen, innerWaterBar, BLUE, currPet.water)
+            currPet.drawStatBar(screen, innerSleepBar, PURPLE, currPet.sleep)
+            currPet.drawStatBar(screen, innerStressBar, RED, currPet.stress)
+            currPet.draw(screen, WIDTH / 2, 3 * HEIGHT / 4)
 
         elif currGameState == Screen.EGG:
             print("FILLER")
@@ -176,8 +127,7 @@ def main():
             qTitle = textFont.render('Some questions first!', True, WHITE)
             screen.blit(qTitle, (WIDTH / 4 - 30, HEIGHT / 2 - 157))
 
-            q1Text = textFont.render(
-                'Do you often feel stressed?', True, WHITE)
+            q1Text = textFont.render('Do you often feel stressed?', True, WHITE)
 
             bgRect1 = pg.Surface((700, 75))
             bgRect1.set_alpha(100)
@@ -203,46 +153,6 @@ def main():
             answer3Text = smallFont.render('Often', True, WHITE)
 
             screen.blit(bgRect2, (WIDTH / 4 + 340, HEIGHT / 2 + 55))
-            screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
-
-            if pg.mouse.get_pressed()[0]:
-                currGameState = Screen.HOME
-
-            bgRect = pg.Surface((600, 75))
-            bgRect.set_alpha(100)
-            bgRect.fill(BLACK)
-            screen.blit(bgRect, (WIDTH / 4 - 90, HEIGHT /2 - 160))
-            
-            qTitle = textFont.render('Some questions first!', True, WHITE)
-            screen.blit(qTitle, (WIDTH / 4 - 30, HEIGHT / 2 - 157))
-
-
-            q1Text = textFont.render('I take good care of myself.', True, WHITE)
-
-            bgRect1 = pg.Surface((700, 75))
-            bgRect1.set_alpha(100)
-            bgRect1.fill(BLACK)
-
-            screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT /2 - 35))
-            screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
-
-            answer1Text = smallFont.render('Disagree', True, WHITE)
-
-            bgRect2 = pg.Surface((215, 50))
-            bgRect2.set_alpha(100)
-            bgRect2.fill(BLACK)
-
-            screen.blit(bgRect2, (WIDTH / 4 - 145, HEIGHT /2 + 55))
-            screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
-
-            answer2Text = smallFont.render('Not sure', True, WHITE)
-
-            screen.blit(bgRect2, (WIDTH / 4 + 98, HEIGHT /2 + 55))
-            screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
-
-            answer3Text = smallFont.render('Agree', True, WHITE)
-
-            screen.blit(bgRect2, (WIDTH / 4 + 340, HEIGHT /2 + 55))
             screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
 
             if pg.mouse.get_pressed()[0]:
@@ -304,6 +214,50 @@ def main():
             screen.blit(qTitle, (WIDTH / 4 - 30, HEIGHT / 2 - 157))
 
             q1Text = textFont.render('I have things under control.', True, WHITE)
+
+            bgRect1 = pg.Surface((700, 75))
+            bgRect1.set_alpha(100)
+            bgRect1.fill(BLACK)
+
+            screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT /2 - 35))
+            screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
+
+            answer1Text = smallFont.render('Disagree', True, WHITE)
+
+            bgRect2 = pg.Surface((215, 50))
+            bgRect2.set_alpha(100)
+            bgRect2.fill(BLACK)
+
+            screen.blit(bgRect2, (WIDTH / 4 - 145, HEIGHT /2 + 55))
+            screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
+
+            answer2Text = smallFont.render('Not sure', True, WHITE)
+
+            screen.blit(bgRect2, (WIDTH / 4 + 98, HEIGHT /2 + 55))
+            screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
+
+            answer3Text = smallFont.render('Agree', True, WHITE)
+
+            screen.blit(bgRect2, (WIDTH / 4 + 340, HEIGHT /2 + 55))
+            screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
+
+            if pg.mouse.get_pressed()[0]:
+                currGameState = Screen.Q_A4
+
+        elif currGameState == Screen.Q_A4:
+
+            qaBG.animate(screen)
+
+            bgRect = pg.Surface((600, 75))
+            bgRect.set_alpha(100)
+            bgRect.fill(BLACK)
+            screen.blit(bgRect, (WIDTH / 4 - 90, HEIGHT /2 - 160))
+            
+            qTitle = textFont.render('Some questions first!', True, WHITE)
+            screen.blit(qTitle, (WIDTH / 4 - 30, HEIGHT / 2 - 157))
+
+
+            q1Text = textFont.render('I take good care of myself.', True, WHITE)
 
             bgRect1 = pg.Surface((700, 75))
             bgRect1.set_alpha(100)
