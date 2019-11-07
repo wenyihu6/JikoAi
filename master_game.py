@@ -3,6 +3,7 @@ from enum import Enum
 from gifImage import gifImage
 from Pet import Pet 
 from Pet import PetType
+from Buttonify import Buttonify
 import pygame as pg
 
 class Screen(Enum):
@@ -51,8 +52,11 @@ def main():
                             WIDTH/4 + 80, HEIGHT/2 - 170, 15)
     eggUnhatched.resize(250, 250)
 
+    Image = Buttonify("graphicAssets/startButton.png",(100, 100), screen)
+
     currGameState = Screen.STARTING
     currPet = Pet(PetType.BALA, "bala")
+
     while True:
 
         clock = pg.time.Clock()
@@ -62,11 +66,11 @@ def main():
 
         if currGameState == Screen.STARTING:
 
-            outerRect = pg.Rect(WIDTH / 2, HEIGHT / 2, 410, 160)
-            innerRect = pg.Rect(WIDTH / 2, HEIGHT / 2, 390, 140)
-            outerRect.centerx = WIDTH / 2  # draw rectangles at the center of the screen
-            outerRect.centery = HEIGHT / 2
-            innerRect.center = outerRect.center
+            #outerRect = pg.Rect(WIDTH / 2, HEIGHT / 2, 410, 160)
+            #innerRect = pg.Rect(WIDTH / 2, HEIGHT / 2, 390, 140)
+            #outerRect.centerx = WIDTH / 2  # draw rectangles at the center of the screen
+            #outerRect.centery = HEIGHT / 2
+            #innerRect.center = outerRect.center
             #Pet.drawWithBorder(screen, innerRect, WHITE)
 
             titleBG.animate(screen)
@@ -77,8 +81,10 @@ def main():
             subtitle = textFont.render('Click to begin!', True, WHITE)
             screen.blit(subtitle, (WIDTH / 4 + 25, HEIGHT / 2 + 57))
 
-            if pg.mouse.get_pressed()[0]:
-                currGameState = Screen.Q_A
+            Image = Buttonify("graphicAssets/startButton.png",(300, 100), screen)
+
+            #if pg.mouse.get_pressed()[0]:
+             #   currGameState = Screen.Q_A
 
         elif currGameState == Screen.HOME:
 
@@ -101,6 +107,7 @@ def main():
         elif currGameState == Screen.HATCH:
             print("FILLER")
         elif currGameState == Screen.Q_A:
+
             homeBG.animate(screen)
             eggUnhatched.animate(screen)
 
@@ -301,6 +308,9 @@ def main():
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
-
+            if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+                mouse = pg.mouse.get_pos()
+                if Image[1].collidepoint(mouse):
+                    currGameState = Screen.Q_A
 
 main()
