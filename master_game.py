@@ -52,7 +52,7 @@ def main():
                             WIDTH/4 + 80, HEIGHT/2 - 170, 15)
     eggUnhatched.resize(250, 250)
 
-    Image = Buttonify("graphicAssets/startButton.png",(300, 100), screen)
+    Image = Buttonify("graphicAssets/startButton.png",300, 100, screen)
 
     currGameState = Screen.STARTING
     currPet = Pet(PetType.BALA, "bala")
@@ -66,13 +66,6 @@ def main():
 
         if currGameState == Screen.STARTING:
 
-            #outerRect = pg.Rect(WIDTH / 2, HEIGHT / 2, 410, 160)
-            #innerRect = pg.Rect(WIDTH / 2, HEIGHT / 2, 390, 140)
-            #outerRect.centerx = WIDTH / 2  # draw rectangles at the center of the screen
-            #outerRect.centery = HEIGHT / 2
-            #innerRect.center = outerRect.center
-            #Pet.drawWithBorder(screen, innerRect, WHITE)
-
             titleBG.animate(screen)
 
             title = titleFont.render('JikoAi', True, WHITE)
@@ -82,9 +75,6 @@ def main():
             screen.blit(subtitle, (WIDTH / 4 + 25, HEIGHT / 2 + 57))
 
             Image.draw()
-
-            #if pg.mouse.get_pressed()[0]:
-             #   currGameState = Screen.Q_A
 
         elif currGameState == Screen.HOME:
 
