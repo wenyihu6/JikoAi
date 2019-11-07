@@ -52,7 +52,7 @@ def main():
                             WIDTH/4 + 80, HEIGHT/2 - 170, 15)
     eggUnhatched.resize(250, 250)
 
-    Image = Buttonify("graphicAssets/startButton.png",(100, 100), screen)
+    Image = Buttonify("graphicAssets/startButton.png",(300, 100), screen)
 
     currGameState = Screen.STARTING
     currPet = Pet(PetType.BALA, "bala")
@@ -81,7 +81,7 @@ def main():
             subtitle = textFont.render('Click to begin!', True, WHITE)
             screen.blit(subtitle, (WIDTH / 4 + 25, HEIGHT / 2 + 57))
 
-            Image = Buttonify("graphicAssets/startButton.png",(300, 100), screen)
+            Image.draw()
 
             #if pg.mouse.get_pressed()[0]:
              #   currGameState = Screen.Q_A
@@ -310,7 +310,7 @@ def main():
                 sys.exit()
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 mouse = pg.mouse.get_pos()
-                if Image[1].collidepoint(mouse):
+                if Image.getImageRect().collidepoint(mouse):
                     currGameState = Screen.Q_A
 
 main()
