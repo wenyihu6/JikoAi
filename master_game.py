@@ -5,6 +5,7 @@ from Pet import Pet
 from Pet import PetType
 from Buttonify import Buttonify
 import pygame as pg
+from RectButton import RectButton
 
 class Screen(Enum):
     STARTING = 0
@@ -56,6 +57,7 @@ def main():
 
     currGameState = Screen.STARTING
     currPet = Pet(PetType.BALA, "bala")
+    ScreenClick = RectButton(pg.Rect(0,0, WIDTH, HEIGHT), WIDTH / 2, HEIGHT / 2, screen)
 
     while True:
 
@@ -71,10 +73,12 @@ def main():
             title = titleFont.render('JikoAi', True, WHITE)
             screen.blit(title, (WIDTH / 4 - 15, HEIGHT / 2 - 100))
 
-            subtitle = textFont.render('Click to begin!', True, WHITE)
-            screen.blit(subtitle, (WIDTH / 4 + 25, HEIGHT / 2 + 57))
 
-            Image.draw()
+            # subtitle = textFont.render('Click to begin!', True, WHITE)
+            # screen.blit(subtitle, (WIDTH / 4 + 25, HEIGHT / 2 + 57))
+
+
+            # Image.draw()
 
         elif currGameState == Screen.HOME:
 
@@ -302,5 +306,8 @@ def main():
                 mouse = pg.mouse.get_pos()
                 if Image.getImageRect().collidepoint(mouse):
                     currGameState = Screen.Q_A
+                if currGameState == Screen.STARTING:
+                    if ScreenClick.getRect().collidepoint(mouse):
+                        currGameState = Screen.Q_A
 
 main()
