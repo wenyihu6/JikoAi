@@ -68,7 +68,14 @@ def main():
     continueGameButton.resize(300,100)
     continueGameButton.setCoords(700, 175)
 
+    qa1LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, scree, BLACK, 100)
     qa1MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa1RightButton = RectButton(WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+
+    qa2LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, scree, BLACK, 100)
+    qa2MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa2RightButton = RectButton(WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+
 
     currGameState = Screen.STARTING
     currPet = Pet(PetType.BALA, "bala")
@@ -163,7 +170,7 @@ def main():
             bgRect2.set_alpha(100)
             bgRect2.fill(BLACK)
 
-            screen.blit(bgRect2, (WIDTH / 4 - 145, HEIGHT / 2 + 55))
+            qa1LeftButton.draw()
             screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
 
             answer2Text = smallFont.render('Sometimes', True, WHITE)
@@ -173,7 +180,7 @@ def main():
 
             answer3Text = smallFont.render('Often', True, WHITE)
 
-            screen.blit(bgRect2, (WIDTH / 4 + 340, HEIGHT / 2 + 55))
+            qa1RightButton.draw()
             screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
 
         elif currGameState == Screen.Q_A2:
@@ -203,21 +210,18 @@ def main():
             bgRect2.set_alpha(100)
             bgRect2.fill(BLACK)
 
-            screen.blit(bgRect2, (WIDTH / 4 - 145, HEIGHT /2 + 55))
+            qa2LeftButton.draw()
             screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
 
             answer2Text = smallFont.render('Not sure', True, WHITE)
 
-            screen.blit(bgRect2, (WIDTH / 4 + 98, HEIGHT /2 + 55))
+            qa2MiddleButton.draw()
             screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
 
             answer3Text = smallFont.render('Agree', True, WHITE)
 
-            screen.blit(bgRect2, (WIDTH / 4 + 340, HEIGHT /2 + 55))
+            qa2RightButton.draw()
             screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
-
-            if pg.mouse.get_pressed()[0]:
-                currGameState = Screen.Q_A3
 
         elif currGameState == Screen.Q_A3:
 
@@ -323,7 +327,11 @@ def main():
                 mouse = pg.mouse.get_pos()
                 if newGameButton.getImageRect().collidepoint(mouse):
                     currGameState = Screen.Q_A
-                if qa1MiddleButton.getImageRect().collidepoint(mouse):
+                elif qa1LeftButton.getImageRect().collidepoint(mouse):
+                    currGameState = Screen.Q_A2
+                elif qa1MiddleButton.getImageRect().collidepoint(mouse):
+                    currGameState = Screen.Q_A2
+                elif qa1RightButton.getImageRect().collidepoint(mouse):
                     currGameState = Screen.Q_A2
                 
                 

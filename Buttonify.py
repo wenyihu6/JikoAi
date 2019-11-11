@@ -6,7 +6,7 @@ class Buttonify(object):
 
         self.image = pygame.image.load(Picture)
         self.imagerect = self.image.get_rect()
-        self.imagerect.topright = (x, y)
+        self.imagerect.topleft = (x, y)
         self.surface = surface
 
     def getImageRect(self):
@@ -20,6 +20,6 @@ class Buttonify(object):
         self.imagerect = self.image.get_rect()
     
     def setCoords(self, x, y): 
-        self.imagerect.topright = (x, y)
+        self.imagerect.topleft = (x, y)
 
     
