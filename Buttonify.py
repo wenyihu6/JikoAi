@@ -2,7 +2,7 @@ import pygame
 
 class Buttonify(object):
 
-    def __init__ (self, Picture, x, y, surface):
+    def __init__ (self, Picture, surface, x = 0, y = 0):
 
         self.image = pygame.image.load(Picture)
         self.imagerect = self.image.get_rect()
@@ -19,7 +19,7 @@ class Buttonify(object):
         self.image = pygame.transform.scale(self.image, (width, height))
         self.imagerect = self.image.get_rect()
     
-    def setCoords(self, x, y): #Set coordinates
+    def setCoords(self, x, y): 
         self.imagerect.topright = (x, y)
 
     

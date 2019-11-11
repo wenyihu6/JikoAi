@@ -4,6 +4,7 @@ from gifImage import gifImage
 from Pet import Pet 
 from Pet import PetType
 from Buttonify import Buttonify
+from RectButton import RectButton
 import pygame as pg
 
 class Screen(Enum):
@@ -19,6 +20,7 @@ class Screen(Enum):
     FOOD = 9
     WATER = 10
     FUN = 11
+    SELECTION = 12
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -38,6 +40,8 @@ smallFont = pg.font.Font("VT323-Regular.ttf", 40)
 
 screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
+savefile = open("save/saveFile.txt", "a+")
+
 def main():
 
     FRAMERATE = 12
@@ -52,7 +56,19 @@ def main():
                             WIDTH/4 + 80, HEIGHT/2 - 170, 15)
     eggUnhatched.resize(250, 250)
 
-    Image = Buttonify("graphicAssets/startButton.png",300, 100, screen)
+    startButton = Buttonify("graphicAssets/startButton.png", screen)
+    startButton.resize(300,100)
+    startButton.setCoords(300, 300)
+
+    newGameButton = Buttonify("graphicAssets/NewGame.png", screen)
+    newGameButton.resize(320, 110)
+    newGameButton.setCoords(400, 180)
+
+    continueGameButton = Buttonify("graphicAssets/LoadGame.png", screen)
+    continueGameButton.resize(300,100)
+    continueGameButton.setCoords(700, 175)
+
+    qa1MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
 
     currGameState = Screen.STARTING
     currPet = Pet(PetType.BALA, "bala")
@@ -68,13 +84,21 @@ def main():
 
             titleBG.animate(screen)
 
-            title = titleFont.render('JikoAi', True, WHITE)
+            title = titleFont.render('JikoAi', True, WHITE) 
             screen.blit(title, (WIDTH / 4 - 15, HEIGHT / 2 - 100))
 
             subtitle = textFont.render('Click to begin!', True, WHITE)
             screen.blit(subtitle, (WIDTH / 4 + 25, HEIGHT / 2 + 57))
 
-            Image.draw()
+            if pg.mouse.get_pressed()[0]:
+                currGameState = Screen.SELECTION
+
+        elif currGameState == Screen.SELECTION:
+
+            titleBG.animate(screen)
+
+            newGameButton.draw()
+            continueGameButton.draw()
 
         elif currGameState == Screen.HOME:
 
@@ -144,16 +168,13 @@ def main():
 
             answer2Text = smallFont.render('Sometimes', True, WHITE)
 
-            screen.blit(bgRect2, (WIDTH / 4 + 98, HEIGHT / 2 + 55))
+            qa1MiddleButton.draw()
             screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
 
             answer3Text = smallFont.render('Often', True, WHITE)
 
             screen.blit(bgRect2, (WIDTH / 4 + 340, HEIGHT / 2 + 55))
             screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
-
-            if pg.mouse.get_pressed()[0]:
-                currGameState = Screen.Q_A2
 
         elif currGameState == Screen.Q_A2:
 
@@ -300,7 +321,11 @@ def main():
                 sys.exit()
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 mouse = pg.mouse.get_pos()
-                if Image.getImageRect().collidepoint(mouse):
+                if newGameButton.getImageRect().collidepoint(mouse):
                     currGameState = Screen.Q_A
+                if qa1MiddleButton.getImageRect().collidepoint(mouse):
+                    currGameState = Screen.Q_A2
+                
+                
 
 main()
