@@ -68,14 +68,21 @@ def main():
     continueGameButton.resize(300,100)
     continueGameButton.setCoords(700, 175)
 
-    qa1LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, scree, BLACK, 100)
+    qa1LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
     qa1MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
     qa1RightButton = RectButton(WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
 
-    qa2LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, scree, BLACK, 100)
+    qa2LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
     qa2MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
     qa2RightButton = RectButton(WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
 
+    qa3LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa3MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa3RightButton = RectButton(WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+
+    qa4LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa4MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa4RightButton = RectButton(WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
 
     currGameState = Screen.STARTING
     currPet = Pet(PetType.BALA, "bala")
@@ -140,7 +147,7 @@ def main():
             eggSubtitle = textFont.render('Who will your pet be?', True, WHITE)
             screen.blit(eggSubtitle, (WIDTH / 4 - 30, HEIGHT / 2 + 77))
 
-            if pg.mouse.get_pressed()[0]:
+            if pg.mouse.get_pressed()[0] and currGameState == Screen.Q_A:
                 currGameState = Screen.Q_A1
 
         elif currGameState == Screen.Q_A1:
@@ -250,21 +257,18 @@ def main():
             bgRect2.set_alpha(100)
             bgRect2.fill(BLACK)
 
-            screen.blit(bgRect2, (WIDTH / 4 - 145, HEIGHT /2 + 55))
+            qa3LeftButton.draw()
             screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
 
             answer2Text = smallFont.render('Not sure', True, WHITE)
 
-            screen.blit(bgRect2, (WIDTH / 4 + 98, HEIGHT /2 + 55))
+            qa3MiddleButton.draw()
             screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
 
             answer3Text = smallFont.render('Agree', True, WHITE)
 
-            screen.blit(bgRect2, (WIDTH / 4 + 340, HEIGHT /2 + 55))
+            qa3RightButton.draw()
             screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
-
-            if pg.mouse.get_pressed()[0]:
-                currGameState = Screen.Q_A4
 
         elif currGameState == Screen.Q_A4:
 
@@ -294,21 +298,18 @@ def main():
             bgRect2.set_alpha(100)
             bgRect2.fill(BLACK)
 
-            screen.blit(bgRect2, (WIDTH / 4 - 145, HEIGHT /2 + 55))
+            qa4LeftButton.draw()
             screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
 
             answer2Text = smallFont.render('Not sure', True, WHITE)
 
-            screen.blit(bgRect2, (WIDTH / 4 + 98, HEIGHT /2 + 55))
+            qa4MiddleButton.draw()
             screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
 
             answer3Text = smallFont.render('Agree', True, WHITE)
 
-            screen.blit(bgRect2, (WIDTH / 4 + 340, HEIGHT /2 + 55))
+            qa4RightButton.draw()
             screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
-
-            if pg.mouse.get_pressed()[0]:
-                currGameState = Screen.HOME
 
         elif currGameState == Screen.WATER:
             print("FILLER")
@@ -325,15 +326,31 @@ def main():
                 sys.exit()
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 mouse = pg.mouse.get_pos()
-                if newGameButton.getImageRect().collidepoint(mouse):
+                if newGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
                     currGameState = Screen.Q_A
-                elif qa1LeftButton.getImageRect().collidepoint(mouse):
+                elif qa1LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A1:
                     currGameState = Screen.Q_A2
-                elif qa1MiddleButton.getImageRect().collidepoint(mouse):
+                elif qa1MiddleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A1:
                     currGameState = Screen.Q_A2
-                elif qa1RightButton.getImageRect().collidepoint(mouse):
+                elif qa1RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A1:
                     currGameState = Screen.Q_A2
-                
-                
+                elif qa2LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A2:
+                    currGameState = Screen.Q_A3
+                elif qa2MiddleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A2:
+                    currGameState = Screen.Q_A3
+                elif qa2RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A2:
+                    currGameState = Screen.Q_A3
+                elif qa3LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A3:
+                    currGameState = Screen.Q_A4
+                elif qa3MiddleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A3:
+                    currGameState = Screen.Q_A4
+                elif qa3RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A3:
+                    currGameState = Screen.Q_A4
+                elif qa4LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A4:
+                    currGameState = Screen.HOME
+                elif qa4MiddleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A4:
+                    currGameState = Screen.HOME
+                elif qa4RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A4:
+                    currGameState = Screen.HOME
 
 main()
