@@ -184,25 +184,18 @@ def main():
             screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT / 2 - 35))
             screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
 
-            answer1Text = smallFont.render('Not often', True, WHITE)
-
             bgRect2 = pg.Surface((215, 50))
             bgRect2.set_alpha(100)
             bgRect2.fill(BLACK)
 
             qa1LeftButton.draw()
             qa1LeftButton.draw_text("Not often")
-            #screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
-
-            answer2Text = smallFont.render('Sometimes', True, WHITE)
 
             qa1MiddleButton.draw()
-            screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
-
-            answer3Text = smallFont.render('Often', True, WHITE)
+            qa1MiddleButton.draw_text("Sometimes")
 
             qa1RightButton.draw()
-            screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
+            qa1RightButton.draw_text("Often")
 
         elif currGameState == Screen.Q_A2:
 
@@ -225,24 +218,18 @@ def main():
             screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT /2 - 35))
             screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
 
-            answer1Text = smallFont.render('Disagree', True, WHITE)
-
             bgRect2 = pg.Surface((215, 50))
             bgRect2.set_alpha(100)
             bgRect2.fill(BLACK)
 
             qa2LeftButton.draw()
-            screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
-
-            answer2Text = smallFont.render('Not sure', True, WHITE)
+            qa2LeftButton.draw_text("Disagree")
 
             qa2MiddleButton.draw()
-            screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
-
-            answer3Text = smallFont.render('Agree', True, WHITE)
+            qa2MiddleButton.draw_text("Not sure")
 
             qa2RightButton.draw()
-            screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
+            qa2RightButton.draw_text("Agree")
 
         elif currGameState == Screen.Q_A3:
 
@@ -265,24 +252,19 @@ def main():
             screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT /2 - 35))
             screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
 
-            answer1Text = smallFont.render('Disagree', True, WHITE)
 
             bgRect2 = pg.Surface((215, 50))
             bgRect2.set_alpha(100)
             bgRect2.fill(BLACK)
 
             qa3LeftButton.draw()
-            screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
-
-            answer2Text = smallFont.render('Not sure', True, WHITE)
+            qa3LeftButton.draw_text("Disagree")
 
             qa3MiddleButton.draw()
-            screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
-
-            answer3Text = smallFont.render('Agree', True, WHITE)
+            qa3MiddleButton.draw_text("Not sure")
 
             qa3RightButton.draw()
-            screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
+            qa3RightButton.draw_text("Agree")
 
         elif currGameState == Screen.Q_A4:
 
@@ -305,24 +287,18 @@ def main():
             screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT /2 - 35))
             screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
 
-            answer1Text = smallFont.render('Disagree', True, WHITE)
-
             bgRect2 = pg.Surface((215, 50))
             bgRect2.set_alpha(100)
             bgRect2.fill(BLACK)
 
             qa4LeftButton.draw()
-            screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
-
-            answer2Text = smallFont.render('Not sure', True, WHITE)
+            qa4LeftButton.draw_text("Disagree")
 
             qa4MiddleButton.draw()
-            screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
-
-            answer3Text = smallFont.render('Agree', True, WHITE)
+            qa4MiddleButton.draw_text("Not sure")
 
             qa4RightButton.draw()
-            screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
+            qa4RightButton.draw_text("Agree")
 
         elif currGameState == Screen.WATER:
             print("FILLER")
@@ -388,6 +364,6 @@ def main():
                         currGameState = Screen.WATER
                     elif HomeSleepButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.SLEEP
-                    elif HomeStressButtonButton.getImageRect().collidepoint(mouse):
+                    elif HomeStressButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FUN
 main()

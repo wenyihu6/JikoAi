@@ -29,6 +29,7 @@ class Pet(pg.sprite.Sprite):
 
     def __init__(self, petType, name):
         WHITE = (255, 255, 255)
+        super().__init__()
         self.petType = petType
         self.name = name
         if (petType == PetType.BALA):
