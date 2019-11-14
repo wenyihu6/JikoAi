@@ -339,22 +339,25 @@ def main():
                 sys.exit()
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 mouse = pg.mouse.get_pos()
-                if newGameButton.getImageRect().collidepoint(mouse):
-                    currGameState = Screen.Q_A
-                elif qa1LeftButton.getImageRect().collidepoint(mouse):
-                    currGameState = Screen.Q_A2
-                elif qa1MiddleButton.getImageRect().collidepoint(mouse):
-                    currGameState = Screen.Q_A2
-                elif qa1RightButton.getImageRect().collidepoint(mouse):
-                    currGameState = Screen.Q_A2
-                elif HomeFoodButton.getImageRect().collidepoint(mouse):
-                    currGameState = Screen.FOOD
-                elif HomeWaterButton.getImageRect().collidepoint(mouse):
-                    currGameState = Screen.WATER
-                elif HomeSleepButton.getImageRect().collidepoint(mouse):
-                    currGameState = Screen.SLEEP
-                elif HomeStressButtonButton.getImageRect().collidepoint(mouse):
-                    currGameState = Screen.FUN
+                if currGameState == Screen.SELECTION:
+                    if newGameButton.getImageRect().collidepoint(mouse):
+                        currGameState = Screen.Q_A
+                elif currGameState == Screen.Q_A1:
+                    if qa1LeftButton.getImageRect().collidepoint(mouse):
+                        currGameState = Screen.Q_A2
+                    elif qa1MiddleButton.getImageRect().collidepoint(mouse):
+                        currGameState = Screen.Q_A2
+                    elif qa1RightButton.getImageRect().collidepoint(mouse):
+                        currGameState = Screen.Q_A2
+                elif currGameState == Screen.HOME:
+                    if HomeFoodButton.getImageRect().collidepoint(mouse):
+                        currGameState = Screen.FOOD
+                    elif HomeWaterButton.getImageRect().collidepoint(mouse):
+                        currGameState = Screen.WATER
+                    elif HomeSleepButton.getImageRect().collidepoint(mouse):
+                        currGameState = Screen.SLEEP
+                    elif HomeStressButtonButton.getImageRect().collidepoint(mouse):
+                        currGameState = Screen.FUN
                 
 
 main()
