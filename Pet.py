@@ -17,7 +17,7 @@ WIDTH = 800
 HEIGHT = 480
 
 
-class Pet(pg.sprite.Sprite):
+class Pet():
 
     petType = -1
     name = ""
@@ -29,7 +29,6 @@ class Pet(pg.sprite.Sprite):
 
     def __init__(self, petType, name):
         WHITE = (255, 255, 255)
-        super().__init__()
         self.petType = petType
         self.name = name
         if (petType == PetType.BALA):

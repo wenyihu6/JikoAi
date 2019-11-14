@@ -1,12 +1,13 @@
 import sys
 from enum import Enum
 from gifImage import gifImage
-from Pet import Pet 
+from Pet import Pet
 from Pet import PetType
 from Buttonify import Buttonify
 from RectButton import RectButton
 import pygame as pg
 from RectButton import RectButton
+
 
 class Screen(Enum):
     STARTING = 0
@@ -23,6 +24,7 @@ class Screen(Enum):
     SLEEP = 11
     FUN = 12
     SELECTION = 13
+
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -44,6 +46,7 @@ screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
 savefile = open("save/saveFile.txt", "a+")
 
+
 def main():
 
     FRAMERATE = 12
@@ -59,7 +62,7 @@ def main():
     eggUnhatched.resize(250, 250)
 
     startButton = Buttonify("graphicAssets/startButton.png", screen)
-    startButton.resize(300,100)
+    startButton.resize(300, 100)
     startButton.setCoords(100, 300)
 
     newGameButton = Buttonify("graphicAssets/NewGame.png", screen)
@@ -67,29 +70,45 @@ def main():
     newGameButton.setCoords(75, 180)
 
     continueGameButton = Buttonify("graphicAssets/LoadGame.png", screen)
-    continueGameButton.resize(300,100)
+    continueGameButton.resize(300, 100)
     continueGameButton.setCoords(425, 175)
 
-    qa1LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
-    qa1MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
-    qa1RightButton = RectButton(WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa1LeftButton = RectButton(
+        WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa1MiddleButton = RectButton(
+        WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa1RightButton = RectButton(
+        WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
 
-    qa2LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
-    qa2MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
-    qa2RightButton = RectButton(WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa2LeftButton = RectButton(
+        WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa2MiddleButton = RectButton(
+        WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa2RightButton = RectButton(
+        WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
 
-    qa3LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
-    qa3MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
-    qa3RightButton = RectButton(WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa3LeftButton = RectButton(
+        WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa3MiddleButton = RectButton(
+        WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa3RightButton = RectButton(
+        WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
 
-    qa4LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
-    qa4MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
-    qa4RightButton = RectButton(WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
-    
-    HomeFoodButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 10, 90, 90, screen, BLACK, 180)
-    HomeWaterButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 110, 90, 90, screen, BLACK, 180)
-    HomeSleepButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 210, 90, 90, screen, BLACK, 180)
-    HomeStressButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 310, 90, 90, screen, BLACK, 180)
+    qa4LeftButton = RectButton(
+        WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa4MiddleButton = RectButton(
+        WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+    qa4RightButton = RectButton(
+        WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
+
+    HomeFoodButton = RectButton(
+        7 * WIDTH / 8, HEIGHT / 16 + 10, 90, 90, screen, BLACK, 180)
+    HomeWaterButton = RectButton(
+        7 * WIDTH / 8, HEIGHT / 16 + 110, 90, 90, screen, BLACK, 180)
+    HomeSleepButton = RectButton(
+        7 * WIDTH / 8, HEIGHT / 16 + 210, 90, 90, screen, BLACK, 180)
+    HomeStressButton = RectButton(
+        7 * WIDTH / 8, HEIGHT / 16 + 310, 90, 90, screen, BLACK, 180)
 
     currGameState = Screen.STARTING
     currPet = Pet(PetType.BALA, "bala")
@@ -105,9 +124,8 @@ def main():
 
             titleBG.animate(screen)
 
-            title = titleFont.render('JikoAi', True, WHITE) 
+            title = titleFont.render('JikoAi', True, WHITE)
             screen.blit(title, (WIDTH / 4 - 15, HEIGHT / 2 - 100))
-
 
         elif currGameState == Screen.SELECTION:
 
@@ -138,7 +156,6 @@ def main():
             HomeSleepButton.draw_text("sleep")
             HomeStressButton.draw()
             HomeStressButton.draw_text("play")
-
 
         elif currGameState == Screen.EGG:
             print("FILLER")
@@ -174,7 +191,8 @@ def main():
             qTitle = textFont.render('Some questions first!', True, WHITE)
             screen.blit(qTitle, (WIDTH / 4 - 30, HEIGHT / 2 - 157))
 
-            q1Text = textFont.render('Do you often feel stressed?', True, WHITE)
+            q1Text = textFont.render(
+                'Do you often feel stressed?', True, WHITE)
 
             bgRect1 = pg.Surface((700, 75))
             bgRect1.set_alpha(100)
@@ -209,8 +227,8 @@ def main():
             bgRect = pg.Surface((600, 75))
             bgRect.set_alpha(100)
             bgRect.fill(BLACK)
-            screen.blit(bgRect, (WIDTH / 4 - 90, HEIGHT /2 - 160))
-            
+            screen.blit(bgRect, (WIDTH / 4 - 90, HEIGHT / 2 - 160))
+
             qTitle = textFont.render('Some questions first!', True, WHITE)
             screen.blit(qTitle, (WIDTH / 4 - 30, HEIGHT / 2 - 157))
 
@@ -220,7 +238,7 @@ def main():
             bgRect1.set_alpha(100)
             bgRect1.fill(BLACK)
 
-            screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT /2 - 35))
+            screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT / 2 - 35))
             screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
 
             answer1Text = smallFont.render('Disagree', True, WHITE)
@@ -249,18 +267,19 @@ def main():
             bgRect = pg.Surface((600, 75))
             bgRect.set_alpha(100)
             bgRect.fill(BLACK)
-            screen.blit(bgRect, (WIDTH / 4 - 90, HEIGHT /2 - 160))
-            
+            screen.blit(bgRect, (WIDTH / 4 - 90, HEIGHT / 2 - 160))
+
             qTitle = textFont.render('Some questions first!', True, WHITE)
             screen.blit(qTitle, (WIDTH / 4 - 30, HEIGHT / 2 - 157))
 
-            q1Text = textFont.render('I have things under control.', True, WHITE)
+            q1Text = textFont.render(
+                'I have things under control.', True, WHITE)
 
             bgRect1 = pg.Surface((700, 75))
             bgRect1.set_alpha(100)
             bgRect1.fill(BLACK)
 
-            screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT /2 - 35))
+            screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT / 2 - 35))
             screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
 
             answer1Text = smallFont.render('Disagree', True, WHITE)
@@ -289,18 +308,19 @@ def main():
             bgRect = pg.Surface((600, 75))
             bgRect.set_alpha(100)
             bgRect.fill(BLACK)
-            screen.blit(bgRect, (WIDTH / 4 - 90, HEIGHT /2 - 160))
-            
+            screen.blit(bgRect, (WIDTH / 4 - 90, HEIGHT / 2 - 160))
+
             qTitle = textFont.render('Some questions first!', True, WHITE)
             screen.blit(qTitle, (WIDTH / 4 - 30, HEIGHT / 2 - 157))
 
-            q1Text = textFont.render('I take good care of myself.', True, WHITE)
+            q1Text = textFont.render(
+                'I take good care of myself.', True, WHITE)
 
             bgRect1 = pg.Surface((700, 75))
             bgRect1.set_alpha(100)
             bgRect1.fill(BLACK)
 
-            screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT /2 - 35))
+            screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT / 2 - 35))
             screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
 
             answer1Text = smallFont.render('Disagree', True, WHITE)
@@ -388,4 +408,6 @@ def main():
                         currGameState = Screen.SLEEP
                     elif HomeStressButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FUN
+
+
 main()

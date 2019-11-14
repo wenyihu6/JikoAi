@@ -26,6 +26,7 @@ class RectButton(object):
     def draw_text(self, text = "", font = pygame.font.Font("VT323-Regular.ttf", 40)):
         self.text = font.render(text, True, (255, 255, 255))
         self.surface.blit(self.text, self.imagerect)
+        
     def resize(self, width, height): 
         self.width = width
         self.height = height
