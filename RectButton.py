@@ -21,3 +21,18 @@ class RectButton(object):
 
     def draw(self): 
         self.surface.blit(self.button, self.imagerect)
+
+    def resize(self, width, height): 
+        self.width = width
+        self.height = height
+        self.button = pygame.transform.scale(self.button, (self.width, self.height))
+        self.imagerect = self.button.get_rect()
+    
+    def setCoords(self, x, y): 
+        self.imagerect.topleft = (x, y)
+
+    def setAlpha(self, alpha):
+        self.alpha = alpha
+        self.button.set_alpha(alpha)
+
+

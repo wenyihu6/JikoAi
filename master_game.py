@@ -58,15 +58,15 @@ def main():
 
     startButton = Buttonify("graphicAssets/startButton.png", screen)
     startButton.resize(300,100)
-    startButton.setCoords(300, 300)
+    startButton.setCoords(100, 300)
 
     newGameButton = Buttonify("graphicAssets/NewGame.png", screen)
     newGameButton.resize(320, 110)
-    newGameButton.setCoords(400, 180)
+    newGameButton.setCoords(75, 180)
 
     continueGameButton = Buttonify("graphicAssets/LoadGame.png", screen)
     continueGameButton.resize(300,100)
-    continueGameButton.setCoords(700, 175)
+    continueGameButton.setCoords(425, 175)
 
     qa1LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
     qa1MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
@@ -103,9 +103,6 @@ def main():
 
             subtitle = textFont.render('Click to begin!', True, WHITE)
             screen.blit(subtitle, (WIDTH / 4 + 25, HEIGHT / 2 + 57))
-
-            if pg.mouse.get_pressed()[0]:
-                currGameState = Screen.SELECTION
 
         elif currGameState == Screen.SELECTION:
 
@@ -325,7 +322,9 @@ def main():
                 sys.exit()
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 mouse = pg.mouse.get_pos()
-                if newGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
+                if currGameState == Screen.STARTING:
+                    currGameState = Screen.SELECTION
+                elif newGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
                     open("save/saveFile.txt", 'w').close()
                     currGameState = Screen.Q_A
                 elif qa1LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A1:
