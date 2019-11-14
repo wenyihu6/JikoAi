@@ -1,12 +1,11 @@
 import sys
 from enum import Enum
-from gifImage import gifImage
+from GIFImage import GIFImage
 from Pet import Pet 
 from Pet import PetType
 from Buttonify import Buttonify
 from RectButton import RectButton
 import pygame as pg
-from RectButton import RectButton
 
 class Screen(Enum):
     STARTING = 0
@@ -48,13 +47,13 @@ def main():
 
     FRAMERATE = 12
 
-    titleBG = gifImage("graphicAssets/BgTitle3")
-    homeBG = gifImage("graphicAssets/BgTitle5")
+    titleBG = GIFImage("graphicAssets/BgTitle3")
+    homeBG = GIFImage("graphicAssets/BgTitle5")
     homeBG.resize(800, 480)
-    qaBG = gifImage("graphicAssets/BgTitle4")
+    qaBG = GIFImage("graphicAssets/BgTitle4")
     qaBG.resize(800, 480)
 
-    eggUnhatched = gifImage("graphicAssets/EggUnhatched",
+    eggUnhatched = GIFImage("graphicAssets/EggUnhatched",
                             WIDTH/4 + 80, HEIGHT/2 - 170, 15)
     eggUnhatched.resize(250, 250)
 
@@ -108,6 +107,8 @@ def main():
             title = titleFont.render('JikoAi', True, WHITE) 
             screen.blit(title, (WIDTH / 4 - 15, HEIGHT / 2 - 100))
 
+            subtitle = textFont.render('Click to begin!', True, WHITE)
+            screen.blit(subtitle, (WIDTH / 4 + 25, HEIGHT / 2 + 57))
 
         elif currGameState == Screen.SELECTION:
 
@@ -190,7 +191,8 @@ def main():
             bgRect2.fill(BLACK)
 
             qa1LeftButton.draw()
-            screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
+            qa1LeftButton.draw_text("Not often")
+            #screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
 
             answer2Text = smallFont.render('Sometimes', True, WHITE)
 

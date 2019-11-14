@@ -9,6 +9,8 @@ class RectButton(object):
         self.colour = colour
         self.alpha = alpha
         self.surface = surface
+        self.x = x
+        self.y = y
 
         self.button = pygame.Surface((width, height))
         self.button.set_alpha(alpha)
@@ -25,7 +27,8 @@ class RectButton(object):
 
     def draw_text(self, text = "", font = pygame.font.Font("VT323-Regular.ttf", 40)):
         self.text = font.render(text, True, (255, 255, 255))
-        self.surface.blit(self.text, self.imagerect)
+        self.surface.blit(self.text, (self.x + self.width/2, self.y + self.height/2))
+
     def resize(self, width, height): 
         self.width = width
         self.height = height
@@ -33,6 +36,8 @@ class RectButton(object):
         self.imagerect = self.button.get_rect()
     
     def setCoords(self, x, y): 
+        self.x = x
+        self.y = y
         self.imagerect.topleft = (x, y)
 
     def setAlpha(self, alpha):

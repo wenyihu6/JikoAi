@@ -8,7 +8,7 @@ from PIL import Image
 #You can set the size, placement, and how many frames you want each picture to be!
 #The game is currently set to 60 fps.
 
-class gifImage(object):
+class GIFImage(object):
 
     def __init__(self, folderPath, x=0, y=0, frameCycleLen = 1): #Initialize
         self.folderPath = folderPath
