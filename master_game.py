@@ -20,8 +20,9 @@ class Screen(Enum):
     HATCH = 8
     FOOD = 9
     WATER = 10
-    FUN = 11
-    SELECTION = 12
+    SLEEP = 11
+    FUN = 12
+    SELECTION = 13
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -132,6 +133,8 @@ def main():
             HomeSleepButton.draw_text("sleep")
             HomeStressButton.draw()
             HomeStressButton.draw_text("play")
+
+
         elif currGameState == Screen.EGG:
             print("FILLER")
         elif currGameState == Screen.FOOD:
@@ -344,7 +347,14 @@ def main():
                     currGameState = Screen.Q_A2
                 elif qa1RightButton.getImageRect().collidepoint(mouse):
                     currGameState = Screen.Q_A2
-                
+                elif HomeFoodButton.getImageRect().collidepoint(mouse):
+                    currGameState = Screen.FOOD
+                elif HomeWaterButton.getImageRect().collidepoint(mouse):
+                    currGameState = Screen.WATER
+                elif HomeSleepButton.getImageRect().collidepoint(mouse):
+                    currGameState = Screen.SLEEP
+                elif HomeStressButtonButton.getImageRect().collidepoint(mouse):
+                    currGameState = Screen.FUN
                 
 
 main()
