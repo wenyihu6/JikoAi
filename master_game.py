@@ -326,43 +326,43 @@ def main():
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 mouse = pg.mouse.get_pos()
                 if newGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
-                    open(savefile, 'w').close()
+                    open("save/saveFile.txt", 'w').close()
                     currGameState = Screen.Q_A
                 elif qa1LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A1:
-                    savefile.write("1")
+                    savefile.write("1\n")
                     currGameState = Screen.Q_A2
                 elif qa1MiddleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A1:
-                    savefile.write("2")
+                    savefile.write("2\n")
                     currGameState = Screen.Q_A2
                 elif qa1RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A1:
-                    savefile.write("3")
+                    savefile.write("3\n")
                     currGameState = Screen.Q_A2
                 elif qa2LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A2:
-                    savefile.write("1")
+                    savefile.write("1\n")
                     currGameState = Screen.Q_A3
                 elif qa2MiddleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A2:
-                    savefile.write("2")
+                    savefile.write("2\n")
                     currGameState = Screen.Q_A3
                 elif qa2RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A2:
-                    savefile.write("3")
+                    savefile.write("3\n")
                     currGameState = Screen.Q_A3
                 elif qa3LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A3:
-                    savefile.write("1")
+                    savefile.write("1\n")
                     currGameState = Screen.Q_A4
                 elif qa3MiddleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A3:
-                    savefile.write("2")
+                    savefile.write("2\n")
                     currGameState = Screen.Q_A4
                 elif qa3RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A3:
-                    savefile.write("3")
+                    savefile.write("3\n")
                     currGameState = Screen.Q_A4
                 elif qa4LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A4:
-                    savefile.write("1")
+                    savefile.write("1\n")
                     currGameState = Screen.HOME
                 elif qa4MiddleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A4:
-                    savefile.write("2")
+                    savefile.write("2\n")
                     currGameState = Screen.HOME
                 elif qa4RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A4:
-                    savefile.write("3")
+                    savefile.write("3\n")
                     currGameState = Screen.HOME
 
 main()
