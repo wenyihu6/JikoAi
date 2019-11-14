@@ -378,7 +378,7 @@ def main():
                 elif qa4RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A4:
                     savefile.write("3\n")
                     currGameState = Screen.HOME
-                    
+
                 elif currGameState == Screen.HOME:
                     if HomeFoodButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FOOD
@@ -386,6 +386,6 @@ def main():
                         currGameState = Screen.WATER
                     elif HomeSleepButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.SLEEP
-                    elif HomeStressButtonButton.getImageRect().collidepoint(mouse):
+                    elif HomeStressButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FUN
 main()
