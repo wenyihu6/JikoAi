@@ -69,18 +69,21 @@ def main():
     continueGameButton.resize(300,100)
     continueGameButton.setCoords(700, 175)
 
-    qa1LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, scree, BLACK, 100)
+    qa1LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
     qa1MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
     qa1RightButton = RectButton(WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
 
-    qa2LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, scree, BLACK, 100)
+    qa2LeftButton = RectButton(WIDTH / 4 - 145, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
     qa2MiddleButton = RectButton(WIDTH / 4 + 98, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
     qa2RightButton = RectButton(WIDTH / 4 + 340, HEIGHT / 2 + 55, 215, 50, screen, BLACK, 100)
 
-
-    currGameState = Screen.STARTING
+    HomeFoodButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 10, 90, 90, screen, BLACK, 180)
+    HomeWaterButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 110, 90, 90, screen, BLACK, 180)
+    HomeSleepButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 210, 90, 90, screen, BLACK, 180)
+    HomeStressButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 310, 90, 90, screen, BLACK, 180)
+    
+    currGameState = Screen.HOME
     currPet = Pet(PetType.BALA, "bala")
-    ScreenClick = RectButton(pg.Rect(0,0, WIDTH, HEIGHT), WIDTH / 2, HEIGHT / 2, screen)
 
     while True:
 
@@ -121,6 +124,14 @@ def main():
             currPet.drawStatBar(screen, innerStressBar, RED, currPet.stress)
             currPet.draw(screen, WIDTH / 2, 3 * HEIGHT / 4)
 
+            HomeFoodButton.draw()
+            HomeFoodButton.draw_text("food")
+            HomeWaterButton.draw()
+            HomeWaterButton.draw_text("water")
+            HomeSleepButton.draw()
+            HomeSleepButton.draw_text("sleep")
+            HomeStressButton.draw()
+            HomeStressButton.draw_text("play")
         elif currGameState == Screen.EGG:
             print("FILLER")
         elif currGameState == Screen.FOOD:
