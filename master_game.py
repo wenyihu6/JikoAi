@@ -62,6 +62,7 @@ currPet = Pet(PetType.BALA, "bala")
 def update_save():
     savefile = open("save/saveFile.txt", "w+")
     savefile.write(str(currPet.petType.value) + "\n")
+    savefile.write(currPet.name + "\n")
     savefile.write(str(currPet.food) + "\n")
     savefile.write(str(currPet.water) + "\n")
     savefile.write(str(currPet.sleep) + "\n")
@@ -399,6 +400,14 @@ def main():
                 elif newGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
                     open("save/saveFile.txt", 'w').close()
                     currGameState = Screen.Q_A
+                elif continueGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
+                    lines = open("save/saveFile.txt", "r").read().splitlines()
+                    currPet = Pet(lines[0], lines[1])
+                    currPet.food = int(lines[2])
+                    currPet.water = int(lines[3])
+                    currPet.sleep = int(lines[4])
+                    currPet.stress = int(lines[5])
+                    currGameState = Screen.HOME
                 elif qa1LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A1:
                     petSum += 1
                     currGameState = Screen.Q_A2

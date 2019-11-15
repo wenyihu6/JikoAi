@@ -1,7 +1,8 @@
 import pygame as pg 
 from enum import Enum
+from enum import IntEnum
 
-class PetType(Enum):
+class PetType(IntEnum):
     BALA = 0
     MAMAU = 1
     TORA = 2
@@ -29,6 +30,7 @@ class Pet():
 
     def __init__(self, petType, name):
         WHITE = (255, 255, 255)
+        picture = "graphicAssets/SpriteBala.png"
         self.petType = petType
         self.name = name
         if (petType == PetType.BALA):
