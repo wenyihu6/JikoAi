@@ -1,6 +1,6 @@
 import sys
 from enum import Enum
-from gifImage import gifImage
+from GIFImage import GIFImage
 from Pet import Pet 
 from Pet import PetType
 import pygame as pg
