@@ -113,6 +113,8 @@ def main():
     currGameState = Screen.STARTING
     currPet = Pet(PetType.BALA, "bala")
 
+    petSum = 0
+    
     while True:
 
         clock = pg.time.Clock()
@@ -162,7 +164,13 @@ def main():
         elif currGameState == Screen.FOOD:
             print("FILLER")
         elif currGameState == Screen.HATCH:
-            print("FILLER")
+            if petSum <= 6:
+                currPet = Pet(PetType.BALA, "bala")
+            elif petSum <= 9:
+                currPet = Pet(PetType.MAMAU, "mamau")
+            else:
+                currPet = Pet(PetType.TORA, "tora")
+            currGameState = Screen.HOME
         elif currGameState == Screen.Q_A:
 
             homeBG.animate(screen)
@@ -364,41 +372,54 @@ def main():
                     currGameState = Screen.Q_A
                 elif qa1LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A1:
                     savefile.write("1\n")
+                    petSum += 1
                     currGameState = Screen.Q_A2
                 elif qa1MiddleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A1:
                     savefile.write("2\n")
+                    petSum += 2
                     currGameState = Screen.Q_A2
                 elif qa1RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A1:
                     savefile.write("3\n")
+                    petSum += 3
                     currGameState = Screen.Q_A2
                 elif qa2LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A2:
                     savefile.write("1\n")
+                    petSum += 1
                     currGameState = Screen.Q_A3
                 elif qa2MiddleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A2:
                     savefile.write("2\n")
+                    petSum += 2
                     currGameState = Screen.Q_A3
                 elif qa2RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A2:
                     savefile.write("3\n")
+                    petSum += 3
                     currGameState = Screen.Q_A3
                 elif qa3LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A3:
                     savefile.write("1\n")
+                    petSum += 1
                     currGameState = Screen.Q_A4
                 elif qa3MiddleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A3:
                     savefile.write("2\n")
+                    petSum += 2
                     currGameState = Screen.Q_A4
                 elif qa3RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A3:
                     savefile.write("3\n")
+                    petSum += 3
                     currGameState = Screen.Q_A4
                 elif qa4LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A4:
                     savefile.write("1\n")
-                    currGameState = Screen.HOME
+                    petSum += 1
+                    currGameState = Screen.HATCH
                 elif qa4MiddleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A4:
                     savefile.write("2\n")
-                    currGameState = Screen.HOME
+                    petSum += 2
+                    currGameState = Screen.HATCH
                 elif qa4RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A4:
                     savefile.write("3\n")
+                    petSum += 3
+                    currGameState = Screen.HATCH
+                elif currGameState == Screen.HATCH:
                     currGameState = Screen.HOME
-
                 elif currGameState == Screen.HOME:
                     if HomeFoodButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FOOD
