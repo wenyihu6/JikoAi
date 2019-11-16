@@ -63,11 +63,9 @@ smallFont = pg.font.Font("VT323-Regular.ttf", 40)
 screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
 
-currPet = Pet(PetType.BALA, "bala")
-
-def update_save():
+def update_save(currPet):
     savefile = open("save/saveFile.txt", "w+")
-    savefile.write(str(currPet.petType.value) + "\n")
+    savefile.write(str((currPet.petType)) + "\n")
     savefile.write(currPet.name + "\n")
     savefile.write(str(currPet.food) + "\n")
     savefile.write(str(currPet.water) + "\n")
@@ -77,6 +75,8 @@ def update_save():
     savefile.close()
 
 def main():
+    
+    currPet = Pet(PetType.BALA, "bala")
     
     savefile = open("save/saveFile.txt", "a+")
 
@@ -409,8 +409,9 @@ def main():
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 if currGameState.value > Screen.HATCH.value:
                     savefile.close()
-                    update_save() 
+                    update_save(currPet) 
                     savefile = open("save/saveFile.txt", 'a+')
+                    print ("saving")
                 mouse = pg.mouse.get_pos()
                 if currGameState == Screen.STARTING:
                     currGameState = Screen.SELECTION
@@ -419,12 +420,17 @@ def main():
                     currGameState = Screen.Q_A
                 elif continueGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
                     lines = open("save/saveFile.txt", "r").read().splitlines()
-                    currPet = Pet(lines[0], lines[1])
-                    currPet.food = int(lines[2])
-                    currPet.water = int(lines[3])
-                    currPet.sleep = int(lines[4])
-                    currPet.stress = int(lines[5])
-                    currGameState = Screen.HOME
+                    if len(lines) > 6:
+                        currPet = Pet(lines[0], lines[1])
+                        currPet.food = int(lines[2])
+                        currPet.water = int(lines[3])
+                        currPet.sleep = int(lines[4])
+                        currPet.stress = int(lines[5])
+                        currGameState = Screen.HOME
+                    else:
+                        print("Save game not found")
+                        open("save/saveFile.txt", 'w').close()
+                        currGameState = Screen.Q_A
                 elif qa1LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A1:
                     petSum += 1
                     currGameState = Screen.Q_A2
