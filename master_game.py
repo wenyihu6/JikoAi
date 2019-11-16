@@ -91,7 +91,9 @@ def main():
     HomeStressButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 310, 90, 90, screen, BLACK, 180)
 
     currGameState = Screen.STARTING
-    currPet = Pet(PetType.BALA, "bala")
+    currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
+    currPet.setCoords(WIDTH / 2, 3 * HEIGHT / 4)
+    currPet.setMoveCycleCount(25)
 
     while True:
 
@@ -129,7 +131,7 @@ def main():
             currPet.drawStatBar(screen, innerWaterBar, BLUE, currPet.water)
             currPet.drawStatBar(screen, innerSleepBar, PURPLE, currPet.sleep)
             currPet.drawStatBar(screen, innerStressBar, RED, currPet.stress)
-            currPet.draw(screen, WIDTH / 2, 3 * HEIGHT / 4)
+            currPet.draw(screen)
 
             HomeFoodButton.draw()
             HomeFoodButton.draw_text("food")
@@ -139,7 +141,6 @@ def main():
             HomeSleepButton.draw_text("sleep")
             HomeStressButton.draw()
             HomeStressButton.draw_text("play")
-
 
         elif currGameState == Screen.EGG:
             print("FILLER")
@@ -251,7 +252,6 @@ def main():
 
             screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT /2 - 35))
             screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
-
 
             bgRect2 = pg.Surface((215, 50))
             bgRect2.set_alpha(100)
