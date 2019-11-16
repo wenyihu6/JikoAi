@@ -93,7 +93,7 @@ def main():
     currGameState = Screen.STARTING
     currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
     currPet.setCoords(WIDTH / 2, 3 * HEIGHT / 4)
-    currPet.setMoveCycleCount(25)
+    currPet.setMoveCycleCount(45)
 
     while True:
 

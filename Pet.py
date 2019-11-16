@@ -96,9 +96,10 @@ class Pet(pg.sprite.Sprite):
             randomx = randint(-40, 40)
             randomy = randint(-40, 40)
 
-            while(self.currX + randomx >= WIDTH - 80 or self.currY + randomy >= HEIGHT - 120
+            if(self.currX + randomx >= WIDTH - 80 or self.currY + randomy >= HEIGHT - 120
             or self.currX + randomx <= 0 or self.currY + randomy <= 0):
-                random = randint(-40, 40)
+                randomx = randint(-40, 40)
+                randomy = randint(-40, 40)
             
             self.currX = self.currX + randomx
             self.currY = self.currY + randomy
