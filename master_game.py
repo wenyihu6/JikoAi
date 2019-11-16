@@ -22,6 +22,7 @@ class Screen(Enum):
     SLEEP = 11
     FUN = 12
     SELECTION = 13
+    CREDITS = 14
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -90,6 +91,10 @@ def main():
     HomeSleepButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 210, 90, 90, screen, BLACK, 180)
     HomeStressButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 310, 90, 90, screen, BLACK, 180)
 
+    creditsButton = RectButton(300, 350, 215, 50, screen, BLACK, 100)
+
+    creditToTitleButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
+
     currGameState = Screen.STARTING
     currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
     currPet.setCoords(WIDTH / 2, 3 * HEIGHT / 4)
@@ -107,10 +112,13 @@ def main():
             titleBG.animate(screen)
 
             title = titleFont.render('JikoAi', True, WHITE) 
-            screen.blit(title, (WIDTH / 4 - 15, HEIGHT / 2 - 100))
+            screen.blit(title, (WIDTH / 4 - 15, HEIGHT / 2 - 125))
 
             subtitle = textFont.render('Click to begin!', True, WHITE)
-            screen.blit(subtitle, (WIDTH / 4 + 25, HEIGHT / 2 + 57))
+            screen.blit(subtitle, (WIDTH / 4 + 25, HEIGHT / 2 + 32))
+
+            creditsButton.draw()
+            creditsButton.draw_text("Credits")
 
         elif currGameState == Screen.SELECTION:
 
@@ -304,6 +312,11 @@ def main():
             print("FILLER")
         elif currGameState == Screen.FUN:
             print("FILLER")
+        elif currGameState == Screen.CREDITS:
+            titleBG.animate(screen)
+            creditToTitleButton.draw()
+            creditToTitleButton.draw_text("Back")
+
 
         pg.display.update()
 
@@ -315,7 +328,9 @@ def main():
                 sys.exit()
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 mouse = pg.mouse.get_pos()
-                if currGameState == Screen.STARTING:
+                if creditsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.STARTING:
+                    currGameState = Screen.CREDITS
+                elif currGameState == Screen.STARTING:
                     currGameState = Screen.SELECTION
                 elif newGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
                     open("save/saveFile.txt", 'w').close()
@@ -356,6 +371,8 @@ def main():
                 elif qa4RightButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A4:
                     savefile.write("3\n")
                     currGameState = Screen.HOME
+                elif creditToTitleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.CREDITS:
+                    currGameState = Screen.STARTING
                     
                 elif currGameState == Screen.HOME:
                     if HomeFoodButton.getImageRect().collidepoint(mouse):
