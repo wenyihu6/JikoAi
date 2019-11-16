@@ -48,8 +48,14 @@ PURPLE = (127, 0, 255)
 WIDTH = 800
 HEIGHT = 480
 
+FOOD_CHANGE_RATE = -1
+WATER_CHANGE_RATE = -1
+SLEEP_CHANGE_RATE = -1
+STRESS_CHANGE_RATE = 1
+
 pg.init()
 pg.font.init()
+init_time = datetime.datetime.now()
 titleFont = pg.font.Font("VT323-Regular.ttf", 180)
 textFont = pg.font.Font("VT323-Regular.ttf", 60)
 smallFont = pg.font.Font("VT323-Regular.ttf", 40)
@@ -145,6 +151,17 @@ def main():
 
         ev = pg.event.get()
         screen.fill(WHITE)
+
+        if currGameState.value > Screen.HATCH.value:
+            currPet.food += FOOD_CHANGE_RATE
+            currPet.water += WATER_CHANGE_RATE
+            currPet.sleep += SLEEP_CHANGE_RATE
+            currPet.stress += STRESS_CHANGE_RATE
+
+            currPet.food = 0 if currPet.food < 0 else 100 if currPet.food > 100 else currPet.food
+            currPet.water = 0 if currPet.water < 0 else 100 if currPet.water > 100 else currPet.water
+            currPet.sleep = 0 if currPet.sleep < 0 else 100 if currPet.sleep > 100 else currPet.sleep
+            currPet.stress = 0 if currPet.stress < 0 else 100 if currPet.stress > 100 else currPet.stress
 
         if currGameState == Screen.STARTING:
 
