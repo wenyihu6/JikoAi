@@ -48,10 +48,10 @@ PURPLE = (127, 0, 255)
 WIDTH = 800
 HEIGHT = 480
 
-FOOD_CHANGE_RATE = -1
-WATER_CHANGE_RATE = -1
-SLEEP_CHANGE_RATE = -1
-STRESS_CHANGE_RATE = 1
+FOOD_CHANGE_RATE = -0.1
+WATER_CHANGE_RATE = -0.1
+SLEEP_CHANGE_RATE = -0.1
+STRESS_CHANGE_RATE = 0.1
 
 pg.init()
 pg.font.init()
@@ -71,7 +71,7 @@ def update_save(currPet):
     savefile.write(str(currPet.water) + "\n")
     savefile.write(str(currPet.sleep) + "\n")
     savefile.write(str(currPet.stress) + "\n")
-    savefile.write(str(datetime.datetime.now()) + "\n")
+    savefile.write(str(datetime.datetime.now().strftime("%Y-%B-%d %I:%M%p.%f")) + "\n")
     savefile.close()
 
 def main():
@@ -420,12 +420,17 @@ def main():
                     currGameState = Screen.Q_A
                 elif continueGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
                     lines = open("save/saveFile.txt", "r").read().splitlines()
-                    if len(lines) > 6:
+                    if len(lines) > 5:
                         currPet = Pet(lines[0], lines[1])
-                        currPet.food = int(lines[2])
-                        currPet.water = int(lines[3])
-                        currPet.sleep = int(lines[4])
-                        currPet.stress = int(lines[5])
+                        currPet.food = float(lines[2])
+                        currPet.water = float(lines[3])
+                        currPet.sleep = float(lines[4])
+                        currPet.stress = float(lines[5])
+                        dtime = (init_time - datetime.datetime.strptime(lines[6], "%Y-%B-%d %I:%M%p.%f")).seconds
+                        currPet.food += FOOD_CHANGE_RATE * dtime * FRAMERATE
+                        currPet.water += WATER_CHANGE_RATE * dtime * FRAMERATE
+                        currPet.sleep += SLEEP_CHANGE_RATE * dtime * FRAMERATE
+                        currPet.stress += STRESS_CHANGE_RATE * dtime * FRAMERATE
                         currGameState = Screen.HOME
                     else:
                         print("Save game not found")
