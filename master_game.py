@@ -48,10 +48,10 @@ PURPLE = (127, 0, 255)
 WIDTH = 800
 HEIGHT = 480
 
-FOOD_CHANGE_RATE = -0.1
-WATER_CHANGE_RATE = -0.1
-SLEEP_CHANGE_RATE = -0.1
-STRESS_CHANGE_RATE = 0.1
+FOOD_CHANGE_RATE = -100 / (12 * 60 * 60 * 12) # 100% per (12 f/s * 60s/m * 60 m/h * 12 h to empty)
+WATER_CHANGE_RATE = -100 / (12 * 60 * 60 * 6) # 100% per (12 f/s * 60s/m * 60 m/h * 6 h to empty)
+SLEEP_CHANGE_RATE = -100 / (12 * 60 * 60 * 16) # 100% per (12 f/s * 60s/m * 60 m/h * 16 h to empty)
+STRESS_CHANGE_RATE = 100 / (12 * 60 * 60 * 24) # 100% per (12 f/s * 60s/m * 60 m/h * 24 h to full)
 
 pg.init()
 pg.font.init()
@@ -71,7 +71,7 @@ def update_save(currPet):
     savefile.write(str(currPet.water) + "\n")
     savefile.write(str(currPet.sleep) + "\n")
     savefile.write(str(currPet.stress) + "\n")
-    savefile.write(str(datetime.datetime.now().strftime("%Y-%B-%d %I:%M%p.%f")) + "\n")
+    savefile.write(str(datetime.datetime.now().strftime("%Y-%B-%d %I:%M:%S.%f")) + "\n")
     savefile.close()
 
 def main():
@@ -426,7 +426,7 @@ def main():
                         currPet.water = float(lines[3])
                         currPet.sleep = float(lines[4])
                         currPet.stress = float(lines[5])
-                        dtime = (init_time - datetime.datetime.strptime(lines[6], "%Y-%B-%d %I:%M%p.%f")).seconds
+                        dtime = (init_time - datetime.datetime.strptime(lines[6], "%Y-%B-%d %I:%M:%S.%f")).seconds
                         currPet.food += FOOD_CHANGE_RATE * dtime * FRAMERATE
                         currPet.water += WATER_CHANGE_RATE * dtime * FRAMERATE
                         currPet.sleep += SLEEP_CHANGE_RATE * dtime * FRAMERATE
