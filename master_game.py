@@ -103,6 +103,8 @@ def main():
 
     creditToTitleButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
 
+    randomButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
+
     currGameState = Screen.STARTING
     currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
     currPet.setCoords(WIDTH / 2, 3 * HEIGHT / 4)
@@ -158,6 +160,8 @@ def main():
             HomeStressButton.draw()
             HomeStressButton.draw_text("play")
 
+            randomButton.draw()
+            randomButton.draw_text("RANDOM")
         elif currGameState == Screen.EGG:
             print("FILLER")
         elif currGameState == Screen.FOOD:
@@ -392,6 +396,8 @@ def main():
                     currGameState = Screen.HOME
                 elif creditToTitleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.CREDITS:
                     currGameState = Screen.STARTING
+                elif randomButton.getImageRect().collidepoint(mouse) and currGameState == Screen.HOME:
+                    #BLAHBLAHBLJSDKFJD
                     
                 elif currGameState == Screen.HOME:
                     if HomeFoodButton.getImageRect().collidepoint(mouse):
