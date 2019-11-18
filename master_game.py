@@ -53,6 +53,8 @@ def main():
     homeBG.resize(800, 480)
     qaBG = GIFImage("graphicAssets/BgTitle4")
     qaBG.resize(800, 480)
+    sleepBG = GIFImage("graphicAssets/SleepBG")
+    sleepBG.resize(800, 480)
 
     eggUnhatched = GIFImage("graphicAssets/EggUnhatched",
                             WIDTH/4 + 80, HEIGHT/2 - 170, 15)
@@ -90,6 +92,12 @@ def main():
     HomeWaterButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 110, 90, 90, screen, BLACK, 180)
     HomeSleepButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 210, 90, 90, screen, BLACK, 180)
     HomeStressButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 310, 90, 90, screen, BLACK, 180)
+
+    sleepAffirmationsButton = RectButton(10, 60, 215, 50, screen, BLACK, 100)
+    sleepBackButton = RectButton(10, 10, 215, 50, screen, BLACK, 100)
+    sleepLogButton = RectButton(80, 10, 215, 50, screen, BLACK, 100)
+    sleepMeditateButton = RectButton(100, 100, 215, 50, screen, BLACK, 100)
+    sleepBreatheButton = RectButton(200, 200, 215, 50, screen, BLACK, 100)
 
     creditsButton = RectButton(300, 350, 215, 50, screen, BLACK, 100)
 
@@ -153,6 +161,7 @@ def main():
         elif currGameState == Screen.EGG:
             print("FILLER")
         elif currGameState == Screen.FOOD:
+
             print("FILLER")
         elif currGameState == Screen.HATCH:
             print("FILLER")
@@ -312,11 +321,21 @@ def main():
             print("FILLER")
         elif currGameState == Screen.FUN:
             print("FILLER")
+        elif currGameState == Screen.SLEEP:
+            sleepBG.animate(screen)
+            #affirmations
+            sleepAffirmationsButton.draw()
+            sleepAffirmationsButton.draw_text("Affirmations")
+            #meditate
+            #sleep
+            #breathe
+            #back
+            sleepBackButton.draw()
+            sleepBackButton.draw_text("Back")
         elif currGameState == Screen.CREDITS:
             titleBG.animate(screen)
             creditToTitleButton.draw()
             creditToTitleButton.draw_text("Back")
-
 
         pg.display.update()
 
