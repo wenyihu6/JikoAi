@@ -24,6 +24,7 @@ WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)  # More colours should be added here
 ORANGE = (255, 128, 0)
 RED = (255, 0, 0)
+
 GREEN = (0, 255, 0)
 PURPLE = (127, 0, 255)
 WIDTH = 800
@@ -34,6 +35,9 @@ pg.font.init()
 titleFont = pg.font.Font("VT323-Regular.ttf", 180)
 textFont = pg.font.Font("VT323-Regular.ttf", 60)
 smallFont = pg.font.Font("VT323-Regular.ttf", 40)
+
+pg.mixer.music.load('Bitbasic_-_01_-_An_opener(1).mp3')
+pg.mixer.music.play(-1)
 
 screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
