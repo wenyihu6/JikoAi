@@ -45,4 +45,7 @@ class RectButton(object):
         self.alpha = alpha
         self.button.set_alpha(alpha)
 
+    def getAlpha(self):
+        return self.alpha
+
 

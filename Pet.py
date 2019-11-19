@@ -74,6 +74,13 @@ class Pet(pg.sprite.Sprite):
     def init_gifImage(cls, petType, name):
         return cls(petType, name, False)
 
+    def resize(self, width, height):
+        if(self.isImage)
+            self.image = pg.transform.scale(self.image, (width, height))
+        else:
+            self.image.resize(width, height)
+
+
     def setCoords(self, x, y):
 
         self.currX = x - self.image.get_width() / 2
