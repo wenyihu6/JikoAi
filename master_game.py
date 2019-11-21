@@ -5,6 +5,7 @@ from Pet import Pet
 from Pet import PetType
 from Buttonify import Buttonify
 from RectButton import RectButton
+from Meditate import Meditate
 import pygame as pg
 
 class Screen(Enum):
@@ -23,6 +24,7 @@ class Screen(Enum):
     FUN = 12
     SELECTION = 13
     CREDITS = 14
+    MEDITATION = 15
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -109,6 +111,8 @@ def main():
     currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
     currPet.setCoords(WIDTH / 2, 3 * HEIGHT / 4)
     currPet.setMoveCycleCount(45)
+
+    meditate = Meditate(screen)
 
     while True:
 
@@ -336,6 +340,9 @@ def main():
             #back
             sleepBackButton.draw()
             sleepBackButton.draw_text("Back")
+        elif currGameState == Screen.MEDITATION:
+            sleepBG.animate(screen)
+            meditate.setOn()
         elif currGameState == Screen.CREDITS:
             titleBG.animate(screen)
             creditToTitleButton.draw()
@@ -396,9 +403,8 @@ def main():
                     currGameState = Screen.HOME
                 elif creditToTitleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.CREDITS:
                     currGameState = Screen.STARTING
-                elif randomButton.getImageRect().collidepoint(mouse) and currGameState == Screen.HOME:
-                    #BLAHBLAHBLJSDKFJD
-                    
+                elif sleepAffirmationsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
+                    currGameState = Screen.MEDITATION
                 elif currGameState == Screen.HOME:
                     if HomeFoodButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FOOD
