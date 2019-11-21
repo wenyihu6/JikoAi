@@ -25,6 +25,9 @@ class Screen(Enum):
     SELECTION = 13
     CREDITS = 14
     MEDITATION = 15
+    BREATHE = 16
+    SLEEPLOG = 17
+    AFFIRMATIONS = 18
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -95,11 +98,11 @@ def main():
     HomeSleepButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 210, 90, 90, screen, BLACK, 180)
     HomeStressButton = RectButton(7 * WIDTH / 8, HEIGHT / 16 + 310, 90, 90, screen, BLACK, 180)
 
-    sleepAffirmationsButton = RectButton(10, 60, 215, 50, screen, BLACK, 100)
-    sleepBackButton = RectButton(10, 10, 215, 50, screen, BLACK, 100)
-    sleepLogButton = RectButton(80, 10, 215, 50, screen, BLACK, 100)
-    sleepMeditateButton = RectButton(100, 100, 215, 50, screen, BLACK, 100)
-    sleepBreatheButton = RectButton(200, 200, 215, 50, screen, BLACK, 100)
+    sleepAffirmationsButton = RectButton(300, 170, 215, 50, screen, BLACK, 100)
+    sleepBackButton = RectButton(10, 10, 115, 50, screen, BLACK, 100)
+    sleepLogButton = RectButton(300, 100, 215, 50, screen, BLACK, 100)
+    sleepMeditateButton = RectButton(300, 310, 215, 50, screen, BLACK, 100)
+    sleepBreatheButton = RectButton(300, 240, 215, 50, screen, BLACK, 100)
 
     meditateToSleepButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
 
@@ -340,7 +343,11 @@ def main():
             sleepMeditateButton.draw()
             sleepMeditateButton.draw_text("Meditation")
             #sleep
+            sleepLogButton.draw()
+            sleepLogButton.draw_text("Log Sleep")
             #breathe
+            sleepBreatheButton.draw()
+            sleepBreatheButton.draw_text("Breathe")
             #back
             sleepBackButton.draw()
             sleepBackButton.draw_text("Back")
