@@ -11,6 +11,10 @@ from RectButton import RectButton
 import os
 import shutil
 import datetime
+import time
+
+if sys.platform.startswith('linux'):
+    import RPi.GPIO as GPIO
 
 class Screen(Enum):
     STARTING = 0
@@ -76,15 +80,15 @@ def update_save(currPet):
     savefile.write(str(currPet.stress) + "\n")
     savefile.write(str(datetime.datetime.now().strftime("%Y-%B-%d %I:%M:%S.%f")) + "\n")
     savefile.close()
-
-GPIO.setmode(GPIO.BOARD)  
-GPIO.setup(29, GPIO.IN, pull_up_down = GPIO.PUD_UP)  
  
 # Our function on what to do when the button is pressed  
 def Shutdown(channel):  
     os.system("sudo shutdown -h now") 
-  
-GPIO.add_event_detect(29, GPIO.FALLING, callback = Shutdown, bouncetime = 5000)  
+
+if sys.platform.startswith('linux'):
+    GPIO.setmode(GPIO.BOARD)  
+    GPIO.setup(29, GPIO.IN, pull_up_down = GPIO.PUD_UP)  
+    GPIO.add_event_detect(29, GPIO.FALLING, callback = Shutdown, bouncetime = 5000)  
 
 def main():    
     savefile = open("save/saveFile.txt", "a+")
