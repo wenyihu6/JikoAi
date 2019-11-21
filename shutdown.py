@@ -9,8 +9,8 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(29, GPIO.IN, pull_up_down = GPIO.PUD_UP)  
  
 # Our function on what to do when the button is pressed  
-def Print(channel):  
-    print("Button Pressed")  
+def Shutdown(channel):  
+    os.system("sudo shutdown -h now") 
  
 # Add our function to execute when the button pressed event happens  
 GPIO.add_event_detect(29, GPIO.FALLING, callback = Shutdown, bouncetime = 2000)  
