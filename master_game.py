@@ -101,6 +101,8 @@ def main():
     sleepMeditateButton = RectButton(100, 100, 215, 50, screen, BLACK, 100)
     sleepBreatheButton = RectButton(200, 200, 215, 50, screen, BLACK, 100)
 
+    meditateToSleepButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
+
     creditsButton = RectButton(300, 350, 215, 50, screen, BLACK, 100)
 
     creditToTitleButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
@@ -335,6 +337,8 @@ def main():
             sleepAffirmationsButton.draw()
             sleepAffirmationsButton.draw_text("Affirmations")
             #meditate
+            sleepMeditateButton.draw()
+            sleepMeditateButton.draw_text("Meditation")
             #sleep
             #breathe
             #back
@@ -342,6 +346,8 @@ def main():
             sleepBackButton.draw_text("Back")
         elif currGameState == Screen.MEDITATION:
             sleepBG.animate(screen)
+            meditateToSleepButton.draw()
+            meditateToSleepButton.draw_text("Back")
             meditate.setOn()
         elif currGameState == Screen.CREDITS:
             titleBG.animate(screen)
@@ -403,8 +409,11 @@ def main():
                     currGameState = Screen.HOME
                 elif creditToTitleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.CREDITS:
                     currGameState = Screen.STARTING
-                elif sleepAffirmationsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
+                elif sleepMeditateButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
                     currGameState = Screen.MEDITATION
+                elif meditateToSleepButton.getImageRect().collidepoint(mouse) and currGameState == Screen.MEDITATION:
+                    meditate.setOff()
+                    currGameState = Screen.SLEEP
                 elif currGameState == Screen.HOME:
                     if HomeFoodButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FOOD

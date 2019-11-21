@@ -80,9 +80,7 @@ class Pet(pg.sprite.Sprite):
         else:
             self.image.resize(width, height)
 
-
     def setCoords(self, x, y):
-
         self.currX = x - self.image.get_width() / 2
         self.currY = y - self.image.get_width() / 2
 
