@@ -23,4 +23,9 @@ Some links we accessed for the project include:
 * for learning how to open a program automatically on startup: [Stack Overflow: Open chromium full screen on startup](https://raspberrypi.stackexchange.com/questions/69204/open-chromium-full-screen-on-start-up)
 * the gifImage class used to split a gif into multiple images for reanimation is from this Stack Overflow question as well: [How to Extract Frame From GIF, and Reconstruct the Details of each Frame?](https://stackoverflow.com/questions/47483375/how-to-extract-frame-from-gif-and-reconstruct-the-details-of-each-frame/48670390#48670390)
 
+#### Assets
+The theme music for the game is "An opener" by Bitbasic; accessed through (Free Music Archive)[https://freemusicarchive.org/].
+The art used in the game are as follows; note that all images used do not imply endorsement by the artists and we used the images as placeholders; if you don't want your art here let us know!
+
+~
 Authors: Simran Thind (@simcard0000), Cole MacPhail (@colemacphail), Zhengmao Ouyang (@SwuntiiTHICC), Wenyi Hu (@wenyihu3)
