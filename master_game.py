@@ -155,6 +155,8 @@ def main():
 
     randomButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
 
+    exitButton = RectButton(20, HEIGHT - 70, 215, 50, screen, BLACK, 100)
+
     currGameState = Screen.STARTING
     currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
     currPet.setCoords(WIDTH / 2, 3 * HEIGHT / 4)
@@ -224,6 +226,9 @@ def main():
             HomeSleepButton.draw_text("sleep")
             HomeStressButton.draw()
             HomeStressButton.draw_text("play")
+
+            exitButton.draw()
+            exitButton.draw_text("EXIT")
 
             randomButton.draw()
             randomButton.draw_text("RANDOM")
@@ -515,6 +520,12 @@ def main():
                         currGameState = Screen.SLEEP
                     elif HomeStressButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FUN
+                    elif exitButton.getImageRect().collidepoint(mouse):
+                        update_save(currPet)
+                        pg.quit()
+                        if sys.platform.startswith('linux'):
+                            os.system("sudo shutdown -h now")  
+                        sys.exit()
 
 
 main()
