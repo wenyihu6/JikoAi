@@ -92,7 +92,7 @@ def processImage(path):
 
 
 def main():
-    processImage('graphicAssets/BgTitle6.gif')
+    processImage('graphicAssets/SleepBG.gif')
     #processImage('graphicAssets/BgTitle5.gif')
     
 

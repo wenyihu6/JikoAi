@@ -8,7 +8,7 @@ from PIL import Image
 #You can set the size, placement, and how many frames you want each picture to be!
 #The game is currently set to 60 fps.
 
-class gifImage(object):
+class GIFImage(object):
 
     def __init__(self, folderPath, x=0, y=0, frameCycleLen = 1): #Initialize
         self.folderPath = folderPath
@@ -22,7 +22,7 @@ class gifImage(object):
         self.frameCycleCount = 1
         self.getFrames()
 
-    def setCoords(x, y): #Set coordinates
+    def setCoords(self, x, y): #Set coordinates
         self.x = x  
         self.y = y
 
@@ -32,12 +32,19 @@ class gifImage(object):
     def getFrames(self): #Generates the frames and gets them ready to be iterated over
         self.imgNames = os.listdir(self.folderPath)
         self.imgNames = self.naturalSort(self.imgNames)
+
         for i in range(len(self.imgNames)):
             self.images.append(pygame.image.load(self.folderPath + "/" + self.imgNames[i]))
+
+        self.width = self.images[0].get_width
+        self.height = self.images[0].get_height
 
     def resize(self, width, height): #Resizes each frame
         for i in range(len(self.images)):
             self.images[i] = pygame.transform.scale(self.images[i], (width, height))
+        
+        self.width = width
+        self.height = height
 
     def animate(self, screen): #Iterates over the images (call this in the loop where you want the image to be animated!)
         screen.blit(self.images[self.frameNum], (self.x, self.y))
@@ -56,3 +63,11 @@ class gifImage(object):
         alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
         return sorted(l, key = alphanum_key)
 
+    def get_width(self): #Gets width of image
+        return self.width
+
+    def get_height(self): #Gets height of image
+        return self.height
+
+    def get_cycleEnd(self): #Tells you when its about to change the image
+        return (self.frameCycleCount >= self.frameCycleLen)

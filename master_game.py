@@ -1,10 +1,11 @@
 import sys
 from enum import Enum
-from gifImage import gifImage
-from Pet import Pet
+from GIFImage import GIFImage
+from Pet import Pet 
 from Pet import PetType
 from Buttonify import Buttonify
 from RectButton import RectButton
+from Meditate import Meditate
 import pygame as pg
 from RectButton import RectButton
 import os
@@ -13,19 +14,21 @@ import datetime
 
 class Screen(Enum):
     STARTING = 0
-    SELECTION = 1
-    EGG = 2
-    Q_A = 3
-    Q_A1 = 4
-    Q_A2 = 5
-    Q_A3 = 6
-    Q_A4 = 7
-    HATCH = 8
-    HOME = 9
-    FOOD = 10
-    WATER = 11
-    SLEEP = 12
-    FUN = 13
+    CREDITS = 1
+    SELECTION = 2
+    EGG = 3
+    Q_A = 4
+    Q_A1 = 5
+    Q_A2 = 6
+    Q_A3 = 7
+    Q_A4 = 8
+    HATCH = 9
+    HOME = 100
+    FOOD = 101
+    WATER = 102
+    SLEEP = 103
+    FUN = 104
+    MEDITATION = 105
 
     def __lt__(this, other):
         if this.__class__ is other.__class__:
@@ -74,21 +77,20 @@ def update_save(currPet):
     savefile.write(str(datetime.datetime.now().strftime("%Y-%B-%d %I:%M:%S.%f")) + "\n")
     savefile.close()
 
-def main():
-    
-    currPet = Pet(PetType.BALA, "bala")
-    
+def main():    
     savefile = open("save/saveFile.txt", "a+")
 
     FRAMERATE = 12
 
-    titleBG = gifImage("graphicAssets/BgTitle3")
-    homeBG = gifImage("graphicAssets/BgTitle5")
+    titleBG = GIFImage("graphicAssets/BgTitle3")
+    homeBG = GIFImage("graphicAssets/BgTitle5")
     homeBG.resize(800, 480)
-    qaBG = gifImage("graphicAssets/BgTitle4")
+    qaBG = GIFImage("graphicAssets/BgTitle4")
     qaBG.resize(800, 480)
+    sleepBG = GIFImage("graphicAssets/SleepBG")
+    sleepBG.resize(800, 480)
 
-    eggUnhatched = gifImage("graphicAssets/EggUnhatched",
+    eggUnhatched = GIFImage("graphicAssets/EggUnhatched",
                             WIDTH/4 + 80, HEIGHT/2 - 170, 15)
     eggUnhatched.resize(250, 250)
 
@@ -141,7 +143,24 @@ def main():
     HomeStressButton = RectButton(
         7 * WIDTH / 8, HEIGHT / 16 + 310, 90, 90, screen, BLACK, 180)
 
+    sleepAffirmationsButton = RectButton(10, 60, 215, 50, screen, BLACK, 100)
+    sleepBackButton = RectButton(10, 10, 215, 50, screen, BLACK, 100)
+    sleepLogButton = RectButton(80, 10, 215, 50, screen, BLACK, 100)
+    sleepMeditateButton = RectButton(100, 100, 215, 50, screen, BLACK, 100)
+    sleepBreatheButton = RectButton(200, 200, 215, 50, screen, BLACK, 100)
+
+    creditsButton = RectButton(300, 350, 215, 50, screen, BLACK, 100)
+
+    creditToTitleButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
+
+    randomButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
+
     currGameState = Screen.STARTING
+    currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
+    currPet.setCoords(WIDTH / 2, 3 * HEIGHT / 4)
+    currPet.setMoveCycleCount(45)
+
+    meditate = Meditate(screen)
 
     petSum = 0
     
@@ -167,8 +186,14 @@ def main():
 
             titleBG.animate(screen)
 
-            title = titleFont.render('JikoAi', True, WHITE)
-            screen.blit(title, (WIDTH / 4 - 15, HEIGHT / 2 - 100))
+            title = titleFont.render('JikoAi', True, WHITE) 
+            screen.blit(title, (WIDTH / 4 - 15, HEIGHT / 2 - 125))
+
+            subtitle = textFont.render('Click to begin!', True, WHITE)
+            screen.blit(subtitle, (WIDTH / 4 + 25, HEIGHT / 2 + 32))
+
+            creditsButton.draw()
+            creditsButton.draw_text("Credits")
 
         elif currGameState == Screen.SELECTION:
 
@@ -189,7 +214,7 @@ def main():
             currPet.drawStatBar(screen, innerWaterBar, BLUE, currPet.water)
             currPet.drawStatBar(screen, innerSleepBar, PURPLE, currPet.sleep)
             currPet.drawStatBar(screen, innerStressBar, RED, currPet.stress)
-            currPet.draw(screen, WIDTH / 2, 3 * HEIGHT / 4)
+            currPet.draw(screen)
 
             HomeFoodButton.draw()
             HomeFoodButton.draw_text("food")
@@ -200,17 +225,20 @@ def main():
             HomeStressButton.draw()
             HomeStressButton.draw_text("play")
 
+            randomButton.draw()
+            randomButton.draw_text("RANDOM")
         elif currGameState == Screen.EGG:
             print("FILLER")
         elif currGameState == Screen.FOOD:
+
             print("FILLER")
         elif currGameState == Screen.HATCH:
             if petSum <= 6:
-                currPet = Pet(PetType.BALA, "bala")
+                currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
             elif petSum <= 9:
-                currPet = Pet(PetType.MAMAU, "mamau")
+                currPet = Pet.init_gifImage(PetType.MAMAUGIF, "mamau")
             else:
-                currPet = Pet(PetType.TORA, "tora")
+                currPet = Pet.init_gifImage(PetType.TORAGIF, "tora")
             savefile.write(str(currPet.petType.value) + "\n")
             #TODO: make an animation
             currGameState = Screen.HOME
@@ -252,24 +280,18 @@ def main():
             screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT / 2 - 35))
             screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
 
-            answer1Text = smallFont.render('Not often', True, WHITE)
-
             bgRect2 = pg.Surface((215, 50))
             bgRect2.set_alpha(100)
             bgRect2.fill(BLACK)
 
             qa1LeftButton.draw()
-            screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
-
-            answer2Text = smallFont.render('Sometimes', True, WHITE)
+            qa1LeftButton.draw_text("Not often")
 
             qa1MiddleButton.draw()
-            screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
-
-            answer3Text = smallFont.render('Often', True, WHITE)
+            qa1MiddleButton.draw_text("Sometimes")
 
             qa1RightButton.draw()
-            screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
+            qa1RightButton.draw_text("Often")
 
         elif currGameState == Screen.Q_A2:
 
@@ -292,24 +314,18 @@ def main():
             screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT / 2 - 35))
             screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
 
-            answer1Text = smallFont.render('Disagree', True, WHITE)
-
             bgRect2 = pg.Surface((215, 50))
             bgRect2.set_alpha(100)
             bgRect2.fill(BLACK)
 
             qa2LeftButton.draw()
-            screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
-
-            answer2Text = smallFont.render('Not sure', True, WHITE)
+            qa2LeftButton.draw_text("Disagree")
 
             qa2MiddleButton.draw()
-            screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
-
-            answer3Text = smallFont.render('Agree', True, WHITE)
+            qa2MiddleButton.draw_text("Not sure")
 
             qa2RightButton.draw()
-            screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
+            qa2RightButton.draw_text("Agree")
 
         elif currGameState == Screen.Q_A3:
 
@@ -333,24 +349,18 @@ def main():
             screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT / 2 - 35))
             screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
 
-            answer1Text = smallFont.render('Disagree', True, WHITE)
-
             bgRect2 = pg.Surface((215, 50))
             bgRect2.set_alpha(100)
             bgRect2.fill(BLACK)
 
             qa3LeftButton.draw()
-            screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
-
-            answer2Text = smallFont.render('Not sure', True, WHITE)
+            qa3LeftButton.draw_text("Disagree")
 
             qa3MiddleButton.draw()
-            screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
-
-            answer3Text = smallFont.render('Agree', True, WHITE)
+            qa3MiddleButton.draw_text("Not sure")
 
             qa3RightButton.draw()
-            screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
+            qa3RightButton.draw_text("Agree")
 
         elif currGameState == Screen.Q_A4:
 
@@ -374,29 +384,41 @@ def main():
             screen.blit(bgRect1, (WIDTH / 4 - 145, HEIGHT / 2 - 35))
             screen.blit(q1Text, (WIDTH / 4 - 110, HEIGHT / 2 - 30))
 
-            answer1Text = smallFont.render('Disagree', True, WHITE)
-
             bgRect2 = pg.Surface((215, 50))
             bgRect2.set_alpha(100)
             bgRect2.fill(BLACK)
 
             qa4LeftButton.draw()
-            screen.blit(answer1Text, (WIDTH / 4 - 110, HEIGHT / 2 + 60))
-
-            answer2Text = smallFont.render('Not sure', True, WHITE)
+            qa4LeftButton.draw_text("Disagree")
 
             qa4MiddleButton.draw()
-            screen.blit(answer2Text, (WIDTH / 4 + 133, HEIGHT / 2 + 60))
-
-            answer3Text = smallFont.render('Agree', True, WHITE)
+            qa4MiddleButton.draw_text("Not sure")
 
             qa4RightButton.draw()
-            screen.blit(answer3Text, (WIDTH / 4 + 400, HEIGHT / 2 + 60))
+            qa4RightButton.draw_text("Agree")
 
         elif currGameState == Screen.WATER:
             print("FILLER")
         elif currGameState == Screen.FUN:
             print("FILLER")
+        elif currGameState == Screen.SLEEP:
+            sleepBG.animate(screen)
+            #affirmations
+            sleepAffirmationsButton.draw()
+            sleepAffirmationsButton.draw_text("Affirmations")
+            #meditate
+            #sleep
+            #breathe
+            #back
+            sleepBackButton.draw()
+            sleepBackButton.draw_text("Back")
+        elif currGameState == Screen.MEDITATION:
+            sleepBG.animate(screen)
+            meditate.setOn()
+        elif currGameState == Screen.CREDITS:
+            titleBG.animate(screen)
+            creditToTitleButton.draw()
+            creditToTitleButton.draw_text("Back")
 
         pg.display.update()
 
@@ -413,7 +435,9 @@ def main():
                     savefile = open("save/saveFile.txt", 'a+')
                     print ("saving")
                 mouse = pg.mouse.get_pos()
-                if currGameState == Screen.STARTING:
+                if creditsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.STARTING:
+                    currGameState = Screen.CREDITS
+                elif currGameState == Screen.STARTING:
                     currGameState = Screen.SELECTION
                 elif newGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
                     open("save/saveFile.txt", 'w').close()
@@ -421,7 +445,11 @@ def main():
                 elif continueGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
                     lines = open("save/saveFile.txt", "r").read().splitlines()
                     if len(lines) > 5:
-                        currPet = Pet(lines[0], lines[1])
+                        savePetType = lines[0]
+                        if savePetType.__contains__("GIF"):
+                            currPet = Pet.init_gifImage(lines[0], lines[1])
+                        else:
+                            currPet = Pet(lines[0], lines[1])
                         currPet.food = float(lines[2])
                         currPet.water = float(lines[3])
                         currPet.sleep = float(lines[4])
@@ -474,6 +502,10 @@ def main():
                     currGameState = Screen.HATCH
                 elif currGameState == Screen.HATCH:
                     currGameState = Screen.HOME
+                elif creditToTitleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.CREDITS:
+                    currGameState = Screen.STARTING
+                elif sleepAffirmationsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
+                    currGameState = Screen.MEDITATION
                 elif currGameState == Screen.HOME:
                     if HomeFoodButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FOOD
