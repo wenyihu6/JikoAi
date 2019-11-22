@@ -1,7 +1,7 @@
 # jiko-ai
 🐈 A creative final project for SE101 (cohort 2024) - the first-year concepts course for Software Engineering @ the University of Waterloo. jiko-ai is a virtual pet, styled after Tamagotchi™, in which the user is encouraged to not only look after their creatures, but after themselves too. Through activities like medition and affirmations, both the pet and the user can grow together!
 ### Credits
-The audio processing of this project relies heavily on [IBM's Speech-To-Text Service](https://www.ibm.com/ca-en/marketplace/speech-to-text), and a majority of the game code was written using the pygame library (see Dependencies/Imports). 
+The audio processing of this project relies heavily on [IBM's Speech-To-Text Service](https://www.ibm.com/ca-en/marketplace/speech-to-text), and a majority of the game code was written using the pygame library (see Dependencies/Imports). For helping format the request to the API and keeping track of what requests we wanted to make, the [Postman](https://www.getpostman.com/) tool was used.
 
 Other sites and resources that were integral to the building of the project include:
 
@@ -24,7 +24,10 @@ Some links we accessed for the project include:
 * the gifImage class used to split a gif into multiple images for reanimation is from this Stack Overflow question as well: [How to Extract Frame From GIF, and Reconstruct the Details of each Frame?](https://stackoverflow.com/questions/47483375/how-to-extract-frame-from-gif-and-reconstruct-the-details-of-each-frame/48670390#48670390)
 * the script used to shutdown the Pi is based off of this: [shutdown.py](https://github.com/halofx/rpi-shutdown/blob/master/shutdown.py)
 * for finding what the current OS is on Python: [Stack Overflow: How can I find the current OS in Python?](https://stackoverflow.com/questions/110362/how-can-i-find-the-current-os-in-python)
-* For learning more about what pins to use on the Raspberry Pi for GPIO: the [GPIO Raspberry Pi Documentation](https://www.raspberrypi.org/documentation/usage/gpio/) and a [Raspberry Pi GPIO Pinout](https://pinout.xyz/) schematic
+* for learning more about what pins to use on the Raspberry Pi for GPIO: the [GPIO Raspberry Pi Documentation](https://www.raspberrypi.org/documentation/usage/gpio/) and a [Raspberry Pi GPIO Pinout](https://pinout.xyz/) schematic
+* debugging the API call with a specific error code involved looking at this [post](
+https://developer.ibm.com/answers/questions/203041/speech-to-text-with-python-error-500/)
+
 #### Assets
 The theme music for the game is "An opener" by Bitbasic; accessed through [Free Music Archive](https://freemusicarchive.org/music/Bitbasic/Pixel_Mixel). The art used in the game are as follows; note that all images used do not imply endorsement by the artists and we used the images as placeholders; if you don't want your art here let us know!
 
