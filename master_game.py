@@ -71,6 +71,9 @@ titleFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 180)
 textFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 60)
 smallFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 40)
 
+pg.mixer.music.load('Bitbasic_-_01_-_An_opener(1).mp3')
+pg.mixer.music.play(-1)
+
 screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
 currGameState = Screen.STARTING
