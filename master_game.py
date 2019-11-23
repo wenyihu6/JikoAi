@@ -113,7 +113,7 @@ def toggle_voice(channel):
     filename = 'command.wav'
     p = pyaudio.PyAudio()
 
-    print(p.get_default_output_device_info())
+    #print(p.get_default_output_device_info())
 
     stream = p.open(format=sample_format,
         channels=channels,
