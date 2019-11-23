@@ -13,6 +13,10 @@ import shutil
 import datetime
 import time
 
+import wave
+import requests
+import pyaudio
+
 if sys.platform.startswith('linux'):
     import RPi.GPIO as GPIO
 
