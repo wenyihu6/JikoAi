@@ -116,6 +116,12 @@ def main():
     qaBG.resize(800, 480)
     sleepBG = GIFImage(os.getcwd() + "/graphicAssets/SleepBG")
     sleepBG.resize(800, 480)
+    waterBG = GIFImage(os.getcwd() + "/graphicAssets/BgWater")
+    waterBG.resize(800, 480)
+    foodBG = GIFImage(os.getcwd() + "/graphicAssets/BgFood")
+    foodBG.resize(800, 480)
+    playBG = GIFImage(os.getcwd() + "/graphicAssets/BgPlay")
+    playBG.resize(800, 480)
 
     eggUnhatched = GIFImage(os.getcwd() + "/graphicAssets/EggUnhatched",
                             WIDTH/4 + 80, HEIGHT/2 - 170, 15)
@@ -171,10 +177,11 @@ def main():
         7 * WIDTH / 8, HEIGHT / 16 + 310, 90, 90, screen, BLACK, 180)
 
     sleepAffirmationsButton = RectButton(10, 60, 215, 50, screen, BLACK, 100)
-    sleepBackButton = RectButton(10, 10, 215, 50, screen, BLACK, 100)
     sleepLogButton = RectButton(80, 10, 215, 50, screen, BLACK, 100)
     sleepMeditateButton = RectButton(100, 100, 215, 50, screen, BLACK, 100)
     sleepBreatheButton = RectButton(200, 200, 215, 50, screen, BLACK, 100)
+
+    backButton = RectButton(10, 10, 215, 50, screen, BLACK, 100)
 
     creditsButton = RectButton(300, 350, 215, 50, screen, BLACK, 100)
 
@@ -258,9 +265,6 @@ def main():
             randomButton.draw()
             randomButton.draw_text("RANDOM")
         elif currGameState == Screen.EGG:
-            print("FILLER")
-        elif currGameState == Screen.FOOD:
-
             print("FILLER")
         elif currGameState == Screen.HATCH:
             if petSum <= 6:
@@ -427,10 +431,15 @@ def main():
             qa4RightButton.draw()
             qa4RightButton.draw_text("Agree")
 
+        
         elif currGameState == Screen.WATER:
-            print("FILLER")
+            waterBG.animate(screen)
+            backButton.draw()
+            backButton.draw_text("Back")
         elif currGameState == Screen.FUN:
-            print("FILLER")
+            playBG.animate(screen)
+            backButton.draw()
+            backButton.draw_text("Back")
         elif currGameState == Screen.SLEEP:
             sleepBG.animate(screen)
             #affirmations
@@ -440,9 +449,15 @@ def main():
             #sleep
             #breathe
             #back
-            sleepBackButton.draw()
-            sleepBackButton.draw_text("Back")
+            backButton.draw()
+            backButton.draw_text("Back")
+        elif currGameState == Screen.FOOD:
+            foodBG.animate(screen)
+            backButton.draw()
+            backButton.draw_text("Back")
         elif currGameState == Screen.MEDITATION:
+            backButton.draw()
+            backButton.draw_text("Back")
             sleepBG.animate(screen)
             meditate.setOn()
         elif currGameState == Screen.CREDITS:
@@ -536,6 +551,8 @@ def main():
                     currGameState = Screen.STARTING
                 elif sleepAffirmationsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
                     currGameState = Screen.MEDITATION
+                elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.FOOD or currGameState is Screen.WATER or currGameState is Screen.SLEEP or currGameState is Screen.FUN):
+                    currGameState = Screen.HOME
                 elif currGameState == Screen.HOME:
                     if HomeFoodButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FOOD
