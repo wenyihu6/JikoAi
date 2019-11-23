@@ -87,7 +87,7 @@ def Shutdown(channel):
 
 is_voice_enabled = False
 
-def enable_voice(channel):
+def toggle_voice(channel):
     is_voice_enabled = not is_voice_enabled
     print("flip")
 
