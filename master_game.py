@@ -199,8 +199,6 @@ def toggle_voice(channel):
     if (words is 'done' and (currGameState == Screen.FOOD or currGameState == Screen.WATER or 
         currGameState == Screen.SLEEP or currGameState == Screen.MEDITATION or currGameState == Screen.FUN)):
             currGameState = Screen.HOME
-    else if (currGameState == Screen.FUN):
-        #pet the pet!
 
 if sys.platform.startswith('linux'):
     GPIO.setmode(GPIO.BOARD)  
