@@ -85,11 +85,9 @@ def update_save(currPet):
 def Shutdown(channel):  
     os.system("sudo shutdown -h now")
 
-is_voice_enabled = False
-
 def toggle_voice(channel):
-    is_voice_enabled = not is_voice_enabled
-    print("flip")
+    print("Unimplemented")
+    #TODO: Implement me!
 
 if sys.platform.startswith('linux'):
     GPIO.setmode(GPIO.BOARD)  
