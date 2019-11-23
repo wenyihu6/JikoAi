@@ -48,6 +48,8 @@ class Screen(Enum):
             return this.value > other.value
         return NotImplemented
 
+global currGameState
+global currPet
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -208,8 +210,6 @@ if sys.platform.startswith('linux'):
     GPIO.add_event_detect(33, GPIO.BOTH, callback = toggle_voice, bouncetime = 250)  
 
 def main():
-    global currGameState
-    global currPet
     savefile = open(os.getcwd() + "/save/saveFile.txt", "a+")
 
     FRAMERATE = 12
