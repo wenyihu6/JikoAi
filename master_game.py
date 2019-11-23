@@ -48,8 +48,8 @@ class Screen(Enum):
             return this.value > other.value
         return NotImplemented
 
-global currGameState
-global currPet
+global currGameState = Screen.STARTING
+global currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -78,9 +78,6 @@ pg.mixer.music.play(-1)
 
 screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
-currGameState = Screen.STARTING
-currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
-
 def update_save(currPet):
     savefile = open(os.getcwd() + "/save/saveFile.txt", "w+")
     savefile.write(str((currPet.petType)) + "\n")
@@ -94,8 +91,6 @@ def update_save(currPet):
  
 # Our function on what to do when the button is pressed  
 def Shutdown(channel):
-    global currGameState
-    global currPet
     if currGameState.value > Screen.HATCH.value:
         update_save(currPet)
     os.system("sudo shutdown -h now")
