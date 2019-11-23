@@ -80,6 +80,7 @@ currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
 
 def update_save():
     global currPet
+    global currGameState
     savefile = open(os.getcwd() + "/save/saveFile.txt", "w+")
     savefile.write(str((currPet.petType)) + "\n")
     savefile.write(currPet.name + "\n")
@@ -92,12 +93,15 @@ def update_save():
  
 # Our function on what to do when the button is pressed  
 def Shutdown(channel):
+    global currPet
+    global currGameState
     if currGameState.value > Screen.HATCH.value:
         update_save()
     os.system("sudo shutdown -h now")
 
 def toggle_voice(channel):
     global currGameState
+    global currPet
     #getting audio for stuff
 
     chunk = 8192
@@ -207,6 +211,8 @@ if sys.platform.startswith('linux'):
     GPIO.add_event_detect(33, GPIO.BOTH, callback = toggle_voice, bouncetime = 250)  
 
 def main():
+    global currPet
+    global currGameState
 
     savefile = open(os.getcwd() + "/save/saveFile.txt", "a+")
 
