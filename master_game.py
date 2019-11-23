@@ -48,9 +48,6 @@ class Screen(Enum):
             return this.value > other.value
         return NotImplemented
 
-global currGameState = Screen.STARTING
-global currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
-
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)  # More colours should be added here
@@ -78,7 +75,11 @@ pg.mixer.music.play(-1)
 
 screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
-def update_save(currPet):
+currGameState = Screen.STARTING
+currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
+
+def update_save():
+    global currPet
     savefile = open(os.getcwd() + "/save/saveFile.txt", "w+")
     savefile.write(str((currPet.petType)) + "\n")
     savefile.write(currPet.name + "\n")
@@ -92,10 +93,11 @@ def update_save(currPet):
 # Our function on what to do when the button is pressed  
 def Shutdown(channel):
     if currGameState.value > Screen.HATCH.value:
-        update_save(currPet)
+        update_save()
     os.system("sudo shutdown -h now")
 
 def toggle_voice(channel):
+    global currGameState
     #getting audio for stuff
 
     chunk = 8192
@@ -194,8 +196,8 @@ def toggle_voice(channel):
     if (words is 'exit'):
         os.system("sudo shutdown -h now")
     if (words is 'done' and (currGameState == Screen.FOOD or currGameState == Screen.WATER or 
-        currGameState == Screen.SLEEP or currGameState == Screen.MEDITATION or currGameState == Screen.FUN)):
-            currGameState = Screen.HOME
+    currGameState == Screen.SLEEP or currGameState == Screen.MEDITATION or currGameState == Screen.FUN)):
+        currGameState = Screen.HOME
 
 if sys.platform.startswith('linux'):
     GPIO.setmode(GPIO.BOARD)  
@@ -205,6 +207,7 @@ if sys.platform.startswith('linux'):
     GPIO.add_event_detect(33, GPIO.BOTH, callback = toggle_voice, bouncetime = 250)  
 
 def main():
+
     savefile = open(os.getcwd() + "/save/saveFile.txt", "a+")
 
     FRAMERATE = 12
@@ -374,7 +377,6 @@ def main():
             else:
                 currPet = Pet.init_gifImage(PetType.TORAGIF, "tora")
             savefile.write(str(currPet.petType.value) + "\n")
-            #TODO: make an animation
             currGameState = Screen.HOME
         elif currGameState == Screen.Q_A:
 
@@ -576,7 +578,7 @@ def main():
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 if currGameState.value > Screen.HATCH.value:
                     savefile.close()
-                    update_save(currPet) 
+                    update_save() 
                     savefile = open(os.getcwd() + "/save/saveFile.txt", 'a+')
                     print ("saving")
                 mouse = pg.mouse.get_pos()
@@ -663,7 +665,7 @@ def main():
                     elif HomeStressButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FUN
                     elif exitButton.getImageRect().collidepoint(mouse):
-                        update_save(currPet)
+                        update_save()
                         pg.quit()
                         if sys.platform.startswith('linux'):
                             os.system("sudo shutdown -h now")  
