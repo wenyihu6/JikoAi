@@ -67,15 +67,17 @@ STRESS_CHANGE_RATE = 100 / (12 * 60 * 60 * 24) # 100% per (12 f/s * 60s/m * 60 m
 pg.init()
 pg.font.init()
 init_time = datetime.datetime.now()
-titleFont = pg.font.Font("VT323-Regular.ttf", 180)
-textFont = pg.font.Font("VT323-Regular.ttf", 60)
-smallFont = pg.font.Font("VT323-Regular.ttf", 40)
+titleFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 180)
+textFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 60)
+smallFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 40)
 
 screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
+currGameState = Screen.STARTING
+currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
 
 def update_save(currPet):
-    savefile = open("save/saveFile.txt", "w+")
+    savefile = open(os.getcwd() + "/save/saveFile.txt", "w+")
     savefile.write(str((currPet.petType)) + "\n")
     savefile.write(currPet.name + "\n")
     savefile.write(str(currPet.food) + "\n")
@@ -86,7 +88,11 @@ def update_save(currPet):
     savefile.close()
  
 # Our function on what to do when the button is pressed  
-def Shutdown(channel):  
+def Shutdown(channel):
+    global currGameState
+    global currPet
+    if currGameState.value > Screen.HATCH.value:
+        update_save(currPet)
     os.system("sudo shutdown -h now")
 
 def toggle_voice(channel):
@@ -200,32 +206,34 @@ if sys.platform.startswith('linux'):
     GPIO.setup(33, GPIO.IN, pull_up_down = GPIO.PUD_UP) #Voice
     GPIO.add_event_detect(33, GPIO.BOTH, callback = toggle_voice, bouncetime = 250)  
 
-def main():    
-    savefile = open("save/saveFile.txt", "a+")
+def main():
+    global currGameState
+    global currPet
+    savefile = open(os.getcwd() + "/save/saveFile.txt", "a+")
 
     FRAMERATE = 12
 
-    titleBG = GIFImage("graphicAssets/BgTitle3")
-    homeBG = GIFImage("graphicAssets/BgTitle5")
+    titleBG = GIFImage(os.getcwd() + "/graphicAssets/BgTitle3")
+    homeBG = GIFImage(os.getcwd() + "/graphicAssets/BgTitle5")
     homeBG.resize(800, 480)
-    qaBG = GIFImage("graphicAssets/BgTitle4")
+    qaBG = GIFImage(os.getcwd() + "/graphicAssets/BgTitle4")
     qaBG.resize(800, 480)
-    sleepBG = GIFImage("graphicAssets/SleepBG")
+    sleepBG = GIFImage(os.getcwd() + "/graphicAssets/SleepBG")
     sleepBG.resize(800, 480)
 
-    eggUnhatched = GIFImage("graphicAssets/EggUnhatched",
+    eggUnhatched = GIFImage(os.getcwd() + "/graphicAssets/EggUnhatched",
                             WIDTH/4 + 80, HEIGHT/2 - 170, 15)
     eggUnhatched.resize(250, 250)
 
-    startButton = Buttonify("graphicAssets/startButton.png", screen)
+    startButton = Buttonify(os.getcwd() + "/graphicAssets/startButton.png", screen)
     startButton.resize(300, 100)
     startButton.setCoords(100, 300)
 
-    newGameButton = Buttonify("graphicAssets/NewGame.png", screen)
+    newGameButton = Buttonify(os.getcwd() + "/graphicAssets/NewGame.png", screen)
     newGameButton.resize(320, 110)
     newGameButton.setCoords(75, 180)
 
-    continueGameButton = Buttonify("graphicAssets/LoadGame.png", screen)
+    continueGameButton = Buttonify(os.getcwd() + "/graphicAssets/LoadGame.png", screen)
     continueGameButton.resize(300, 100)
     continueGameButton.setCoords(425, 175)
 
@@ -280,8 +288,6 @@ def main():
 
     exitButton = RectButton(20, HEIGHT - 70, 215, 50, screen, BLACK, 100)
 
-    currGameState = Screen.STARTING
-    currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
     currPet.setCoords(WIDTH / 2, 3 * HEIGHT / 4)
     currPet.setMoveCycleCount(45)
 
@@ -560,7 +566,7 @@ def main():
                 if currGameState.value > Screen.HATCH.value:
                     savefile.close()
                     update_save(currPet) 
-                    savefile = open("save/saveFile.txt", 'a+')
+                    savefile = open(os.getcwd() + "/save/saveFile.txt", 'a+')
                     print ("saving")
                 mouse = pg.mouse.get_pos()
                 if creditsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.STARTING:
@@ -568,10 +574,10 @@ def main():
                 elif currGameState == Screen.STARTING:
                     currGameState = Screen.SELECTION
                 elif newGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
-                    open("save/saveFile.txt", 'w').close()
+                    open(os.getcwd() + "/save/saveFile.txt", 'w').close()
                     currGameState = Screen.Q_A
                 elif continueGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
-                    lines = open("save/saveFile.txt", "r").read().splitlines()
+                    lines = open(os.getcwd() + "/save/saveFile.txt", "r").read().splitlines()
                     if len(lines) > 5:
                         savePetType = lines[0]
                         if savePetType.__contains__("GIF"):
@@ -590,7 +596,7 @@ def main():
                         currGameState = Screen.HOME
                     else:
                         print("Save game not found")
-                        open("save/saveFile.txt", 'w').close()
+                        open(os.getcwd() + "/save/saveFile.txt", 'w').close()
                         currGameState = Screen.Q_A
                 elif qa1LeftButton.getImageRect().collidepoint(mouse) and currGameState == Screen.Q_A1:
                     petSum += 1
