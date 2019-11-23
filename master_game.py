@@ -83,12 +83,24 @@ def update_save(currPet):
  
 # Our function on what to do when the button is pressed  
 def Shutdown(channel):  
-    os.system("sudo shutdown -h now") 
+    os.system("sudo shutdown -h now")
+
+bool is_voice_enabled = False
+def enable_voice(channel):
+    is_voice_enabled = True
+    print("down")
+
+def disable_voice(channel):
+    is_voice_enabled = False
+    print("up")
 
 if sys.platform.startswith('linux'):
     GPIO.setmode(GPIO.BOARD)  
-    GPIO.setup(29, GPIO.IN, pull_up_down = GPIO.PUD_UP)  
+    GPIO.setup(29, GPIO.IN, pull_up_down = GPIO.PUD_UP) #Power
     GPIO.add_event_detect(29, GPIO.FALLING, callback = Shutdown, bouncetime = 5000)  
+    GPIO.setup(33, GPIO.IN, pull_up_down = GPIO.PUD_UP) #Voice
+    GPIO.add_event_detect(33, GPIO.FALLING, callback = enable_voice, bouncetime = 250)  
+    GPIO.add_event_detect(33, GPIO.RISING, callback = disable_voice, bouncetime = 250)  
 
 def main():    
     savefile = open("save/saveFile.txt", "a+")
