@@ -89,7 +89,8 @@ def update_save(currPet):
 def Shutdown(channel):  
     os.system("sudo shutdown -h now")
 
-bool is_voice_enabled = False
+is_voice_enabled = False
+
 def enable_voice(channel):
     is_voice_enabled = True
     print("down")
