@@ -109,7 +109,7 @@ def toggle_voice(channel):
     #two channels for Windows, one channel for Mac/Linux
     channels = 1
     fs = 44100
-    seconds = 10
+    seconds = 2
     filename = 'command.wav'
     p = pyaudio.PyAudio()
 
