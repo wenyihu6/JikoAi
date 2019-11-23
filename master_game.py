@@ -90,8 +90,108 @@ def Shutdown(channel):
     os.system("sudo shutdown -h now")
 
 def toggle_voice(channel):
-    print("Unimplemented")
-    #TODO: Implement me!
+    #getting audio for stuff
+
+    chunk = 8192
+    sample_format = pyaudio.paInt16
+    #two channels for Windows, one channel for Mac/Linux
+    channels = 1
+    fs = 44100
+    seconds = 10
+    filename = 'command.wav'
+    p = pyaudio.PyAudio()
+
+    print(p.get_default_output_device_info())
+
+    stream = p.open(format=sample_format,
+        channels=channels,
+        rate=fs,
+        input_device_index=0,
+        frames_per_buffer=chunk,
+        input=True)
+
+    print("starting recording")
+    frames = []
+    for i in range(0, int(fs / chunk * seconds)):
+        data = stream.read(chunk)
+        frames.append(data)
+
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
+
+    print("stopping recording")
+    filewriting = wave.open(filename, 'wb')
+    filewriting.setnchannels(channels)
+    filewriting.setsampwidth(p.get_sample_size(sample_format))
+    filewriting.setframerate(fs)
+    filewriting.writeframes(b''.join(frames))
+    filewriting.close()
+
+    url = "https://stream.watsonplatform.net/speech-to-text/api/v1/recognize"
+
+    headers = {
+        'Content-Type': "audio/wav",
+        'Authorization': "Basic YXBpa2V5OjY2Ylk2SmljTUh0LW1SdjJCZk8tYzEwLTJ0U0xweVVTZkRRTlFjU3A5WV90",
+        'User-Agent': "PostmanRuntime/7.19.0",
+        'Accept': "*/*",
+        'Cache-Control': "no-cache",
+        'Postman-Token': "507a31da-ffc7-430e-9dad-b8006da32933,270b9439-797f-4e71-bc99-c13feb217166",
+        'Host': "stream.watsonplatform.net",
+        'Accept-Encoding': "gzip, deflate",
+        'Content-Length': "285928",
+        'Connection': "keep-alive",
+        'cache-control': "no-cache"
+    }
+
+    data = open('command.wav', 'rb')
+
+    response = requests.post(url, data, headers=headers)
+    cleanResponse = response.json()
+
+    print(response.text)
+    words = cleanResponse['results'][0]['alternatives'][0]['transcript']
+    print(words)
+
+    if ((words is 'begin' or words is 'start') and currGameState = Screen.STARTING):
+        currGameState = Screen.SELECTION
+    if (words is 'credits' and currGameState = Screen.STARTING):
+        currGameState = Screen.CREDITS
+    if (words is 'new game' and currGameState = Screen.SELECTION):
+        currGameState = Screen.Q_A
+    if (words is 'load game' and currGameState = Screen.SELECTION):
+        currGameState = Screen.HOME
+    if (words is 'let\'s go' and currGameState = Screen.Q_A):
+        currGameState = Screen.Q_A1
+    if ((words is 'not often' or words is 'sometimes' or words is 'often')
+        and currGameState = Screen.Q_A1):
+        currGameState = Screen.Q_A2
+    if ((words is 'disagree' or words is 'not sure' or words is 'agree')):
+        if (currGameState = Screen.Q_A2):
+            currGameState = Screen.Q_A3
+        if (currGameState = Screen.Q_A3):
+            currGameState = Screen.Q_A4
+        if (currGameState = Screen.Q_A4):
+            currGameState = Screen.HOME
+    if (currGameState = Screen.HOME):
+        if (words is 'food'):
+            currGameState = Screen.FOOD
+        if (words is 'water'):
+            currGameState = Screen.WATER
+        if (words is 'sleep'):
+            currGameState = Screen.SLEEP
+        if (words is 'play'):
+            currGameState = Screen.FUN
+    if (currGameState = Screen.SLEEP):
+        if (words is 'meditation'):
+            currGameState = Screen.MEDITIATION
+    if (words is 'exit'):
+        os.system("sudo shutdown -h now")
+    if (words is 'done' and (Screen.FOOD or Screen.WATER or 
+        Screen.SLEEP or Screen.MEDITATION or Screen.FUN)):
+            currGameState = Screen.HOME
+    else if (currGameState.FUN):
+        #pet the pet!
 
 if sys.platform.startswith('linux'):
     GPIO.setmode(GPIO.BOARD)  
