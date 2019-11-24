@@ -17,6 +17,8 @@ import wave
 import requests
 import pyaudio
 
+import config
+
 if sys.platform.startswith('linux'):
     import RPi.GPIO as GPIO
 
@@ -144,11 +146,11 @@ def toggle_voice(channel):
 
     headers = {
         'Content-Type': "audio/wav",
-        'Authorization': "Basic YXBpa2V5OjY2Ylk2SmljTUh0LW1SdjJCZk8tYzEwLTJ0U0xweVVTZkRRTlFjU3A5WV90",
+        'Authorization': config.auth_token,
         'User-Agent': "PostmanRuntime/7.19.0",
         'Accept': "*/*",
         'Cache-Control': "no-cache",
-        'Postman-Token': "507a31da-ffc7-430e-9dad-b8006da32933,270b9439-797f-4e71-bc99-c13feb217166",
+        'Postman-Token': config.postman_token,
         'Host': "stream.watsonplatform.net",
         'Accept-Encoding': "gzip, deflate",
         'Content-Length': "285928",
