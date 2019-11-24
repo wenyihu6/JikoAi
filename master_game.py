@@ -17,6 +17,8 @@ import wave
 import requests
 import pyaudio
 
+import config
+
 if sys.platform.startswith('linux'):
     import RPi.GPIO as GPIO
 
@@ -109,11 +111,11 @@ def toggle_voice(channel):
     #two channels for Windows, one channel for Mac/Linux
     channels = 1
     fs = 44100
-    seconds = 10
+    seconds = 2
     filename = 'command.wav'
     p = pyaudio.PyAudio()
 
-    print(p.get_default_output_device_info())
+    #print(p.get_default_output_device_info())
 
     stream = p.open(format=sample_format,
         channels=channels,
@@ -144,11 +146,11 @@ def toggle_voice(channel):
 
     headers = {
         'Content-Type': "audio/wav",
-        'Authorization': "Basic YXBpa2V5OjY2Ylk2SmljTUh0LW1SdjJCZk8tYzEwLTJ0U0xweVVTZkRRTlFjU3A5WV90",
+        'Authorization': config.auth_token,
         'User-Agent': "PostmanRuntime/7.19.0",
         'Accept': "*/*",
         'Cache-Control': "no-cache",
-        'Postman-Token': "507a31da-ffc7-430e-9dad-b8006da32933,270b9439-797f-4e71-bc99-c13feb217166",
+        'Postman-Token': config.postman_token,
         'Host': "stream.watsonplatform.net",
         'Accept-Encoding': "gzip, deflate",
         'Content-Length': "285928",
@@ -165,20 +167,20 @@ def toggle_voice(channel):
     words = cleanResponse['results'][0]['alternatives'][0]['transcript']
     print(words)
 
-    if ((words is 'begin' or words is 'start') and currGameState == Screen.STARTING):
+    if ((words == 'begin ' or words == 'start ') and currGameState == Screen.STARTING):
         currGameState = Screen.SELECTION
-    if (words is 'credits' and currGameState == Screen.STARTING):
+    if (words == 'credits ' and currGameState == Screen.STARTING):
         currGameState = Screen.CREDITS
-    if (words is 'new game' and currGameState == Screen.SELECTION):
+    if (words == 'new game ' and currGameState == Screen.SELECTION):
         currGameState = Screen.Q_A
-    if (words is 'load game' and currGameState == Screen.SELECTION):
+    if (words == 'load game ' and currGameState == Screen.SELECTION):
         currGameState = Screen.HOME
-    if (words is 'let\'s go' and currGameState == Screen.Q_A):
+    if (words == 'let\'s go ' and currGameState == Screen.Q_A):
         currGameState = Screen.Q_A1
-    if ((words is 'not often' or words is 'sometimes' or words is 'often')
+    if ((words == 'not often ' or words == 'sometimes ' or words == 'often ')
         and currGameState == Screen.Q_A1):
         currGameState = Screen.Q_A2
-    if ((words is 'disagree' or words is 'not sure' or words is 'agree')):
+    if ((words == 'disagree ' or words == 'not sure ' or words == 'agree ')):
         if (currGameState == Screen.Q_A2):
             currGameState = Screen.Q_A3
         if (currGameState == Screen.Q_A3):
@@ -186,20 +188,20 @@ def toggle_voice(channel):
         if (currGameState == Screen.Q_A4):
             currGameState = Screen.HOME
     if (currGameState == Screen.HOME):
-        if (words is 'food'):
+        if (words == 'food '):
             currGameState = Screen.FOOD
-        if (words is 'water'):
+        if (words == 'water '):
             currGameState = Screen.WATER
-        if (words is 'sleep'):
+        if (words == 'sleep '):
             currGameState = Screen.SLEEP
-        if (words is 'play'):
+        if (words == 'play '):
             currGameState = Screen.FUN
     if (currGameState == Screen.SLEEP):
-        if (words is 'meditation'):
+        if (words == 'meditation '):
             currGameState = Screen.MEDITIATION
-    if (words is 'exit'):
+    if (words == 'exit '):
         os.system("sudo shutdown -h now")
-    if (words is 'done' and (currGameState == Screen.FOOD or currGameState == Screen.WATER or 
+    if (words == 'done ' and (currGameState == Screen.FOOD or currGameState == Screen.WATER or 
     currGameState == Screen.SLEEP or currGameState == Screen.MEDITATION or currGameState == Screen.FUN)):
         currGameState = Screen.HOME
 
@@ -208,7 +210,7 @@ if sys.platform.startswith('linux'):
     GPIO.setup(29, GPIO.IN, pull_up_down = GPIO.PUD_UP) #Power
     GPIO.add_event_detect(29, GPIO.FALLING, callback = Shutdown, bouncetime = 5000)  
     GPIO.setup(33, GPIO.IN, pull_up_down = GPIO.PUD_UP) #Voice
-    GPIO.add_event_detect(33, GPIO.BOTH, callback = toggle_voice, bouncetime = 250)  
+    GPIO.add_event_detect(33, GPIO.FALLING, callback = toggle_voice, bouncetime = 250)  
 
 def main():
     global currPet
