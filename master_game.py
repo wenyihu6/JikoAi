@@ -68,7 +68,7 @@ STRESS_CHANGE_RATE = 100 / (12 * 60 * 60 * 24) # 100% per (12 f/s * 60s/m * 60 m
 
 pg.init()
 pg.font.init()
-init_time = datetime.datetime.now()
+init_time = datetime.datetime.strptime(datetime.datetime.now().strftime("%Y-%B-%d %I:%M:%S.%f"), "%Y-%B-%d %I:%M:%S.%f")
 titleFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 180)
 textFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 60)
 smallFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 40)
@@ -175,6 +175,7 @@ def toggle_voice(channel):
     if (words == 'new game ' and currGameState == Screen.SELECTION):
         currGameState = Screen.Q_A
     if (words == 'load game ' and currGameState == Screen.SELECTION):
+        currPet.setCoords(WIDTH / 2, HEIGHT / 2)
         currGameState = Screen.HOME
     if (words == 'let\'s go ' and currGameState == Screen.Q_A):
         currGameState = Screen.Q_A1
@@ -188,6 +189,7 @@ def toggle_voice(channel):
             currGameState = Screen.Q_A4
         if (currGameState == Screen.Q_A4):
             currGameState = Screen.HOME
+            currPet.setCoords(WIDTH / 2, HEIGHT / 2)
     if (currGameState == Screen.HOME):
         if (words == 'food '):
             currGameState = Screen.FOOD
@@ -205,6 +207,7 @@ def toggle_voice(channel):
     if (words == 'done ' and (currGameState == Screen.FOOD or currGameState == Screen.WATER or 
     currGameState == Screen.SLEEP or currGameState == Screen.MEDITATION or currGameState == Screen.FUN)):
         currGameState = Screen.HOME
+        currPet.setCoords(WIDTH / 2, HEIGHT / 2)
 
 if sys.platform.startswith('linux'):
     GPIO.setmode(GPIO.BOARD)  
@@ -396,6 +399,7 @@ def main():
                 currPet = Pet.init_gifImage(PetType.TORAGIF, "tora")
             savefile.write(str(currPet.petType.value) + "\n")
             currGameState = Screen.HOME
+            currPet.setCoords(WIDTH / 2, HEIGHT / 2)
         elif currGameState == Screen.Q_A:
 
             homeBG.animate(screen)
@@ -567,6 +571,7 @@ def main():
             water_response_button.draw()
             water_response_button.draw_text("Thank you for keeping us both healthy!")
 
+            currPet.draw(screen)
         elif currGameState == Screen.FUN:
             playBG.animate(screen)
             backButton.draw()
@@ -630,12 +635,16 @@ def main():
                         currPet.water = float(lines[3])
                         currPet.sleep = float(lines[4])
                         currPet.stress = float(lines[5])
-                        dtime = (init_time - datetime.datetime.strptime(lines[6], "%Y-%B-%d %I:%M:%S.%f")).seconds
+                        dtimeT = (init_time - datetime.datetime.strptime(lines[6], "%Y-%B-%d %I:%M:%S.%f"))
+                        dtime = dtimeT.seconds
+                        print(dtimeT)
+                        print(dtime)
                         currPet.food += FOOD_CHANGE_RATE * dtime * FRAMERATE
                         currPet.water += WATER_CHANGE_RATE * dtime * FRAMERATE
                         currPet.sleep += SLEEP_CHANGE_RATE * dtime * FRAMERATE
                         currPet.stress += STRESS_CHANGE_RATE * dtime * FRAMERATE
                         currGameState = Screen.HOME
+                        currPet.setCoords(WIDTH / 2, HEIGHT / 2)
                     else:
                         print("Save game not found")
                         open(os.getcwd() + "/save/saveFile.txt", 'w').close()
@@ -678,12 +687,14 @@ def main():
                     currGameState = Screen.HATCH
                 elif currGameState == Screen.HATCH:
                     currGameState = Screen.HOME
+                    currPet.setCoords(WIDTH / 2, HEIGHT / 2)
                 elif creditToTitleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.CREDITS:
                     currGameState = Screen.STARTING
                 elif sleepAffirmationsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
                     currGameState = Screen.MEDITATION
                 elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.FOOD or currGameState is Screen.WATER or currGameState is Screen.WATER_ACTIVE or currGameState is Screen.SLEEP or currGameState is Screen.FUN):
                     currGameState = Screen.HOME
+                    currPet.setCoords(WIDTH / 2, HEIGHT / 2)
                 elif currGameState == Screen.HOME:
                     if HomeFoodButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FOOD
@@ -705,6 +716,7 @@ def main():
                         if currPet.water > 100:
                             currPet.water = 100
                         currGameState = Screen.WATER_ACTIVE
+                        currPet.setCoords(WIDTH / 2, HEIGHT / 2)
 
 
 
