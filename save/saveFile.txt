@@ -1,4 +1,7 @@
-1
-1
-1
-1
+PetType.MAMAUGIF
+mamau
+0
+0
+0
+100
+2019-November-22 09:21:12.939268

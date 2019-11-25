@@ -2,6 +2,8 @@ import pygame as pg
 from random import randint
 from GIFImage import GIFImage
 from enum import Enum
+from enum import IntEnum
+import os
 
 class PetType(Enum):
     BALA = 0
@@ -22,8 +24,7 @@ WIDTH = 800
 HEIGHT = 480
 PETFRAMECYCLE = 15
 
-
-class Pet(pg.sprite.Sprite):
+class Pet():
 
     petType = -1
     name = ""
@@ -31,32 +32,34 @@ class Pet(pg.sprite.Sprite):
     water = 100
     sleep = 100
     stress = 0
-    picture = "graphicAssets/SpriteBala.png"
+    picture = os.getcwd() + "/graphicAssets/SpriteBala.png"
     isImage = True
 
     def __init__(self, petType, name, isImage, moveCycleLen = 0):
 
         WHITE = (255, 255, 255)
-        super().__init__()
-
+        picture = os.getcwd() + "/graphicAssets/SpriteBala.png"
         self.petType = petType
         self.name = name
         self.isImage = isImage
         self.moveCycleLen = moveCycleLen
         self.frameCycleCount = 1
+        self.currX = 0
+        self.currY = 0
 
-        if (petType == PetType.BALA):
-            picture = "graphicAssets/SpriteBala.png"
-        elif (petType == PetType.MAMAU):
-            picture = "graphicAssets/SpriteMamau.png"
-        elif (petType == PetType.TORA):
-            picture = "graphicAssets/SpriteTora.png"
-        elif (petType == PetType.BALAGIF):
-            picture = "graphicAssets/SpriteBalaGif"
-        elif (petType == PetType.MAMAUGIF):
-            picture = "graphicAssets/SpriteMamauGif"
-        elif (petType == PetType.TORAGIF):
-            picture = "graphicAssets/SpriteToraGif"
+
+        if (str(petType) == str(PetType.BALA)):
+            picture = os.getcwd() + "/graphicAssets/SpriteBala.png"
+        elif (str(petType) == str(PetType.MAMAU)):
+            picture = os.getcwd() + "/graphicAssets/SpriteMamau.png"
+        elif (str(petType) == str(PetType.TORA)):
+            picture = os.getcwd() + "/graphicAssets/SpriteTora.png"
+        elif (str(petType) == str(PetType.BALAGIF)):
+            picture = os.getcwd() + "/graphicAssets/SpriteBalaGif"
+        elif (str(petType) == str(PetType.MAMAUGIF)):
+            picture = os.getcwd() + "/graphicAssets/SpriteMamauGif"
+        elif (str(petType) == str(PetType.TORAGIF)):
+            picture = os.getcwd() + "/graphicAssets/SpriteToraGif"
 
         if (self.isImage):
             self.image = pg.image.load(picture)
