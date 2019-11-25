@@ -12,7 +12,7 @@ import os
 import shutil
 import datetime
 import time
-
+import random
 import wave
 import requests
 import pyaudio
@@ -320,6 +320,13 @@ def main():
     water_response_button = RectButton(20, 20, 650, 50, screen, BLACK)
     water_response_button.getImageRect().center = (WIDTH / 2, HEIGHT / 4)
 
+    water_drop1 = Buttonify(os.getcwd() + "/graphicAssets/WaterDrop.png", screen)
+    water_drop2 = Buttonify(os.getcwd() + "/graphicAssets/WaterDrop.png", screen)
+    water_exists1 = True
+    water_exists2 = True
+    water_drop1.resize(100, 100)
+    water_drop2.resize(100, 100)
+
     petSum = 0
     
     while True:
@@ -562,11 +569,18 @@ def main():
             water_question_button.draw()
             water_question_button.draw_text("Have you drank anything recently?")
         elif currGameState == Screen.WATER_ACTIVE:
+
             waterBG.animate(screen)
             backButton.draw()
             backButton.draw_text("Back")
             water_response_button.draw()
             water_response_button.draw_text("Thank you for keeping us both healthy!")
+
+            if water_exists1:
+                water_drop1.draw()
+
+            if water_exists2:
+                water_drop2.draw()
 
             currPet.draw(screen)
         elif currGameState == Screen.FUN:
@@ -711,11 +725,27 @@ def main():
                         sys.exit()
                 elif currGameState == Screen.WATER:
                     if checkin_button.getImageRect().collidepoint(mouse):
-                        currPet.water += 25
-                        if currPet.water > 100:
-                            currPet.water = 100
+                        water_drop1.getImageRect().center = (random.randint(100, WIDTH - 100), random.randint(100, HEIGHT- 100))
+                        water_drop2.getImageRect().center = (random.randint(100, WIDTH - 100), random.randint(100, HEIGHT - 100))
+                        
                         currGameState = Screen.WATER_ACTIVE
                         currPet.setCoords(WIDTH / 2, HEIGHT / 2)
+                        water_exists1 = True
+                        water_exists2 = True
+
+                elif currGameState is Screen.WATER_ACTIVE:
+                    
+                    if water_drop1.getImageRect().collidepoint(mouse) and water_exists1:                                   
+                        currPet.water += 12
+                        if currPet.water > 100:
+                            currPet.water = 100
+                        water_exists1 = False
+                    elif water_drop2.getImageRect().collidepoint(mouse) and water_exists2:
+                        currPet.water += 12
+                        if currPet.water > 100:
+                            currPet.water = 100
+                        water_exists2 = False
+
 
 
 
