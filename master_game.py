@@ -17,7 +17,7 @@ import wave
 import requests
 import pyaudio
 
-import config
+# import config
 
 if sys.platform.startswith('linux'):
     import RPi.GPIO as GPIO
@@ -39,6 +39,7 @@ class Screen(Enum):
     SLEEP = 103
     FUN = 104
     MEDITATION = 105
+    WATER_ACTIVE = 106
 
     def __lt__(this, other):
         if this.__class__ is other.__class__:
@@ -307,6 +308,12 @@ def main():
 
     meditate = Meditate(screen)
 
+    checkin_button = RectButton(20, 20, 215, 50, screen, BLACK, 100)
+    checkin_button.getImageRect().center = (WIDTH / 2, HEIGHT / 2)
+
+    water_question_button = RectButton(20, 20, 550, 50, screen, BLACK)
+    water_question_button.getImageRect().center = (WIDTH / 2, HEIGHT / 4)
+
     petSum = 0
     
     while True:
@@ -546,6 +553,15 @@ def main():
             waterBG.animate(screen)
             backButton.draw()
             backButton.draw_text("Back")
+            checkin_button.draw()
+            checkin_button.draw_text("CHECK IN")
+            water_question_button.draw()
+            water_question_button.draw_text("Have you drank anything recently?")
+        elif currGameState == Screen.WATER_ACTIVE:
+            waterBG.animate(screen)
+            backButton.draw()
+            backButton.draw_text("Back")
+
         elif currGameState == Screen.FUN:
             playBG.animate(screen)
             backButton.draw()
@@ -661,7 +677,7 @@ def main():
                     currGameState = Screen.STARTING
                 elif sleepAffirmationsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
                     currGameState = Screen.MEDITATION
-                elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.FOOD or currGameState is Screen.WATER or currGameState is Screen.SLEEP or currGameState is Screen.FUN):
+                elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.FOOD or currGameState is Screen.WATER or currGameState is Screen.WATER_ACTIVE or currGameState is Screen.SLEEP or currGameState is Screen.FUN):
                     currGameState = Screen.HOME
                 elif currGameState == Screen.HOME:
                     if HomeFoodButton.getImageRect().collidepoint(mouse):
@@ -678,6 +694,13 @@ def main():
                         if sys.platform.startswith('linux'):
                             os.system("sudo shutdown -h now")  
                         sys.exit()
+                elif currGameState == Screen.WATER:
+                    if checkin_button.getImageRect().collidepoint(mouse):
+                        currPet.water += 25
+                        if currPet.water > 100:
+                            currPet.water = 100
+                        currGameState = Screen.WATER_ACTIVE
+
 
 
 main()
