@@ -72,7 +72,8 @@ titleFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 180)
 textFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 60)
 smallFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 40)
 
-pg.mixer.music.load('Bitbasic_-_01_-_An_opener.mp3')
+#pg.mixer.init()
+pg.mixer.music.load('Bitbasic_-_01_-_An_opener.ogg')
 pg.mixer.music.play(-1)
 
 screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
@@ -287,18 +288,16 @@ def main():
     HomeStressButton = RectButton(
         7 * WIDTH / 8, HEIGHT / 16 + 310, 90, 90, screen, BLACK, 180)
 
-    sleepAffirmationsButton = RectButton(10, 60, 215, 50, screen, BLACK, 100)
-    sleepLogButton = RectButton(80, 10, 215, 50, screen, BLACK, 100)
-    sleepMeditateButton = RectButton(100, 100, 215, 50, screen, BLACK, 100)
-    sleepBreatheButton = RectButton(200, 200, 215, 50, screen, BLACK, 100)
+    sleepAffirmationsButton = RectButton(300, 170, 215, 50, screen, BLACK, 100)
+    sleepLogButton = RectButton(300, 100, 215, 50, screen, BLACK, 100)
+    sleepMeditateButton = RectButton(300, 310, 215, 50, screen, BLACK, 100)
+    sleepBreatheButton = RectButton(300, 240, 215, 50, screen, BLACK, 100)
 
     backButton = RectButton(10, 10, 215, 50, screen, BLACK, 100)
 
     creditsButton = RectButton(300, 350, 215, 50, screen, BLACK, 100)
 
     creditToTitleButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
-
-    randomButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
 
     exitButton = RectButton(20, HEIGHT - 70, 215, 50, screen, BLACK, 100)
 
@@ -373,8 +372,6 @@ def main():
             exitButton.draw()
             exitButton.draw_text("EXIT")
 
-            randomButton.draw()
-            randomButton.draw_text("RANDOM")
         elif currGameState == Screen.EGG:
             print("FILLER")
         elif currGameState == Screen.HATCH:
@@ -575,8 +572,6 @@ def main():
             backButton.draw()
             backButton.draw_text("Back")
             sleepBG.animate(screen)
-            meditateToSleepButton.draw()
-            meditateToSleepButton.draw_text("Back")
             meditate.setOn()
         elif currGameState == Screen.CREDITS:
             titleBG.animate(screen)

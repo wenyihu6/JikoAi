@@ -35,7 +35,7 @@ class Pet():
     picture = os.getcwd() + "/graphicAssets/SpriteBala.png"
     isImage = True
 
-    def __init__(self, petType, name, isImage, moveCycleLen = 0):
+    def __init__(self, petType, name, isImage, moveCycleLen = 30):
 
         WHITE = (255, 255, 255)
         picture = os.getcwd() + "/graphicAssets/SpriteBala.png"
