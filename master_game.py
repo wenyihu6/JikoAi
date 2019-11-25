@@ -17,7 +17,7 @@ import wave
 import requests
 import pyaudio
 
-import config
+#import config
 
 if sys.platform.startswith('linux'):
     import RPi.GPIO as GPIO

@@ -41,7 +41,7 @@ class Meditate(object):
         elif((timeNow - self.initTime).seconds > 18 and (timeNow - self.initTime).seconds <= 21):
             self.fadeIn(self.labelArray[0], self.textArray[3])
         elif((timeNow - self.initTime).seconds > 21 and (timeNow - self.initTime).seconds <= 24):
-            self.fadeOut(self.labelArray[0], self.textArray[3])
+            self.fadeOut(self.labelArray[0], self.textArray[3]) 
         elif((timeNow - self.initTime).seconds > 24 and (timeNow - self.initTime).seconds <= 27):
             self.fadeIn(self.labelArray[0], self.textArray[4])
         elif((timeNow - self.initTime).seconds > 27 and (timeNow - self.initTime).seconds <= 30):
