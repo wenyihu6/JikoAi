@@ -413,9 +413,6 @@ def main():
             eggSubtitle = textFont.render('Who will your pet be?', True, WHITE)
             screen.blit(eggSubtitle, (WIDTH / 4 - 30, HEIGHT / 2 + 77))
 
-            if pg.mouse.get_pressed()[0] and currGameState == Screen.Q_A:
-                currGameState = Screen.Q_A1
-
         elif currGameState == Screen.Q_A1:
 
             qaBG.animate(screen)
@@ -610,6 +607,8 @@ def main():
                 pg.quit()
                 sys.exit()
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+                if currGameState == Screen.Q_A:
+                    currGameState = Screen.Q_A1
                 if currGameState.value > Screen.HATCH.value:
                     savefile.close()
                     update_save() 
