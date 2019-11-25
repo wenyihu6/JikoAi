@@ -314,6 +314,9 @@ def main():
     water_question_button = RectButton(20, 20, 550, 50, screen, BLACK)
     water_question_button.getImageRect().center = (WIDTH / 2, HEIGHT / 4)
 
+    water_response_button = RectButton(20, 20, 650, 50, screen, BLACK)
+    water_response_button.getImageRect().center = (WIDTH / 2, HEIGHT / 4)
+
     petSum = 0
     
     while True:
@@ -561,6 +564,8 @@ def main():
             waterBG.animate(screen)
             backButton.draw()
             backButton.draw_text("Back")
+            water_response_button.draw()
+            water_response_button.draw_text("Thank you for keeping us both healthy!")
 
         elif currGameState == Screen.FUN:
             playBG.animate(screen)
