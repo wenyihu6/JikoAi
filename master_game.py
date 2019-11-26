@@ -41,6 +41,8 @@ class Screen(Enum):
     FUN = 104
     MEDITATION = 105
     AFFIRMATIONS = 106
+    LOGSLEEP = 107
+    LOGSLEEP_ACTIVE = 108
 
     def __lt__(this, other):
         if this.__class__ is other.__class__:
@@ -301,10 +303,18 @@ def main():
     HomeStressButton = RectButton(
         7 * WIDTH / 8, HEIGHT / 16 + 310, 90, 90, screen, BLACK, 180)
 
-    sleepAffirmationsButton = RectButton(300, 170, 215, 50, screen, BLACK, 100)
-    sleepLogButton = RectButton(300, 100, 215, 50, screen, BLACK, 100)
-    sleepMeditateButton = RectButton(300, 310, 215, 50, screen, BLACK, 100)
-    sleepBreatheButton = RectButton(300, 240, 215, 50, screen, BLACK, 100)
+    sleepAffirmationsButton = RectButton(300, 210, 215, 50, screen, BLACK, 100)
+    sleepLogButton = RectButton(300, 140, 215, 50, screen, BLACK, 100)
+    sleepMeditateButton = RectButton(300, 280, 215, 50, screen, BLACK, 100)
+
+    sleep_checkin_button = RectButton(20, 20, 215, 50, screen, BLACK, 100)
+    sleep_checkin_button.getImageRect().center = (WIDTH / 2, HEIGHT / 2)
+
+    sleep_question_button = RectButton(20, 20, 550, 50, screen, BLACK)
+    sleep_question_button.getImageRect().center = (WIDTH / 2, HEIGHT / 4)
+
+    sleep_response_button = RectButton(20, 20, 650, 50, screen, BLACK)
+    sleep_response_button.getImageRect().center = (WIDTH / 2, HEIGHT / 4)
 
     backButton = RectButton(10, 10, 215, 50, screen, BLACK, 100)
 
@@ -586,9 +596,6 @@ def main():
             #sleep
             sleepLogButton.draw()
             sleepLogButton.draw_text("Log Sleep")
-            #breathe
-            sleepBreatheButton.draw()
-            sleepBreatheButton.draw_text("Breathe")
             #back
             backButton.draw()
             backButton.draw_text("Back")
@@ -606,6 +613,21 @@ def main():
             backButton.draw()
             backButton.draw_text("Back")
             affirmations.run()
+        elif currGameState == Screen.LOGSLEEP:
+            sleepBG.animate(screen)
+            backButton.draw()
+            backButton.draw_text("Back")
+            sleep_checkin_button.draw()
+            sleep_checkin_button.draw_text("CHECK IN")
+            sleep_question_button.draw()
+            sleep_question_button.draw_text("Have you drank anything recently?")
+        elif currGameState == Screen.LOGSLEEP_ACTIVE:
+            sleepBG.animate(screen)
+            backButton.draw()
+            backButton.draw_text("Back")
+            sleep_response_button.draw()
+            sleep_response_button.draw_text("Thank you for keeping us both healthy!")
+            currPet.draw(screen)
         elif currGameState == Screen.CREDITS:
             titleBG.animate(screen)
             creditToTitleButton.draw()
@@ -639,7 +661,7 @@ def main():
                         savePetType = lines[0]
                         if savePetType.__contains__("GIF"):
                             currPet = Pet.init_gifImage(lines[0], lines[1])
-                        else:
+                        else: 
                             currPet = Pet(lines[0], lines[1])
                         currPet.food = float(lines[2])
                         currPet.water = float(lines[3])
@@ -699,11 +721,14 @@ def main():
                     currGameState = Screen.MEDITATION
                 elif sleepAffirmationsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
                     currGameState = Screen.AFFIRMATIONS
-                    toggle_voice()
+                elif sleepLogButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
+                    currGameState = Screen.LOGSLEEP
                 elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.FOOD or currGameState is Screen.WATER or currGameState is Screen.SLEEP or currGameState is Screen.FUN):
                     currGameState = Screen.HOME
-                elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.MEDITATION or currGameState is Screen.AFFIRMATIONS):
+                elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.MEDITATION or currGameState is Screen.AFFIRMATIONS or currGameState is Screen.LOGSLEEP or currGameState is Screen.LOGSLEEP_ACTIVE):
                     currGameState = Screen.SLEEP
+                elif sleep_checkin_button.getImageRect().collidepoint(mouse) and currGameState == Screen.LOGSLEEP:
+                    currGameState = Screen.LOGSLEEP_ACTIVE
                 elif currGameState == Screen.HOME:
                     if HomeFoodButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FOOD
