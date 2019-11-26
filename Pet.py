@@ -105,7 +105,7 @@ class Pet():
             randomy = randint(-40, 40)
 
             if(self.currX + randomx >= WIDTH - 80 or self.currY + randomy >= HEIGHT - 120
-            or self.currX + randomx <= 0 or self.currY + randomy <= 0):
+            or self.currX + randomx <= 50 or self.currY + randomy <= 50):
                 randomx = randint(-40, 40)
                 randomy = randint(-40, 40)
             

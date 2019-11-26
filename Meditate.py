@@ -12,7 +12,8 @@ class Meditate(object):
         self.textArray = ["Sit in a comfortable position.", "Now, start breathing naturally.",
             "Make no effort to control the breath.", "Simply let it be.",
             "Focus your attention on the breath.", "Focus on how the body moves with each breath.",
-            "When ready, close your eyes and breathe for as long as you need."]
+            "When ready, close your eyes and breathe for as long as you need.",
+            "Thanks for being mindful! Your pet's stats will update. :D"]
 
     def setOn(self):
         if(self.isOn == False):
@@ -54,6 +55,11 @@ class Meditate(object):
             self.fadeIn(self.labelArray[1], self.textArray[6], 30)
         elif((timeNow - self.initTime).seconds > 41 and (timeNow - self.initTime).seconds <= 45):
             self.fadeOut(self.labelArray[1], self.textArray[6], 30)
+        elif((timeNow - self.initTime).seconds > 45 and (timeNow - self.initTime).seconds <= 50):
+            self.fadeIn(self.labelArray[1], self.textArray[7], 30)
+        elif((timeNow - self.initTime).seconds > 50 and (timeNow - self.initTime).seconds <= 53):
+            self.fadeOut(self.labelArray[1], self.textArray[7], 30)
+
 
     def drawLabel(self, x, y, width = 215, height = 50, colour = (0, 0, 0), alpha = 0):
         rect = RectButton(x, y, width, height, self.screen, colour, alpha)

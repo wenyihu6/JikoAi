@@ -6,6 +6,7 @@ from Pet import PetType
 from Buttonify import Buttonify
 from RectButton import RectButton
 from Meditate import Meditate
+from Affirmations import Affirmations
 import pygame as pg
 from RectButton import RectButton
 import os
@@ -39,6 +40,7 @@ class Screen(Enum):
     SLEEP = 103
     FUN = 104
     MEDITATION = 105
+    AFFIRMATIONS = 106
 
     def __lt__(this, other):
         if this.__class__ is other.__class__:
@@ -78,8 +80,10 @@ pg.mixer.music.play(-1)
 
 screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
+affirmations = Affirmations(screen)
 currGameState = Screen.STARTING
 currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
+words = ""
 
 def update_save():
     global currPet
@@ -94,7 +98,7 @@ def update_save():
     savefile.write(str(datetime.datetime.now().strftime("%Y-%B-%d %I:%M:%S.%f")) + "\n")
     savefile.close()
  
-# Our function on what to do when the button is pressed  
+# Our function on what to do when the button is pressed  ß
 def Shutdown(channel):
     global currPet
     global currGameState
@@ -102,9 +106,10 @@ def Shutdown(channel):
         update_save()
     os.system("sudo shutdown -h now")
 
-def toggle_voice(channel):
+def toggle_voice():
     global currGameState
     global currPet
+    global words
     #getting audio for stuff
 
     chunk = 8192
@@ -168,6 +173,9 @@ def toggle_voice(channel):
     words = cleanResponse['results'][0]['alternatives'][0]['transcript']
     print(words)
 
+    if(currGameState == Screen.AFFIRMATIONS):
+        affirmations.setDisplayText(words)
+        affirmations.setSpeechParsed(True)
     if ((words == 'begin ' or words == 'start ') and currGameState == Screen.STARTING):
         currGameState = Screen.SELECTION
     if (words == 'credits ' and currGameState == Screen.STARTING):
@@ -206,13 +214,6 @@ def toggle_voice(channel):
     currGameState == Screen.SLEEP or currGameState == Screen.MEDITATION or currGameState == Screen.FUN)):
         currGameState = Screen.HOME
 
-if sys.platform.startswith('linux'):
-    GPIO.setmode(GPIO.BOARD)  
-    GPIO.setup(29, GPIO.IN, pull_up_down = GPIO.PUD_UP) #Power
-    GPIO.add_event_detect(29, GPIO.FALLING, callback = Shutdown, bouncetime = 5000)  
-    GPIO.setup(33, GPIO.IN, pull_up_down = GPIO.PUD_UP) #Voice
-    GPIO.add_event_detect(33, GPIO.FALLING, callback = toggle_voice, bouncetime = 250)  
-
 def main():
     global currPet
     global currGameState
@@ -238,6 +239,18 @@ def main():
     eggUnhatched = GIFImage(os.getcwd() + "/graphicAssets/EggUnhatched",
                             WIDTH/4 + 80, HEIGHT/2 - 170, 15)
     eggUnhatched.resize(250, 250)
+
+    eggHatchedBala = GIFImage(os.getcwd() + "/graphicAssets/EggHatchedBala2")
+    eggHatchedBala.resize(200, 200)
+    eggHatchedBala.setCoords(300, 130)
+
+    eggHatchedMamau = GIFImage(os.getcwd() + "/graphicAssets/EggHatchedMamau2")
+    eggHatchedMamau.resize(200, 200)
+    eggHatchedMamau.setCoords(300, 130)
+
+    eggHatchedTora = GIFImage(os.getcwd() + "/graphicAssets/EggHatchedTora2")
+    eggHatchedTora.resize(200, 200)
+    eggHatchedTora.setCoords(300, 130)
 
     startButton = Buttonify(os.getcwd() + "/graphicAssets/startButton.png", screen)
     startButton.resize(300, 100)
@@ -375,14 +388,29 @@ def main():
         elif currGameState == Screen.EGG:
             print("FILLER")
         elif currGameState == Screen.HATCH:
+
+            homeBG.animate(screen)
+
+            hatchedSubtitle = RectButton(150, 50, 500, 50, screen, BLACK, 128)
+            hatchedSubtitle.draw()
+            hatchedSubtitle.draw_text("Here's your new pet!")
+
+            underSubtitle = RectButton(150, 350, 500, 50, screen, BLACK, 128)
+            underSubtitle.draw()
+            underSubtitle.draw_text("Click anywhere to continue.")
+
             if petSum <= 6:
+                eggHatchedBala.animate(screen)
                 currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
             elif petSum <= 9:
+                eggHatchedMamau.animate(screen)
                 currPet = Pet.init_gifImage(PetType.MAMAUGIF, "mamau")
             else:
+                eggHatchedTora.animate(screen)
                 currPet = Pet.init_gifImage(PetType.TORAGIF, "tora")
+
             savefile.write(str(currPet.petType.value) + "\n")
-            currGameState = Screen.HOME
+
         elif currGameState == Screen.Q_A:
 
             homeBG.animate(screen)
@@ -569,10 +597,15 @@ def main():
             backButton.draw()
             backButton.draw_text("Back")
         elif currGameState == Screen.MEDITATION:
+            sleepBG.animate(screen)
             backButton.draw()
             backButton.draw_text("Back")
-            sleepBG.animate(screen)
             meditate.setOn()
+        elif currGameState == Screen.AFFIRMATIONS:
+            sleepBG.animate(screen)
+            backButton.draw()
+            backButton.draw_text("Back")
+            affirmations.run()
         elif currGameState == Screen.CREDITS:
             titleBG.animate(screen)
             creditToTitleButton.draw()
@@ -664,8 +697,13 @@ def main():
                     currGameState = Screen.STARTING
                 elif sleepMeditateButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
                     currGameState = Screen.MEDITATION
+                elif sleepAffirmationsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
+                    currGameState = Screen.AFFIRMATIONS
+                    toggle_voice()
                 elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.FOOD or currGameState is Screen.WATER or currGameState is Screen.SLEEP or currGameState is Screen.FUN):
                     currGameState = Screen.HOME
+                elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.MEDITATION or currGameState is Screen.AFFIRMATIONS):
+                    currGameState = Screen.SLEEP
                 elif currGameState == Screen.HOME:
                     if HomeFoodButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FOOD
