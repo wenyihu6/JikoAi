@@ -25,7 +25,6 @@ if sys.platform.startswith('linux'):
 
 class Screen(Enum):
     STARTING = 0
-    CREDITS = 1
     SELECTION = 2
     EGG = 3
     Q_A = 4
@@ -216,6 +215,13 @@ def toggle_voice():
     currGameState == Screen.SLEEP or currGameState == Screen.MEDITATION or currGameState == Screen.FUN)):
         currGameState = Screen.HOME
 
+if sys.platform.startswith('linux'):
+    GPIO.setmode(GPIO.BOARD)  
+    GPIO.setup(29, GPIO.IN, pull_up_down = GPIO.PUD_UP) #Power
+    GPIO.add_event_detect(29, GPIO.FALLING, callback = Shutdown, bouncetime = 5000)  
+    GPIO.setup(33, GPIO.IN, pull_up_down = GPIO.PUD_UP) #Voice
+    GPIO.add_event_detect(33, GPIO.FALLING, callback = toggle_voice, bouncetime = 250)  
+
 def main():
     global currPet
     global currGameState
@@ -318,10 +324,6 @@ def main():
 
     backButton = RectButton(10, 10, 215, 50, screen, BLACK, 100)
 
-    creditsButton = RectButton(300, 350, 215, 50, screen, BLACK, 100)
-
-    creditToTitleButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
-
     exitButton = RectButton(20, HEIGHT - 70, 215, 50, screen, BLACK, 100)
 
     currPet.setCoords(WIDTH / 2, 3 * HEIGHT / 4)
@@ -358,9 +360,6 @@ def main():
 
             subtitle = textFont.render('Click to begin!', True, WHITE)
             screen.blit(subtitle, (WIDTH / 4 + 25, HEIGHT / 2 + 32))
-
-            creditsButton.draw()
-            creditsButton.draw_text("Credits")
 
         elif currGameState == Screen.SELECTION:
 
@@ -628,10 +627,6 @@ def main():
             sleep_response_button.draw()
             sleep_response_button.draw_text("Thank you for keeping us both healthy!")
             currPet.draw(screen)
-        elif currGameState == Screen.CREDITS:
-            titleBG.animate(screen)
-            creditToTitleButton.draw()
-            creditToTitleButton.draw_text("Back")
 
         pg.display.update()
 
@@ -648,9 +643,7 @@ def main():
                     savefile = open(os.getcwd() + "/save/saveFile.txt", 'a+')
                     print ("saving")
                 mouse = pg.mouse.get_pos()
-                if creditsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.STARTING:
-                    currGameState = Screen.CREDITS
-                elif currGameState == Screen.STARTING:
+                if currGameState == Screen.STARTING:
                     currGameState = Screen.SELECTION
                 elif newGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
                     open(os.getcwd() + "/save/saveFile.txt", 'w').close()
@@ -715,8 +708,6 @@ def main():
                     currGameState = Screen.HATCH
                 elif currGameState == Screen.HATCH:
                     currGameState = Screen.HOME
-                elif creditToTitleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.CREDITS:
-                    currGameState = Screen.STARTING
                 elif sleepMeditateButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
                     currGameState = Screen.MEDITATION
                 elif sleepAffirmationsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
@@ -726,6 +717,7 @@ def main():
                 elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.FOOD or currGameState is Screen.WATER or currGameState is Screen.SLEEP or currGameState is Screen.FUN):
                     currGameState = Screen.HOME
                 elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.MEDITATION or currGameState is Screen.AFFIRMATIONS or currGameState is Screen.LOGSLEEP or currGameState is Screen.LOGSLEEP_ACTIVE):
+                    currPet.sleep = currPet.sleep + 20
                     currGameState = Screen.SLEEP
                 elif sleep_checkin_button.getImageRect().collidepoint(mouse) and currGameState == Screen.LOGSLEEP:
                     currGameState = Screen.LOGSLEEP_ACTIVE
