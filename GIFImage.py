@@ -26,7 +26,7 @@ class GIFImage(object):
         self.x = x  
         self.y = y
 
-    def frameCycleLen(cycleLen): #Sets how many frames per photo
+    def frameCycleLen(self, cycleLen): #Sets how many frames per photo
         self.frameCycleLen = cycleLen
 
     def getFrames(self): #Generates the frames and gets them ready to be iterated over

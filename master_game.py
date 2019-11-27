@@ -6,6 +6,7 @@ from Pet import PetType
 from Buttonify import Buttonify
 from RectButton import RectButton
 from Meditate import Meditate
+from Affirmations import Affirmations
 import pygame as pg
 from RectButton import RectButton
 import os
@@ -24,7 +25,6 @@ if sys.platform.startswith('linux'):
 
 class Screen(Enum):
     STARTING = 0
-    CREDITS = 1
     SELECTION = 2
     EGG = 3
     Q_A = 4
@@ -40,6 +40,9 @@ class Screen(Enum):
     FUN = 104
     MEDITATION = 105
     WATER_ACTIVE = 106
+    AFFIRMATIONS = 107
+    LOGSLEEP = 108
+    LOGSLEEP_ACTIVE = 109
 
     def __lt__(this, other):
         if this.__class__ is other.__class__:
@@ -73,13 +76,16 @@ titleFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 180)
 textFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 60)
 smallFont = pg.font.Font(os.getcwd() + "/VT323-Regular.ttf", 40)
 
-pg.mixer.music.load('Bitbasic_-_01_-_An_opener.mp3')
+#pg.mixer.init()
+pg.mixer.music.load('Bitbasic_-_01_-_An_opener.ogg')
 pg.mixer.music.play(-1)
 
 screen = pg.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
+affirmations = Affirmations(screen)
 currGameState = Screen.STARTING
 currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
+words = ""
 
 def update_save():
     global currPet
@@ -94,7 +100,7 @@ def update_save():
     savefile.write(str(datetime.datetime.now().strftime("%Y-%B-%d %I:%M:%S.%f")) + "\n")
     savefile.close()
  
-# Our function on what to do when the button is pressed  
+# Our function on what to do when the button is pressed  ß
 def Shutdown(channel):
     global currPet
     global currGameState
@@ -102,9 +108,10 @@ def Shutdown(channel):
         update_save()
     os.system("sudo shutdown -h now")
 
-def toggle_voice(channel):
+def toggle_voice():
     global currGameState
     global currPet
+    global words
     #getting audio for stuff
 
     chunk = 8192
@@ -168,6 +175,9 @@ def toggle_voice(channel):
     words = cleanResponse['results'][0]['alternatives'][0]['transcript']
     print(words)
 
+    if(currGameState == Screen.AFFIRMATIONS):
+        affirmations.setDisplayText(words)
+        affirmations.setSpeechParsed(True)
     if ((words == 'begin ' or words == 'start ') and currGameState == Screen.STARTING):
         currGameState = Screen.SELECTION
     if (words == 'credits ' and currGameState == Screen.STARTING):
@@ -242,6 +252,18 @@ def main():
                             WIDTH/4 + 80, HEIGHT/2 - 170, 15)
     eggUnhatched.resize(250, 250)
 
+    eggHatchedBala = GIFImage(os.getcwd() + "/graphicAssets/EggHatchedBala2")
+    eggHatchedBala.resize(200, 200)
+    eggHatchedBala.setCoords(300, 130)
+
+    eggHatchedMamau = GIFImage(os.getcwd() + "/graphicAssets/EggHatchedMamau2")
+    eggHatchedMamau.resize(200, 200)
+    eggHatchedMamau.setCoords(300, 130)
+
+    eggHatchedTora = GIFImage(os.getcwd() + "/graphicAssets/EggHatchedTora2")
+    eggHatchedTora.resize(200, 200)
+    eggHatchedTora.setCoords(300, 130)
+
     startButton = Buttonify(os.getcwd() + "/graphicAssets/startButton.png", screen)
     startButton.resize(300, 100)
     startButton.setCoords(100, 300)
@@ -291,18 +313,20 @@ def main():
     HomeStressButton = RectButton(
         7 * WIDTH / 8, HEIGHT / 16 + 310, 90, 90, screen, BLACK, 180)
 
-    sleepAffirmationsButton = RectButton(10, 60, 215, 50, screen, BLACK, 100)
-    sleepLogButton = RectButton(80, 10, 215, 50, screen, BLACK, 100)
-    sleepMeditateButton = RectButton(100, 100, 215, 50, screen, BLACK, 100)
-    sleepBreatheButton = RectButton(200, 200, 215, 50, screen, BLACK, 100)
+    sleepAffirmationsButton = RectButton(300, 210, 215, 50, screen, BLACK, 100)
+    sleepLogButton = RectButton(300, 140, 215, 50, screen, BLACK, 100)
+    sleepMeditateButton = RectButton(300, 280, 215, 50, screen, BLACK, 100)
+
+    sleep_checkin_button = RectButton(20, 20, 215, 50, screen, BLACK, 100)
+    sleep_checkin_button.getImageRect().center = (WIDTH / 2, HEIGHT / 2)
+
+    sleep_question_button = RectButton(20, 20, 550, 50, screen, BLACK)
+    sleep_question_button.getImageRect().center = (WIDTH / 2, HEIGHT / 4)
+
+    sleep_response_button = RectButton(20, 20, 650, 50, screen, BLACK)
+    sleep_response_button.getImageRect().center = (WIDTH / 2, HEIGHT / 4)
 
     backButton = RectButton(10, 10, 215, 50, screen, BLACK, 100)
-
-    creditsButton = RectButton(300, 350, 215, 50, screen, BLACK, 100)
-
-    creditToTitleButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
-
-    randomButton = RectButton(20, 20, 215, 50, screen, BLACK, 100)
 
     exitButton = RectButton(20, HEIGHT - 70, 215, 50, screen, BLACK, 100)
 
@@ -357,9 +381,6 @@ def main():
             subtitle = textFont.render('Click to begin!', True, WHITE)
             screen.blit(subtitle, (WIDTH / 4 + 25, HEIGHT / 2 + 32))
 
-            creditsButton.draw()
-            creditsButton.draw_text("Credits")
-
         elif currGameState == Screen.SELECTION:
 
             titleBG.animate(screen)
@@ -393,20 +414,34 @@ def main():
             exitButton.draw()
             exitButton.draw_text("EXIT")
 
-            randomButton.draw()
-            randomButton.draw_text("RANDOM")
         elif currGameState == Screen.EGG:
             print("FILLER")
         elif currGameState == Screen.HATCH:
+
+            homeBG.animate(screen)
+
+            hatchedSubtitle = RectButton(150, 50, 500, 50, screen, BLACK, 128)
+            hatchedSubtitle.draw()
+            hatchedSubtitle.draw_text("Here's your new pet!")
+
+            underSubtitle = RectButton(150, 350, 500, 50, screen, BLACK, 128)
+            underSubtitle.draw()
+            underSubtitle.draw_text("Click anywhere to continue.")
+
             if petSum <= 6:
+                eggHatchedBala.animate(screen)
                 currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
             elif petSum <= 9:
+                eggHatchedMamau.animate(screen)
                 currPet = Pet.init_gifImage(PetType.MAMAUGIF, "mamau")
             else:
+                eggHatchedTora.animate(screen)
                 currPet = Pet.init_gifImage(PetType.TORAGIF, "tora")
+
             savefile.write(str(currPet.petType.value) + "\n")
             currGameState = Screen.HOME
             currPet.setCoords(WIDTH / 2, HEIGHT / 2)
+
         elif currGameState == Screen.Q_A:
 
             homeBG.animate(screen)
@@ -593,8 +628,11 @@ def main():
             sleepAffirmationsButton.draw()
             sleepAffirmationsButton.draw_text("Affirmations")
             #meditate
+            sleepMeditateButton.draw()
+            sleepMeditateButton.draw_text("Meditation")
             #sleep
-            #breathe
+            sleepLogButton.draw()
+            sleepLogButton.draw_text("Log Sleep")
             #back
             backButton.draw()
             backButton.draw_text("Back")
@@ -603,14 +641,30 @@ def main():
             backButton.draw()
             backButton.draw_text("Back")
         elif currGameState == Screen.MEDITATION:
+            sleepBG.animate(screen)
             backButton.draw()
             backButton.draw_text("Back")
-            sleepBG.animate(screen)
             meditate.setOn()
-        elif currGameState == Screen.CREDITS:
-            titleBG.animate(screen)
-            creditToTitleButton.draw()
-            creditToTitleButton.draw_text("Back")
+        elif currGameState == Screen.AFFIRMATIONS:
+            sleepBG.animate(screen)
+            backButton.draw()
+            backButton.draw_text("Back")
+            affirmations.run()
+        elif currGameState == Screen.LOGSLEEP:
+            sleepBG.animate(screen)
+            backButton.draw()
+            backButton.draw_text("Back")
+            sleep_checkin_button.draw()
+            sleep_checkin_button.draw_text("CHECK IN")
+            sleep_question_button.draw()
+            sleep_question_button.draw_text("Have you slept recently?")
+        elif currGameState == Screen.LOGSLEEP_ACTIVE:
+            sleepBG.animate(screen)
+            backButton.draw()
+            backButton.draw_text("Back")
+            sleep_response_button.draw()
+            sleep_response_button.draw_text("Thank you for keeping us both healthy!")
+            currPet.draw(screen)
 
         pg.display.update()
 
@@ -629,9 +683,7 @@ def main():
                     savefile = open(os.getcwd() + "/save/saveFile.txt", 'a+')
                     print ("saving")
                 mouse = pg.mouse.get_pos()
-                if creditsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.STARTING:
-                    currGameState = Screen.CREDITS
-                elif currGameState == Screen.STARTING:
+                if currGameState == Screen.STARTING:
                     currGameState = Screen.SELECTION
                 elif newGameButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SELECTION:
                     open(os.getcwd() + "/save/saveFile.txt", 'w').close()
@@ -642,7 +694,7 @@ def main():
                         savePetType = lines[0]
                         if savePetType.__contains__("GIF"):
                             currPet = Pet.init_gifImage(lines[0], lines[1])
-                        else:
+                        else: 
                             currPet = Pet(lines[0], lines[1])
                         currPet.food = float(lines[2])
                         currPet.water = float(lines[3])
@@ -701,13 +753,22 @@ def main():
                 elif currGameState == Screen.HATCH:
                     currGameState = Screen.HOME
                     currPet.setCoords(WIDTH / 2, HEIGHT / 2)
-                elif creditToTitleButton.getImageRect().collidepoint(mouse) and currGameState == Screen.CREDITS:
-                    currGameState = Screen.STARTING
-                elif sleepAffirmationsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
-                    currGameState = Screen.MEDITATION
                 elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.FOOD or currGameState is Screen.WATER or currGameState is Screen.WATER_ACTIVE or currGameState is Screen.SLEEP or currGameState is Screen.FUN):
                     currGameState = Screen.HOME
                     currPet.setCoords(WIDTH / 2, HEIGHT / 2)
+                elif sleepMeditateButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
+                    currGameState = Screen.MEDITATION
+                elif sleepAffirmationsButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
+                    currGameState = Screen.AFFIRMATIONS
+                elif sleepLogButton.getImageRect().collidepoint(mouse) and currGameState == Screen.SLEEP:
+                    currGameState = Screen.LOGSLEEP
+                elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.FOOD or currGameState is Screen.WATER or currGameState is Screen.SLEEP or currGameState is Screen.FUN):
+                    currGameState = Screen.HOME
+                elif backButton.getImageRect().collidepoint(mouse) and (currGameState is Screen.MEDITATION or currGameState is Screen.AFFIRMATIONS or currGameState is Screen.LOGSLEEP or currGameState is Screen.LOGSLEEP_ACTIVE):
+                    currPet.sleep = currPet.sleep + 20
+                    currGameState = Screen.SLEEP
+                elif sleep_checkin_button.getImageRect().collidepoint(mouse) and currGameState == Screen.LOGSLEEP:
+                    currGameState = Screen.LOGSLEEP_ACTIVE
                 elif currGameState == Screen.HOME:
                     if HomeFoodButton.getImageRect().collidepoint(mouse):
                         currGameState = Screen.FOOD
