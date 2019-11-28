@@ -696,7 +696,7 @@ def main():
             # back
             backButton.draw()
             backButton.draw_text("Back")
-            currPet.draw(screen)
+            # currPet.draw(screen)
 
         elif currGameState == Screen.SHOWER:
             showerBG.animate(screen)
@@ -772,7 +772,7 @@ def main():
             sleep_response_button.draw_text(
                 "Thank you for keeping us both healthy!")
             currPet.draw(screen)
-            meditate.setOn()
+            # meditate.setOn()
 
         pg.display.update()
 
@@ -789,7 +789,6 @@ def main():
                     savefile.close()
                     update_save()
                     savefile = open(os.getcwd() + "/save/saveFile.txt", 'a+')
-                    print("saving")
                 mouse = pg.mouse.get_pos()
                 if currGameState == Screen.STARTING:
                     currGameState = Screen.SELECTION
@@ -812,8 +811,6 @@ def main():
                         dtimeT = (
                             init_time - datetime.datetime.strptime(lines[6], "%Y-%B-%d %I:%M:%S.%f"))
                         dtime = dtimeT.seconds
-                        print(dtimeT)
-                        print(dtime)
                         currPet.food += FOOD_CHANGE_RATE * dtime * FRAMERATE
                         currPet.water += WATER_CHANGE_RATE * dtime * FRAMERATE
                         currPet.sleep += SLEEP_CHANGE_RATE * dtime * FRAMERATE
