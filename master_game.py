@@ -223,6 +223,7 @@ if sys.platform.startswith('linux'):
     GPIO.add_event_detect(33, GPIO.FALLING, callback = toggle_voice, bouncetime = 250)  
 
 def main():
+
     global currPet
     global currGameState
 
@@ -575,7 +576,6 @@ def main():
             qa4RightButton.draw()
             qa4RightButton.draw_text("Agree")
 
-        
         elif currGameState == Screen.WATER:
             waterBG.animate(screen)
             backButton.draw()
