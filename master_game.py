@@ -23,9 +23,9 @@ import pyaudio
 if sys.platform.startswith('linux'):
     import RPi.GPIO as GPIO
 
-
 class Screen(Enum):
     STARTING = 0
+    CREDITS = 1
     SELECTION = 2
     EGG = 3
     Q_A = 4
@@ -57,7 +57,6 @@ class Screen(Enum):
         if this.__class__ is other.__class__:
             return this.value > other.value
         return NotImplemented
-
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -97,7 +96,6 @@ currGameState = Screen.STARTING
 currPet = Pet.init_gifImage(PetType.BALAGIF, "bala")
 words = ""
 
-
 def update_save():
     global currPet
     global currGameState
@@ -121,7 +119,6 @@ def Shutdown(channel):
     if currGameState.value > Screen.HATCH.value:
         update_save()
     os.system("sudo shutdown -h now")
-
 
 def toggle_voice():
     global currGameState
@@ -248,6 +245,24 @@ def main():
     global currPet
     global currGameState
 
+    is_draggable = False
+    on_pizza = False
+    on_edamame = False
+    on_fruitTart = False
+    on_rice = False
+    offset_x = 0
+    offset_y = 0
+    m_x = 0
+    m_y = 0
+    pizza_x = 100
+    pizza_y = 350
+    edamame_x = 280
+    edamame_y = 350
+    fruitTart_x = 530
+    fruitTart_y = 350
+    rice_x = 650
+    rice_y = 350
+
     savefile = open(os.getcwd() + "/save/saveFile.txt", "a+")
 
     FRAMERATE = 12
@@ -265,6 +280,12 @@ def main():
     foodBG.resize(800, 480)
     playBG = GIFImage(os.getcwd() + "/graphicAssets/BgPlay")
     playBG.resize(800, 480)
+
+    #loading food images
+    pizza = pg.image.load(os.getcwd() + "/graphicAssets/pizza.png")
+    fruitTart = pg.image.load(os.getcwd() + "/graphicAssets/fruitTart.png")
+    rice = pg.image.load(os.getcwd() + "/graphicAssets/rice.png")
+    edamame = pg.image.load(os.getcwd() + "/graphicAssets/edamame.png")
 
     eggUnhatched = GIFImage(os.getcwd() + "/graphicAssets/EggUnhatched",
                             WIDTH/4 + 80, HEIGHT/2 - 170, 15)
@@ -741,9 +762,29 @@ def main():
 
             backButton.draw()
             backButton.draw_text("Back")
-
+           
         elif currGameState == Screen.FOOD:
             foodBG.animate(screen)
+            #drawing food images
+            screen.blit(pg.transform.scale(pizza, (100, 100)), (pizza_x, pizza_y))
+            screen.blit(pg.transform.scale(fruitTart, (100, 100)), (fruitTart_x, fruitTart_y))
+            screen.blit(pg.transform.scale(rice, (100, 100)), (rice_x, rice_y))
+            screen.blit(pg.transform.scale(edamame, (100, 100)), (edamame_x, edamame_y))
+            #drawing the text
+            foodText = textFont.render(
+                'Did you eat well today?', True, WHITE)
+
+            foodRect = pg.Surface((550, 75))
+            foodRect.set_alpha(100)
+            foodRect.fill(BLACK)
+
+            screen.blit(foodRect, (150, HEIGHT - 400))
+            screen.blit(foodText, (150, HEIGHT - 400))
+
+            #drawing the character
+            currPet.draw(screen)
+
+            #other buttons and stuff
             backButton.draw()
             backButton.draw_text("Back")
         elif currGameState == Screen.MEDITATION:
@@ -782,12 +823,34 @@ def main():
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
+            if event.type == pg.MOUSEBUTTONUP and event.button == 1:
+                is_draggable = False
+                on_pizza = False
+                on_edamame = False
+                on_fruitTart = False
+                on_rice = False
+            if event.type == pg.MOUSEMOTION:
+                if is_draggable:
+                    m_x, m_y = event.pos
+                    #test for each image:
+                    if on_pizza:
+                        pizza_x = m_x + offset_x
+                        pizza_y = m_y + offset_y
+                    elif on_edamame:
+                        edamame_x = m_x + offset_x
+                        edamame_y = m_y + offset_y
+                    elif on_fruitTart:
+                        fruitTart_x = m_x + offset_x
+                        fruitTart_y = m_y + offset_y
+                    elif on_rice:
+                        rice_x = m_x + offset_x
+                        rice_y = m_y + offset_y
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 if currGameState == Screen.Q_A:
                     currGameState = Screen.Q_A1
                 if currGameState.value > Screen.HATCH.value:
                     savefile.close()
-                    update_save()
+                    update_save() 
                     savefile = open(os.getcwd() + "/save/saveFile.txt", 'a+')
                 mouse = pg.mouse.get_pos()
                 if currGameState == Screen.STARTING:
@@ -925,6 +988,44 @@ def main():
                     if currPet.stress < 0:
                         currPet.stress = 0
                     currGameState = Screen.SHOWER_DONE
+                elif currGameState == Screen.FOOD:
+                    #we have currPet: and pizza, edamame, rice, fruitTart
+                    if pizza.get_rect().collidepoint(mouse):
+                        is_draggable = True
+                        on_edamame = False
+                        on_fruitTart = False
+                        on_rice = False
+                        on_pizza = True
+                        m_x, m_y = event.pos
+                        offset_x = pizza.get_rect().x - m_x
+                        offset_y = pizza.get_rect().y - m_y
+                    elif edamame.get_rect().collidepoint(mouse):
+                        is_draggable = True
+                        on_edamame = True
+                        on_fruitTart = False
+                        on_rice = False
+                        on_pizza = False
+                        m_x, m_y = event.pos
+                        offset_x = edamame.get_rect().x - m_x
+                        offset_y = edamame.get_rect().y - m_y
+                    elif rice.get_rect().collidepoint(mouse):
+                        is_draggable = True
+                        on_edamame = False
+                        on_fruitTart = False
+                        on_rice = True
+                        on_pizza = False
+                        m_x, m_y = event.pos
+                        offset_x = rice.get_rect().x - m_x
+                        offset_y = rice.get_rect().y - m_y
+                    elif fruitTart.get_rect().collidepoint(mouse):
+                        is_draggable = True
+                        on_edamame = False
+                        on_fruitTart = True
+                        on_rice = False
+                        on_pizza = False
+                        m_x, m_y = event.pos
+                        offset_x = fruitTart.get_rect().x - m_x
+                        offset_y = fruitTart.get_rect().y - m_y
 
 
 main()
