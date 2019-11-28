@@ -35,7 +35,7 @@ class Pet():
     picture = os.getcwd() + "/graphicAssets/SpriteBala.png"
     isImage = True
 
-    def __init__(self, petType, name, isImage, moveCycleLen = 0):
+    def __init__(self, petType, name, isImage, moveCycleLen = 30):
 
         WHITE = (255, 255, 255)
         picture = os.getcwd() + "/graphicAssets/SpriteBala.png"
@@ -83,9 +83,7 @@ class Pet():
         else:
             self.image.resize(width, height)
 
-
     def setCoords(self, x, y):
-
         self.currX = x - self.image.get_width() / 2
         self.currY = y - self.image.get_width() / 2
 
@@ -107,7 +105,7 @@ class Pet():
             randomy = randint(-40, 40)
 
             if(self.currX + randomx >= WIDTH - 80 or self.currY + randomy >= HEIGHT - 120
-            or self.currX + randomx <= 0 or self.currY + randomy <= 0):
+            or self.currX + randomx <= 50 or self.currY + randomy <= 50):
                 randomx = randint(-40, 40)
                 randomy = randint(-40, 40)
             
