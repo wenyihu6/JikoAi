@@ -23,9 +23,9 @@ import pyaudio
 if sys.platform.startswith('linux'):
     import RPi.GPIO as GPIO
 
+
 class Screen(Enum):
     STARTING = 0
-    CREDITS = 1
     SELECTION = 2
     EGG = 3
     Q_A = 4
@@ -57,6 +57,7 @@ class Screen(Enum):
         if this.__class__ is other.__class__:
             return this.value > other.value
         return NotImplemented
+
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -306,25 +307,25 @@ def main():
     showerBG.resize(800, 480)
 
     showerBala = GIFImage(
-        os.getcwd() + "/graphicAssets/ShowerBala", WIDTH/4 + 80, HEIGHT/2 - 170, 15)
-    showerBala.resize(250, 250)
+        os.getcwd() + "/graphicAssets/ShowerBala", WIDTH/4 + 80, HEIGHT/2 + 40, 15)
+    showerBala.resize(150, 200)
     showerDoneBala = GIFImage(
-        os.getcwd() + "/graphicAssets/ShowerDoneBala", WIDTH/4 + 80, HEIGHT/2 - 170, 15)
-    showerDoneBala.resize(250, 250)
+        os.getcwd() + "/graphicAssets/ShowerDoneBala", WIDTH/4 + 80, HEIGHT/2 + 40, 15)
+    showerDoneBala.resize(150, 200)
     showerMamau = GIFImage(
-        os.getcwd() + "/graphicAssets/ShowerMamau", WIDTH/4 + 80, HEIGHT/2 - 170, 15)
-    showerMamau.resize(250, 250)
+        os.getcwd() + "/graphicAssets/ShowerMamau", WIDTH/4 + 80, HEIGHT/2 + 40, 15)
+    showerMamau.resize(150, 200)
 
     showerDoneMamau = GIFImage(
-        os.getcwd() + "/graphicAssets/ShowerDoneMamau", WIDTH/4 + 80, HEIGHT/2 - 170, 15)
-    showerDoneMamau.resize(250, 250)
+        os.getcwd() + "/graphicAssets/ShowerDoneMamau", WIDTH/4 + 80, HEIGHT/2 + 40, 15)
+    showerDoneMamau.resize(150, 200)
 
     showerTora = GIFImage(
-        os.getcwd() + "/graphicAssets/ShowerTora", WIDTH/4 + 80, HEIGHT/2 - 170, 15)
-    showerTora.resize(250, 250)
+        os.getcwd() + "/graphicAssets/ShowerTora", WIDTH/4 + 80, HEIGHT/2 + 40, 15)
+    showerTora.resize(150, 200)
     showerDoneTora = GIFImage(
-        os.getcwd() + "/graphicAssets/ShowerDoneTora", WIDTH/4 + 80, HEIGHT/2 - 170, 15)
-    showerDoneTora.resize(250, 250)
+        os.getcwd() + "/graphicAssets/ShowerDoneTora", WIDTH/4 + 80, HEIGHT/2 + 40, 15)
+    showerDoneTora.resize(150, 200)
 
     eggUnhatched = GIFImage(os.getcwd() + "/graphicAssets/EggUnhatched",
                             WIDTH/4 + 80, HEIGHT/2 - 170, 15)
@@ -415,10 +416,10 @@ def main():
     water_response_button = RectButton(20, 20, 650, 50, screen, BLACK)
     water_response_button.getImageRect().center = (WIDTH / 2, HEIGHT / 4)
 
-    shower_response_button = RectButton(20, 20, 650, 50, screen, BLACK)
+    shower_response_button = RectButton(20, 350, 100, 50, screen, BLACK)
     shower_response_button.getImageRect().center = (WIDTH / 2, HEIGHT / 4)
 
-    shower_text_button = RectButton(20, 20, 700, 50, screen, BLACK)
+    shower_text_button = RectButton(20, 350, 650, 50, screen, BLACK)
     shower_text_button.getImageRect().center = (WIDTH / 2, HEIGHT / 4)
 
     water_drop1 = Buttonify(
@@ -751,7 +752,7 @@ def main():
             showerBG.animate(screen)
             shower_text_button.draw()
             shower_text_button.draw_text(
-                "Taking a shower always reduces my anxiety! Thank you!")
+                "Thank you for taking care of me!")
 
             if currPet.petType == "PetType.BALA" or currPet.petType == "PetType.BALAGIF":
                 showerDoneBala.animate(screen)
@@ -850,7 +851,7 @@ def main():
                     currGameState = Screen.Q_A1
                 if currGameState.value > Screen.HATCH.value:
                     savefile.close()
-                    update_save() 
+                    update_save()
                     savefile = open(os.getcwd() + "/save/saveFile.txt", 'a+')
                 mouse = pg.mouse.get_pos()
                 if currGameState == Screen.STARTING:
