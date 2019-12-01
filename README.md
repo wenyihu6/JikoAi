@@ -31,6 +31,19 @@ https://developer.ibm.com/answers/questions/203041/speech-to-text-with-python-er
 #### Assets
 The theme music for the game is "An opener" by Bitbasic; accessed through [Free Music Archive](https://freemusicarchive.org/music/Bitbasic/Pixel_Mixel). The art used in the game are as follows; note that all images used do not imply endorsement by the artists and we used the images as placeholders; if you don't want your art here let us know!
 
+Other assets used in the game are as follows:
+* For the box in which the Raspberry Pi is housed in, the clip art of the monster on the back was accessed from this [site](https://publicdomainvectors.org/en/free-clipart/Cute-toothless-monster/81416.html)
+* On the start screen, the pink cityscape is from this [site](https://steamcommunity.com/sharedfiles/filedetails/?id=1655529628)
+* The new game and load game button graphics are from [here](http://pixelartmaker.com/art/1a3c1597f19b5ff)
+* The forest and water background for the Q&A section of the game is from [here](https://imgur.com/gallery/g6XDZ)
+* The sprites for the different creatures are from this [site](https://www.megupets.com/)
+* The rainy city scene background on the main screen is from [here](https://www.pinterest.ca/pin/70650287887104685/)
+* The cherry blossom city scene background on the food screen is from [here](http://www.webdesignertrends.com/2017/03/waneella-pixel-art/)
+* The lake city scene background on the water screen is from this [site](https://www.pinterest.ca/pin/345510602639604879/)
+* The city-at-night scene background on the sleep screen is from this [site](https://weheartit.com/entry/312959754)
+* The pink/brown forest scene background on the play screen is from [here](https://weheartit.com/entry/324981803)
+* The clip art used for the cleaning your pet activity are from this [site](https://clipground.com/bath-rooms-clipart.html)
+
 ~
 
 Authors: Simran Thind (@simcard0000), Cole MacPhail (@colemacphail), Zhengmao Ouyang (@SwuntiiTHICC), Wenyi Hu (@wenyihu3)
