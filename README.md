@@ -44,6 +44,8 @@ Other assets used in the game are as follows:
 * The pink/brown forest scene background on the play screen is from [here](https://weheartit.com/entry/324981803)
 * The clip art used for the cleaning your pet activity are from this [site](https://clipground.com/bath-rooms-clipart.html)
 
+Font used is [VT323](https://fonts.google.com/specimen/VT323) from Google Fonts.
+
 ~
 
 Authors: Simran Thind (@simcard0000), Cole MacPhail (@colemacphail), Zhengmao Ouyang (@SwuntiiTHICC), Wenyi Hu (@wenyihu3)
