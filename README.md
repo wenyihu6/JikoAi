@@ -1,3 +1,5 @@
+![active development](https://img.shields.io/badge/active%20dev-on%20hold-yellow.svg)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/simcard0000/jiko-ai.svg)
 # jiko-ai
 🐈 A creative final project for SE101 (cohort 2024) - the first-year concepts course for Software Engineering @ the University of Waterloo. jiko-ai is a virtual pet, styled after Tamagotchi™, in which the user is encouraged to not only look after their creatures, but after themselves too. Through activities like medition and affirmations, both the pet and the user can grow together!
 ### Credits
